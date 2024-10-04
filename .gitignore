@@ -1,0 +1,12 @@
+wla.bat
+wla-65816.exe
+wlalink.exe
+*.fig
+.wla9224a
+.wla*
+other/
+tools/
+dma_sync_test/
+info/
+wla.txt
+.vs/
