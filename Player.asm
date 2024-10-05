@@ -10,16 +10,20 @@
 .DEFINE initialPositionY_HI 	$00
 .DEFINE initID					$00
 
-.DEFINE right_velocity 			$24
-.DEFINE left_velocity 			$24
+.DEFINE right_velocity 			$12
+.DEFINE left_velocity 			$12
+.DEFINE down_velocity 			$12
+.DEFINE up_velocity 			$12
 
 
   ;Heading
 .DEFINE Right	0
 .DEFINE Left	1
+.DEFINE Down	0
+.DEFINE Up		1
 
   ;MotionState
-.DEFINE Standing		0
+.DEFINE Standing	0
 .DEFINE Walk		1
 .DEFINE Pivot		2
 .DEFINE Airborne	3
@@ -50,40 +54,41 @@
 	;positionY_LO 	DW ;$F0
 	;positionY_HI 	DW ;$08
 
-	playerID			DB
+	playerID			DB ;C0
 	targetVelocityX   	DB ;C1
-	velocityX        	DB ;C2
-	positionX_Lo       	DB ;C3
-	positionX_Hi       	DB ;C4
-	spriteX_Lo       	DB ;C5
-	spriteX_Hi       	DB ;C6
-	heading          	DB ;C7
+	targetVelocityY   	DB ;C2
+	velocityX        	DB ;C3
+	positionX_Lo       	DB ;C4
+	positionX_Hi       	DB ;C5
+	spriteX_Lo       	DB ;C6
+	spriteX_Hi       	DB ;C7
+	headingX          	DB ;C8
 
-	velocityY        	DB ;C8
-	positionY_Lo        DB ;C9
-	positionY_Hi        DB ;CA
-	spriteY_Lo       	DB ;CB
-	spriteY_Hi       	DB ;CC
+	velocityY        	DB ;C9
+	positionY_Lo        DB ;CA
+	positionY_Hi        DB ;CB
+	spriteY_Lo       	DB ;CC
+	spriteY_Hi       	DB ;CD
+	headingY          	DB ;CE
 
-	motionState      	DB ;CD
-	animationFrame   	DB ;CE
-	animationTimer   	DB ;CF
-	idleState         	DB 
-	idleTimer        	DB 
-	byte19				DB
-	byte20				DB
-	byte21				DB
-	byte22				DB
-	byte23				DB
-	byte24				DB
-	byte25				DB
-	byte26				DB
-	byte27				DB
-	byte28				DB
-	byte29				DB
-	byte30				DB
-	byte31				DB
-	byte32				DB
+	motionState      	DB ;CF
+	animationFrame   	DB ;D0
+	animationTimer   	DB ;D1
+	idleState         	DB ;D2
+	idleTimer        	DB ;D3
+	byte21				DB ;D4
+	byte22				DB ;D4
+	byte23				DB ;D5
+	byte24				DB ;D6
+	byte25				DB ;D7
+	byte26				DB ;D8
+	byte27				DB ;D9
+	byte28				DB ;DA
+	byte29				DB ;DB
+	byte30				DB ;DC
+	byte31				DB ;DE
+	byte32				DB ;DF
+	
 
 
 .ENDST
@@ -94,25 +99,44 @@ player INSTANCEOF playerCharacter 5
 
 .bank 0 slot 0
 .org 0
-.section "Player Controls"
+.section "Player Initialize"
 ;--------------------------------------
 
 PlayerInit:
     
-	stx initID
-	rol initID
-	rol initID
-	rol initID
-	rol initID
-	rol initID
-	ldy initID
-    jsr init_x
-    jsr init_y
+	
+	;rol initID
+	;rol initID
+	;rol initID
+	;rol initID
+	;rol initID
+	;ldy initID
+	cpx #$01
+	bne +
+	stx player.1.playerID
+    jsr init_x_p1
+    jsr init_y_p1
++	cpx #$02
+	bne +
+	stx player.2.playerID
+	jsr init_x_p2
+    jsr init_y_p2
++	cpx #$03
+	bne +
+	stx player.3.playerID
+	jsr init_x_p3
+    jsr init_y_p3
++	cpx #$04
+	bne +
+	stx player.4.playerID
+	jsr init_x_p4
+    jsr init_y_p4
++	
+	
     ;jsr init_sprites
 	rts
 
-
-init_x:
+init_x_p1:
     lda #initialSpriteX
     sta player.1.spriteX_Lo
     lda #initialPositionX_LO
@@ -125,7 +149,7 @@ init_x:
 
 
 
-init_y:
+init_y_p1:
 	lda #initialSpriteY
     lda #initialSpriteY 
     sta player.1.spriteY_Hi
@@ -138,118 +162,318 @@ init_y:
 	lda #Airborne
     sta player.1.motionState
     rts
+	
+init_x_p2:
+    lda #initialSpriteX
+    sta player.2.spriteX_Lo
+    lda #initialPositionX_LO
+    sta player.2.positionX_Lo
+    lda #initialPositionX_HI
+	sta player.2.positionX_Hi
+    lda #initialVelocityX
+    sta player.2.velocityX
+    rts
 
 
+
+init_y_p2:
+	lda #initialSpriteY
+    lda #initialSpriteY 
+    sta player.2.spriteY_Hi
+    lda #initialPositionY_LO
+    sta player.2.positionY_Lo
+    lda #initialPositionY_HI
+	sta player.2.positionY_Hi
+    lda #initialVelocityY
+    sta player.2.velocityY
+	lda #Airborne
+    sta player.2.motionState
+    rts
+	
+init_x_p3:
+    lda #initialSpriteX
+    sta player.3.spriteX_Lo
+    lda #initialPositionX_LO
+    sta player.3.positionX_Lo
+    lda #initialPositionX_HI
+	sta player.3.positionX_Hi
+    lda #initialVelocityX
+    sta player.3.velocityX
+    rts
+
+
+
+init_y_p3:
+	lda #initialSpriteY
+    lda #initialSpriteY 
+    sta player.3.spriteY_Hi
+    lda #initialPositionY_LO
+    sta player.3.positionY_Lo
+    lda #initialPositionY_HI
+	sta player.3.positionY_Hi
+    lda #initialVelocityY
+    sta player.3.velocityY
+	lda #Airborne
+    sta player.3.motionState
+    rts
+	
+init_x_p4:
+    lda #initialSpriteX
+    sta player.4.spriteX_Lo
+    lda #initialPositionX_LO
+    sta player.4.positionX_Lo
+    lda #initialPositionX_HI
+	sta player.4.positionX_Hi
+    lda #initialVelocityX
+    sta player.4.velocityX
+    rts
+
+
+
+init_y_p4:
+	lda #initialSpriteY
+    lda #initialSpriteY 
+    sta player.4.spriteY_Hi
+    lda #initialPositionY_LO
+    sta player.4.positionY_Lo
+    lda #initialPositionY_HI
+	sta player.4.positionY_Hi
+    lda #initialVelocityY
+    sta player.4.velocityY
+	lda #Airborne
+    sta player.4.motionState
+    rts
+	
+	
+.ends	
+	
+	
+;================================================================		
+;================================================================	
 ;================================================================	  
 	  
-MovementUpdate:
-
-	  jsr update_vertical_motion
-      jsr set_target_x_velocity
-      jsr accelerate_x
-      jsr apply_velocity_x
-      jsr bound_position_x
-
-      rts
-
-
-update_vertical_motion:
-      clc
-	  lda player.1.motionState
-      cmp #Airborne
-	  bcs @airborne_motion
+.bank 0 slot 0
+.org 0
+.section "Player 1 Routine"  
 	  
-   @check_jump:
-	 ldy #1
-     lda Joy1Press,y
-     cmp #BUTTON_B
-     beq @begin_jump
-     lda #0
-     sta player.1.velocityY
-	 
-     rts
-   @begin_jump:
-     sed
-     lda #jumpVelocity
-     sta player.1.velocityY
-	 cld
-     lda #Airborne
-     sta player.1.motionState
+MovementUpdateP1:
+      jsr P1_set_target_y_velocity
+      jsr P1_accelerate_y
+      jsr P1_apply_velocity_y
+      jsr P1_bound_position_y
+      jsr P1_set_target_x_velocity
+      jsr P1_accelerate_x
+      jsr P1_apply_velocity_x
+      jsr P1_bound_position_x
+      rts
+	
 
-    @airborne_motion:
-      jsr update_jump_velocity
-      jsr apply_velocity_y
-      jsr bound_position_y
+;================================================================		
+;==============Player 1 routine==================================		
+;================================================================	
+;================================================================	  
+	  
+P1_set_target_y_velocity
+      ; Check if the B button is being pressed and save the state in the X
+      ; register
+
+	  Rep #$30
+	  lda #$0000
+	  sep #$20
+	  ldx #01
+	  
+   
+    @p1check_down: 
+      lda #BUTTON_DOWN
+	  sta CurrentButton
+      and SJoy1, X
+	  tay
+	  cpy CurrentButton
+      bne @p1check_up
+	  sep #$30
+	  lda #$00
+	  sta player.1.headingY
+	  ldx #down_velocity
+      stx player.1.targetVelocityY
+	  rep #$10
+      rts
+    @p1check_up:
+	 
+      lda #BUTTON_UP
+	  sta CurrentButton
+      and SJoy1, X 
+	  tay
+	  cpy CurrentButton
+      bne @p1no_Y_direction
+	  sep #$30
+	  lda #$01
+	  sta player.1.headingY
+      ldx #down_velocity
+      stx player.1.targetVelocityY
+	  rep #$10
+	  
+      rts
+	  
+    @p1no_Y_direction:
+      lda #0
+      sta player.1.targetVelocityY
+	  
       rts
     
 
-update_jump_velocity
 
-   ;   ; Determine if the Y velocity should decelerate quickly or slowly.
-   ;   ; The velocity decelerates slowly (1/frame) for up to 24 frames as
-   ;   ; long as the player holds the "A Button". After that it goes quickly
-   ;   ; (5/frame)
-	;  
-      ldx #5
+P1_accelerate_y
+    ;  lda player.1.motionState;
+    @p1airborne_accel:
+      ; When airborne there is no friction, so ignore target velocities of 0
+      sep #$20
+	  rep #$10
+	  
+	  
+	  lda player.1.targetVelocityY
+	  cmp #$00
+      bne @p1check_directional_velocity_y
+	  
+	;no_target_velocity
+	  lda player.1.headingY
+	  cmp #$00
+      bcs @p1negative_deccel_y
+    @p1positive_deccel_y:
+      ; If moving right, only accelerate if the target velocity is higher
+	  lda player.1.velocityY
+	  sbc player.1.targetVelocityY
+      bmi @p1decelerate_y
+      rts
+    @p1negative_deccel_y:
+      ; Similarly, if moving left only do so if the target velocity is lower
+      lda player.1.velocityY
+	  sbc player.1.targetVelocityY
+      bpl @p1decelerate_y
+      rts
+	  
+      
+   
+    @p1check_directional_velocity_y:
+      lda player.1.headingY
+	  cmp #$00
+      bcc @p1negative_accel_y
+    @p1positive_accel_y:
+      ; If moving right, only accelerate if the target velocity is higher
+	  lda player.1.velocityY
+	  sbc player.1.targetVelocityY
+      bmi @p1accelerate_y
+      rts
+    @p1negative_accel_y:
+      ; Similarly, if moving left only do so if the target velocity is lower
+      lda player.1.velocityY
+	  sbc player.1.targetVelocityY
+      bpl @p1accelerate_y
+      rts
+    
+		
+	@p1accelerate_y:
+     
       lda player.1.velocityY;
-      cmp #$E0
-      bpl @decelerateY
-      ldy #1
-      lda Joy1Press,y ;isButtonHeld
-      cmp #BUTTON_B
-      beq @decelerateY
-      ldx #1
-    @decelerateY:
-      ; Perform the deceleration (the code above stores the rate in Y)
-      txa
-      clc
-      adc player.1.velocityY;
-      bmi @store_velocity
-    @check_Falling_speed:
-      ; If the velocity is positive, check and cap the falling speed
-      cmp #MaxFallSpeed
-      bcc @store_velocity
-      lda #MaxFallSpeed
-    @store_velocity:
-      ; Finally store the velocity and exit
-      sta player.1.velocityY;
+      sec
+      sbc player.1.targetVelocityY;
+      bne @p1check_greater_y
+      rts
+    @p1check_greater_y:
+      bmi @p1lesser_y
+	  rep #$30
+	  lda #$00FF
+	  and player.1.velocityY
+	  tax 
+	  sep #$10
+      dex
+	  stx player.1.velocityY;	
+	  rep #$30
+	  sep #$20	  
+      rts
+    @p1lesser_y:
+     
+	  rep #$30
+	  lda #$00FF
+	  and player.1.velocityY
+	  tax 
+	  sep #$10
+      inx
+	  stx player.1.velocityY;	
+	  rep #$30
+	  sep #$20  
+      rts
+	  
+	  
+	@p1decelerate_y:
+     
+      lda player.1.velocityY;
+      sec
+      sbc player.1.targetVelocityY;
+      bne @p1check_greater_dec_y
+      rts
+    @p1check_greater_dec_y:
+      bmi @p1lesserDec_y
+	  rep #$30
+	  lda #$00FF
+	  and player.1.velocityY
+	  tax 
+	  sep #$10
+      dex
+	  dex
+	  stx player.1.velocityY;	
+	  rep #$30
+	  sep #$20	  
+      rts
+    @p1lesserDec_y:
+     
+	  rep #$30
+	  lda #$00FF
+	  and player.1.velocityY
+	  tax 
+	  sep #$10
+      inx
+	  inx
+	  stx player.1.velocityY;	
+	  rep #$30
+	  sep #$20  
       rts
 
 
-apply_velocity_y
-     REP #$30
-	  ;check_jump
-	 ldy #1
-     lda Joy1Press,y
-     and #BUTTON_B
-     bne @negative_velocity_y
+P1_apply_velocity_y
+ 
+     lda player.1.headingY
+     cmp #$01
+	 beq @p1negative_velocity_Y
 	  
-     @positive_velocity_y:
-      clc
+     @p1positive_velocity_Y:
+      REP #$30
+	  clc
 	  lda #$00FF
 	  and player.1.velocityY
 	  sta $03
 	  lda player.1.positionY_Lo
       adc $03
-      sta player.1.positionY_Lo
+      sta player.1.positionY_Lo;
 	  SEP #$20
 	  rts
-    
-    @negative_velocity_y:
+	 
+   @p1negative_velocity_Y:
+      REP #$30
 	  clc
 	  lda #$00FF
 	  and player.1.velocityY
 	  sta $03
 	  lda player.1.positionY_Lo
       sbc $03
-      sta player.1.positionY_Lo
+      sta player.1.positionY_Lo;
 	  SEP #$20
 	  rts
 
 
-bound_position_y
-      ; Convert from 12.4 fixed point into screen coordinates
-	  ldy #$01
+P1_bound_position_y
+   ;   ; Convert the fixed point position coordinate into screen coordinates
+   
+    ldy #$01
       lda player.1.positionY_Lo
       sta $00
       lda player.1.positionY_Lo, Y
@@ -266,29 +490,15 @@ bound_position_y
       sta player.1.spriteY_Lo
 	  lda $01
 	  sta player.1.spriteY_Hi
-    @check_landing:
-    ;  ; Check to see if the player has landed
-	  rep #$30
-	  lda player.1.spriteY_Lo
-      cmp #FloorHeight
-      bpl @land
-	  lda #Airborne
-      sta player.1.motionState
-	  sep #$20
-      rts
-    @land:
-    ;  ; Land by re-initializing the Y variables and resetting the  motion state
-	  rep #$30
-	  lda #FloorHeight
-	  sta player.1.spriteY_Lo	  
-	  sta player.1.positionY_Lo
-      lda #Still
-      sta player.1.motionState
-	  sep #$20
-      rts
+	  
+	  
+;================================================================		
+;================================================================	
+;================================================================	
+;================================================================	 
+	  
 
-
-set_target_x_velocity
+P1_set_target_x_velocity
       ; Check if the B button is being pressed and save the state in the X
       ; register
 
@@ -298,38 +508,38 @@ set_target_x_velocity
 	  ldx #01
 	  
    
-    @check_right: 
+    @p1check_right: 
       lda #BUTTON_RIGHT
 	  sta CurrentButton
       and SJoy1, X
 	  tay
 	  cpy CurrentButton
-      bne @check_left
+      bne @p1check_left
 	  sep #$30
 	  lda #$00
-	  sta player.1.heading
+	  sta player.1.headingX
 	  ldx #right_velocity
       stx player.1.targetVelocityX
 	  rep #$10
       rts
-    @check_left:
+    @p1check_left:
 	 
       lda #BUTTON_LEFT
 	  sta CurrentButton
       and SJoy1, X 
 	  tay
 	  cpy CurrentButton
-      bne @no_direction
+      bne @p1no_direction
 	  sep #$30
 	  lda #$01
-	  sta player.1.heading
+	  sta player.1.headingX
       ldx #left_velocity
       stx player.1.targetVelocityX
 	  rep #$10
 	  
       rts
 	  
-    @no_direction:
+    @p1no_direction:
       lda #0
       sta player.1.targetVelocityX
 	  
@@ -337,11 +547,11 @@ set_target_x_velocity
     
 
 
-accelerate_x
+P1_accelerate_x
     ;  lda player.1.motionState;
    ;   cmp Airborne
-   ;   bne @accelerate
-    @airborne_accel:
+   ;   bne @p1accelerate
+    ;@p1airborne_accel:
       ; When airborne there is no friction, so ignore target velocities of 0
       sep #$20
 	  rep #$10
@@ -349,58 +559,54 @@ accelerate_x
 	  
 	  lda player.1.targetVelocityX
 	  cmp #$00
-      bne @check_directional_velocity
+      bne @p1check_directional_velocity
 	  
 	;no_target_velocity
-	  lda player.1.heading
+	  lda player.1.headingX
 	  cmp #$00
-      bcs @negative_deccel_x
-    @positive_deccel_x:
+      bcs @p1negative_deccel_x
+    @p1positive_deccel_x:
       ; If moving right, only accelerate if the target velocity is higher
 	  lda player.1.velocityX
 	  sbc player.1.targetVelocityX
-      bmi @decelerate
+      bmi @p1decelerate
       rts
-    @negative_deccel_x:
+    @p1negative_deccel_x:
       ; Similarly, if moving left only do so if the target velocity is lower
       lda player.1.velocityX
 	  sbc player.1.targetVelocityX
-      bpl @decelerate
+      bpl @p1decelerate
       rts
 	  
-   
-   
-   
-   
-    @check_directional_velocity:
-      lda player.1.heading;
+      
+    @p1check_directional_velocity:
+      lda player.1.headingX
 	  cmp #$00
-      bcc @negative_accel_x
-    @positive_accel_x:
+      bcc @p1negative_accel_x
+    @p1positive_accel_x:
       ; If moving right, only accelerate if the target velocity is higher
 	  lda player.1.velocityX
 	  sbc player.1.targetVelocityX
-      bmi @accelerate
+      bmi @p1accelerate
       rts
-    @negative_accel_x:
+    @p1negative_accel_x:
       ; Similarly, if moving left only do so if the target velocity is lower
       lda player.1.velocityX
 	  sbc player.1.targetVelocityX
-      bpl @accelerate
+      bpl @p1accelerate
       rts
     
+		
 	
-	
-	
-	@accelerate:
+	@p1accelerate:
      
       lda player.1.velocityX;
       sec
       sbc player.1.targetVelocityX;
-      bne @check_greater
+      bne @p1check_greater
       rts
-    @check_greater:
-      bmi @lesser
+    @p1check_greater:
+      bmi @p1lesser
 	  rep #$30
 	  lda #$00FF
 	  and player.1.velocityX
@@ -411,7 +617,7 @@ accelerate_x
 	  rep #$30
 	  sep #$20	  
       rts
-    @lesser:
+    @p1lesser:
      
 	  rep #$30
 	  lda #$00FF
@@ -425,15 +631,15 @@ accelerate_x
       rts
 	  
 	  
-	@decelerate:
+	@p1decelerate:
      
       lda player.1.velocityX;
       sec
       sbc player.1.targetVelocityX;
-      bne @check_greater_dec
+      bne @p1check_greater_dec
       rts
-    @check_greater_dec:
-      bmi @lesserDec
+    @p1check_greater_dec:
+      bmi @p1lesserDec
 	  rep #$30
 	  lda #$00FF
 	  and player.1.velocityX
@@ -445,7 +651,7 @@ accelerate_x
 	  rep #$30
 	  sep #$20	  
       rts
-    @lesserDec:
+    @p1lesserDec:
      
 	  rep #$30
 	  lda #$00FF
@@ -460,13 +666,13 @@ accelerate_x
       rts
 
 
-apply_velocity_x
+P1_apply_velocity_x
  
-     lda player.1.heading
+     lda player.1.headingX
      cmp #$01
-	 beq @negative_velocity_x
+	 beq @p1negative_velocity_x
 	  
-     @positive_velocity_x:
+     @p1positive_velocity_x:
       REP #$30
 	  clc
 	  lda #$00FF
@@ -478,7 +684,7 @@ apply_velocity_x
 	  SEP #$20
 	  rts
 	 
-   @negative_velocity_x:
+   @p1negative_velocity_x:
       REP #$30
 	  clc
 	  lda #$00FF
@@ -491,7 +697,7 @@ apply_velocity_x
 	  rts
 
 
-bound_position_x
+P1_bound_position_x
    ;   ; Convert the fixed point position coordinate into screen coordinates
    
     ldy #$01
@@ -530,15 +736,15 @@ bound_position_x
    ;   ;sta player.1.spriteX;
    ;   ; Check if we are moving left or right (negative or positive respectively)
    ;   lda player.1.velocityX;
-   ;   bmi @negative_position_x
-   ; @positive_position_x:
+   ;   bmi @p1negative_position_x
+   ; @p1positive_position_x:
    ;   lda $01
-   ;   bne @bound_upper
+   ;   bne @p1bound_upper
    ;   lda $00
    ;   cmp #239
-   ;   bcs @bound_upper
+   ;   bcs @p1bound_upper
    ;   rts
-   ; @bound_upper:
+   ; @p1bound_upper:
    ;   ; $EF = 239 = 255 - 16, this is the right bound since the screen is 256 pixels
    ;   ; wide and the character is 16 pixels wide.
    ;   ;lda #$EF
@@ -551,13 +757,13 @@ bound_position_x
    ;   ;lda #0
    ;   ;sta player.1.velocityX;
    ;   rts
-   ; @negative_position_x:
+   ; @p1negative_position_x:
    ;   ; The negative case is really simple, just check if the high order byte of the
    ;   ; 12.4 fixed point position is negative. If so bound everything to 0.
    ;   ;lda player.1.positionX+1;
-   ;   bmi @bound_lower
+   ;   bmi @p1bound_lower
    ;   rts
-   ; @bound_lower:
+   ; @p1bound_lower:
    ;   ;lda #0
    ;   ;sta player.1.positionX;
    ;   ;sta player.1.positionX+1;
@@ -567,7 +773,7 @@ bound_position_x
 
 
 
-Sprite_update
+P1_Sprite_update
    ;   jsr update_motion_state
    ;   jsr update_animation_frame
    ;   jsr update_heading
@@ -577,13 +783,13 @@ Sprite_update
       rts
  
 
-update_motion_state
+P1_update_motion_state
       lda player.1.motionState
       cmp Airborne
-      bcc @grounded
-    @airborne_motion_state:
+      bcc @p1grounded
+    @p1airborne_motion_state:
       rts
-    @grounded:
+    @p1grounded:
       ; If spriteX == 0: STILL    // Left bound animation fix
       ; If spriteX == MAX: STILL  // Right bound animation fix
       ; If T = V:
@@ -597,43 +803,43 @@ update_motion_state
       ;     If T < 0 && V > 0: PIVOT
       ;   Else: WALK
       lda player.1.spriteX_Hi
-      beq @stand
+      beq @p1stand
       cmp #$EF
-      beq @stand
+      beq @p1stand
       lda player.1.targetVelocityX;
       cmp player.1.velocityX;
-      bne @accelerating
-    @steady:
+      bne @p1accelerating
+    @p1steady:
       lda player.1.velocityX;
-      beq @stand
-      bne @walk_motion_state
-    @stand:
+      beq @p1stand
+      bne @p1walk_motion_state
+    @p1stand:
       lda Still
       sta player.1.motionState;
       rts
-    @accelerating:
+    @p1accelerating:
       lda BUTTON_LEFT
       ora BUTTON_RIGHT
       and Joy1Press ;isButtonHeld
-      beq @walk_motion_state
+      beq @p1walk_motion_state
       lda #%10000000
       and player.1.targetVelocityX;
       sta $00
       lda #%10000000
       and player.1.velocityX;
       cmp $00
-      ;beq @walk_motion_state
-    @pivot_motion_state:
+      ;beq @p1walk_motion_state
+    @p1pivot_motion_state:
       lda Pivot
       sta player.1.motionState;
       rts
-    @walk_motion_state:
+    @p1walk_motion_state:
       lda Walk
       sta player.1.motionState;
       rts
 
 
-update_animation_frame
+P1_update_animation_frame
       ; If V == 0:
       ;   Set initial timer
       ; Else:
@@ -642,53 +848,53 @@ update_animation_frame
       ;     Reset frame timer based on V
       ;     Increment the frame
       lda player.1.velocityX;
-      bne @moving
+      bne @p1moving
       ;lda delay_by_velocity
       sta player.1.animationTimer;
       rts
-    @moving:
+    @p1moving:
       ;dec player.1.animationTimer;
-      beq @next_frame
+      beq @p1next_frame
       rts
-    @next_frame:
+    @p1next_frame:
       ldx player.1.velocityX;
-      bpl @transition_state
+      bpl @p1transition_state
       lda #0
       sec
       sbc player.1.velocityX;
       tax
-    @transition_state:
+    @p1transition_state:
       ;lda delay_by_velocity, x
       sta player.1.animationTimer;
       lda #1
       eor player.1.animationFrame;
       sta player.1.animationFrame;
       rts
-    delay_by_velocity:
+    ;delay_by_velocity:
       ;.byte 12, 11, 11, 11, 11, 11, 10, 10, 10, 10, 10
       ;.byte 9, 9, 9, 9, 9, 8, 8, 8, 8, 8, 7, 7, 7, 7, 7
       ;.byte 6, 6, 6, 6, 6, 5, 5, 5, 5, 5, 4, 4, 4, 4, 4
 
 
-update_heading
+P1_update_heading
       ; If the target velocity is 0 then the player isn't pressing left or right and
       ; the heading doesn't need to change.
       lda player.1.targetVelocityX;
-      bne @check_heading
+      bne @p1check_headingX
       rts
       ; If the target velocity is non-zero, check to see if player is heading in the
       ; desired direction.
-    @check_heading:
+    @p1check_headingX:
       asl
       lda #0
       rol
-      cmp player.1.heading;
-      bne @update_heading
+      cmp player.1.headingX;
+      bne @p1update_headingX
       rts
-    @update_heading:
+    @p1update_headingX:
       ; If the desired heading is not equal to the current heading based on the
       ; target velocity, then update the heading.
-      sta player.1.heading;
+      sta player.1.headingX;
       ; Toggle the "horizontal" mirroring on the character sprites
       lda #%01000000
       ;eor $200 + OAM_ATTR
@@ -697,95 +903,95 @@ update_heading
       rts
 
 
-update_idle_state
+P1_update_idle_state
      ; lda player.1.motionState;
      ; cmp Still
-     ; beq @update_timer
-     ; ;lda timers
+     ; beq @p1update_timer
+     ; ;lda ;timers
      ; sta player.1.idleTimer;
      ; lda Still
      ; sta player.1.idleState;
       rts
-    @update_timer:
+    @p1update_timer:
       ;dec player.1.idleTimer;
-      beq @update_state
+      beq @p1update_state
       rts
-    @update_state:
+    @p1update_state:
       ldx player.1.idleState;
       inx
       cpx #4
-      bne @set_state
+      bne @p1set_state
       ldx #0
-    @set_state:
+    @p1set_state:
       stx player.1.idleState;
-      ;lda timers, x
+      ;lda ;timers, x
       sta player.1.idleTimer;
       rts
-    timers:
+    ;timers:
       ;.byte 245, 10, 10, 10
 
 
-update_sprite_tiles
+P1_update_sprite_tiles
       lda player.1.motionState;
       cmp Airborne
-      beq @airborne_sptite_tiles
+      beq @p1airborne_sptite_tiles
       cmp Pivot
-      beq @pivot_sprite_tiles
+      beq @p1pivot_sprite_tiles
       cmp Walk
-      beq @walk_sprite_tiles
-    @still:
+      beq @p1walk_sprite_tiles
+    @p1still:
       lda player.1.idleState;
       asl
       asl
       clc
-      adc player.1.heading;
+      adc player.1.headingX;
       tax
       ;lda idle_tiles, x
       ;sta $200 + OAM_TILE
       ;lda idle_tiles + 2, x
       ;sta $204 + OAM_TILE
       rts
-    @airborne_sptite_tiles:
-      ldx player.1.heading;
+    @p1airborne_sptite_tiles:
+      ldx player.1.headingX;
       ;lda jumping_tiles, x
       ;sta $200 + OAM_TILE
       ;lda jumping_tiles + 2, x
       ;sta $204 + OAM_TILE
       rts
-    @walk_sprite_tiles:
+    @p1walk_sprite_tiles:
       lda player.1.animationFrame;
       asl
       asl
       clc
-      adc player.1.heading;
+      adc player.1.headingX;
       tax
       ;lda walk_tiles, x
       ;sta $200 + OAM_TILE
       ;lda walk_tiles +2, x
       ;sta $204 + OAM_TILE
       rts
-    @pivot_sprite_tiles:
-      ldx player.1.heading;
+    @p1pivot_sprite_tiles:
+      ldx player.1.headingX;
       ;lda pivot_tiles, x
       ;sta $200 + OAM_TILE
       ;lda pivot_tiles + 2, x
       ;sta $204 + OAM_TILE
       rts
-    jumping_tiles:
+    ;jumping_tiles:
       ;.byte $88, $8A, $8A, $88
-    pivot_tiles:
+    ;pivot_tiles:
       ;.byte $98, $9A, $9A, $98 ; Pivot is the same no matter the animation frame
-    walk_tiles:
+   ; walk_tiles:
       ;.byte $80, $82, $82, $80 ; Frame 1
       ;.byte $84, $86, $86, $84 ; Frame 2
-    idle_tiles:
+    ;idle_tiles:
       ;.byte $80, $82, $82, $80
       ;.byte $9C, $9E, $9E, $9C
       ;.byte $80, $82, $82, $80
       ;.byte $9C, $9E, $9E, $9C
 
 
-update_sprite_position
+P1_update_sprite_position
       ; This is computed in `bound_position` above, so all we have to do is set
       ; the sprite coordinates appropriately.
       lda player.1.spriteX_Hi
@@ -798,5 +1004,2258 @@ update_sprite_position
       sta $204
       rts 
 	  
+	.ends
+
+.bank 0 slot 0
+.org 0
+.section "Player 2 Routine"  	
+	    
+MovementUpdateP2:
+      jsr P2_set_target_y_velocity
+      jsr P2_accelerate_y
+      jsr P2_apply_velocity_y
+      jsr P2_bound_position_y
+      jsr P2_set_target_x_velocity
+      jsr P2_accelerate_x
+      jsr P2_apply_velocity_x
+      jsr P2_bound_position_x
+      rts
 	  
+
+	  
+	  
+;================================================================		
+;==============Player 2 routine==================================	
+;================================================================	
+;================================================================	  
+	  
+P2_set_target_y_velocity
+      ; Check if the B button is being pressed and save the state in the X
+      ; register
+
+	  Rep #$30
+	  lda #$0000
+	  sep #$20
+	  ldx #01
+	  
+   
+    @p2check_down: 
+      lda #BUTTON_DOWN
+	  sta CurrentButton
+      and SJoy1, X
+	  tay
+	  cpy CurrentButton
+      bne @p2check_up
+	  sep #$30
+	  lda #$00
+	  sta player.2.headingY
+	  ldx #down_velocity
+      stx player.2.targetVelocityY
+	  rep #$10
+      rts
+    @p2check_up:
+	 
+      lda #BUTTON_UP
+	  sta CurrentButton
+      and SJoy2, X 
+	  tay
+	  cpy CurrentButton
+      bne @p2no_Y_direction
+	  sep #$30
+	  lda #$01
+	  sta player.2.headingY
+      ldx #down_velocity
+      stx player.2.targetVelocityY
+	  rep #$10
+	  
+      rts
+	  
+    @p2no_Y_direction:
+      lda #0
+      sta player.2.targetVelocityY
+	  
+      rts
+    
+
+
+P2_accelerate_y
+    ;  lda player.2.motionState;
+    @p2airborne_accel:
+      ; When airborne there is no friction, so ignore target velocities of 0
+      sep #$20
+	  rep #$10
+	  
+	  
+	  lda player.2.targetVelocityY
+	  cmp #$00
+      bne @p2check_directional_velocity_y
+	  
+	;no_target_velocity
+	  lda player.2.headingY
+	  cmp #$00
+      bcs @p2negative_deccel_y
+    @p2positive_deccel_y:
+      ; If moving right, only accelerate if the target velocity is higher
+	  lda player.2.velocityY
+	  sbc player.2.targetVelocityY
+      bmi @p2decelerate_y
+      rts
+    @p2negative_deccel_y:
+      ; Similarly, if moving left only do so if the target velocity is lower
+      lda player.2.velocityY
+	  sbc player.2.targetVelocityY
+      bpl @p2decelerate_y
+      rts
+	  
+      
+   
+    @p2check_directional_velocity_y:
+      lda player.2.headingY
+	  cmp #$00
+      bcc @p2negative_accel_y
+    @p2positive_accel_y:
+      ; If moving right, only accelerate if the target velocity is higher
+	  lda player.2.velocityY
+	  sbc player.2.targetVelocityY
+      bmi @p2accelerate_y
+      rts
+    @p2negative_accel_y:
+      ; Similarly, if moving left only do so if the target velocity is lower
+      lda player.2.velocityY
+	  sbc player.2.targetVelocityY
+      bpl @p2accelerate_y
+      rts
+    
+		
+	@p2accelerate_y:
+     
+      lda player.2.velocityY;
+      sec
+      sbc player.2.targetVelocityY;
+      bne @p2check_greater_y
+      rts
+    @p2check_greater_y:
+      bmi @p2lesser_y
+	  rep #$30
+	  lda #$00FF
+	  and player.2.velocityY
+	  tax 
+	  sep #$10
+      dex
+	  stx player.2.velocityY;	
+	  rep #$30
+	  sep #$20	  
+      rts
+    @p2lesser_y:
+     
+	  rep #$30
+	  lda #$00FF
+	  and player.2.velocityY
+	  tax 
+	  sep #$10
+      inx
+	  stx player.2.velocityY;	
+	  rep #$30
+	  sep #$20  
+      rts
+	  
+	  
+	@p2decelerate_y:
+     
+      lda player.2.velocityY;
+      sec
+      sbc player.2.targetVelocityY;
+      bne @p2check_greater_dec_y
+      rts
+    @p2check_greater_dec_y:
+      bmi @p2lesserDec_y
+	  rep #$30
+	  lda #$00FF
+	  and player.2.velocityY
+	  tax 
+	  sep #$10
+      dex
+	  dex
+	  stx player.2.velocityY;	
+	  rep #$30
+	  sep #$20	  
+      rts
+    @p2lesserDec_y:
+     
+	  rep #$30
+	  lda #$00FF
+	  and player.2.velocityY
+	  tax 
+	  sep #$10
+      inx
+	  inx
+	  stx player.2.velocityY;	
+	  rep #$30
+	  sep #$20  
+      rts
+
+
+P2_apply_velocity_y
+ 
+     lda player.2.headingY
+     cmp #$01
+	 beq @p2negative_velocity_Y
+	  
+     @p2positive_velocity_Y:
+      REP #$30
+	  clc
+	  lda #$00FF
+	  and player.2.velocityY
+	  sta $03
+	  lda player.2.positionY_Lo
+      adc $03
+      sta player.2.positionY_Lo;
+	  SEP #$20
+	  rts
+	 
+   @p2negative_velocity_Y:
+      REP #$30
+	  clc
+	  lda #$00FF
+	  and player.2.velocityY
+	  sta $03
+	  lda player.2.positionY_Lo
+      sbc $03
+      sta player.2.positionY_Lo;
+	  SEP #$20
+	  rts
+
+
+P2_bound_position_y
+   ;   ; Convert the fixed point position coordinate into screen coordinates
+   
+    ldy #$01
+      lda player.2.positionY_Lo
+      sta $00
+      lda player.2.positionY_Lo, Y
+      sta $01
+      lsr $01
+      ror $00
+      lsr $01
+      ror $00
+      lsr $01
+      ror $00
+      lsr $01
+      ror $00
+      lda $00
+      sta player.2.spriteY_Lo
+	  lda $01
+	  sta player.2.spriteY_Hi
+	 
+;================================================================	
+;================================================================	 
+	  
+
+P2_set_target_x_velocity
+      ; Check if the B button is being pressed and save the state in the X
+      ; register
+
+	  Rep #$30
+	  lda #$0000
+	  sep #$20
+	  ldx #01
+	  
+   
+    @p2check_right: 
+      lda #BUTTON_RIGHT
+	  sta CurrentButton
+      and SJoy2, X
+	  tay
+	  cpy CurrentButton
+      bne @p2check_left
+	  sep #$30
+	  lda #$00
+	  sta player.2.headingX
+	  ldx #right_velocity
+      stx player.2.targetVelocityX
+	  rep #$10
+      rts
+    @p2check_left:
+	 
+      lda #BUTTON_LEFT
+	  sta CurrentButton
+      and SJoy2, X 
+	  tay
+	  cpy CurrentButton
+      bne @p2no_direction
+	  sep #$30
+	  lda #$01
+	  sta player.2.headingX
+      ldx #left_velocity
+      stx player.2.targetVelocityX
+	  rep #$10
+	  
+      rts
+	  
+    @p2no_direction:
+      lda #0
+      sta player.2.targetVelocityX
+	  
+      rts
+    
+
+
+P2_accelerate_x
+    ;  lda player.2.motionState;
+   ;   cmp Airborne
+   ;   bne @p2accelerate
+    ;@p2airborne_accel:
+      ; When airborne there is no friction, so ignore target velocities of 0
+      sep #$20
+	  rep #$10
+	  
+	  
+	  lda player.2.targetVelocityX
+	  cmp #$00
+      bne @p2check_directional_velocity
+	  
+	;no_target_velocity
+	  lda player.2.headingX
+	  cmp #$00
+      bcs @p2negative_deccel_x
+    @p2positive_deccel_x:
+      ; If moving right, only accelerate if the target velocity is higher
+	  lda player.2.velocityX
+	  sbc player.2.targetVelocityX
+      bmi @p2decelerate
+      rts
+    @p2negative_deccel_x:
+      ; Similarly, if moving left only do so if the target velocity is lower
+      lda player.2.velocityX
+	  sbc player.2.targetVelocityX
+      bpl @p2decelerate
+      rts
+	  
+      
+    @p2check_directional_velocity:
+      lda player.2.headingX
+	  cmp #$00
+      bcc @p2negative_accel_x
+    @p2positive_accel_x:
+      ; If moving right, only accelerate if the target velocity is higher
+	  lda player.2.velocityX
+	  sbc player.2.targetVelocityX
+      bmi @p2accelerate
+      rts
+    @p2negative_accel_x:
+      ; Similarly, if moving left only do so if the target velocity is lower
+      lda player.2.velocityX
+	  sbc player.2.targetVelocityX
+      bpl @p2accelerate
+      rts
+    
+		
+	
+	@p2accelerate:
+     
+      lda player.2.velocityX;
+      sec
+      sbc player.2.targetVelocityX;
+      bne @p2check_greater
+      rts
+    @p2check_greater:
+      bmi @p2lesser
+	  rep #$30
+	  lda #$00FF
+	  and player.2.velocityX
+	  tax 
+	  sep #$10
+      dex
+	  stx player.2.velocityX;	
+	  rep #$30
+	  sep #$20	  
+      rts
+    @p2lesser:
+     
+	  rep #$30
+	  lda #$00FF
+	  and player.2.velocityX
+	  tax 
+	  sep #$10
+      inx
+	  stx player.2.velocityX;	
+	  rep #$30
+	  sep #$20  
+      rts
+	  
+	  
+	@p2decelerate:
+     
+      lda player.2.velocityX;
+      sec
+      sbc player.2.targetVelocityX;
+      bne @p2check_greater_dec
+      rts
+    @p2check_greater_dec:
+      bmi @p2lesserDec
+	  rep #$30
+	  lda #$00FF
+	  and player.2.velocityX
+	  tax 
+	  sep #$10
+      dex
+	  dex
+	  stx player.2.velocityX;	
+	  rep #$30
+	  sep #$20	  
+      rts
+    @p2lesserDec:
+     
+	  rep #$30
+	  lda #$00FF
+	  and player.2.velocityX
+	  tax 
+	  sep #$10
+      inx
+	  inx
+	  stx player.2.velocityX;	
+	  rep #$30
+	  sep #$20  
+      rts
+
+
+P2_apply_velocity_x
+ 
+     lda player.2.headingX
+     cmp #$01
+	 beq @p2negative_velocity_x
+	  
+     @p2positive_velocity_x:
+      REP #$30
+	  clc
+	  lda #$00FF
+	  and player.2.velocityX
+	  sta $03
+	  lda player.2.positionX_Lo
+      adc $03
+      sta player.2.positionX_Lo;
+	  SEP #$20
+	  rts
+	 
+   @p2negative_velocity_x:
+      REP #$30
+	  clc
+	  lda #$00FF
+	  and player.2.velocityX
+	  sta $03
+	  lda player.2.positionX_Lo
+      sbc $03
+      sta player.2.positionX_Lo;
+	  SEP #$20
+	  rts
+
+
+P2_bound_position_x
+   ;   ; Convert the fixed point position coordinate into screen coordinates
+   
+    ldy #$01
+      lda player.2.positionX_Lo
+      sta $00
+      lda player.2.positionX_Lo, Y
+      sta $01
+      lsr $01
+      ror $00
+      lsr $01
+      ror $00
+      lsr $01
+      ror $00
+      lsr $01
+      ror $00
+      lda $00
+      sta player.2.spriteX_Lo
+	  lda $01
+	  sta player.2.spriteX_Hi
+   
+   ;   ldy sy
+	;  lda player.2.positionX;
+   ;   sta $00
+   ;   lda player.2.positionX;
+   ;   sta $01
+   ;   lsr $01
+   ;   ror $00
+   ;   lsr $01
+   ;   ror $00
+   ;   lsr $01
+   ;   ror $00
+   ;   lsr $01
+   ;   ror $00
+   ;   ; Assume that everything is fine and save the sprite position
+   ;   lda $00
+   ;   ;sta player.2.spriteX;
+   ;   ; Check if we are moving left or right (negative or positive respectively)
+   ;   lda player.2.velocityX;
+   ;   bmi @p2negative_position_x
+   ; @p2positive_position_x:
+   ;   lda $01
+   ;   bne @p2bound_upper
+   ;   lda $00
+   ;   cmp #239
+   ;   bcs @p2bound_upper
+   ;   rts
+   ; @p2bound_upper:
+   ;   ; $EF = 239 = 255 - 16, this is the right bound since the screen is 256 pixels
+   ;   ; wide and the character is 16 pixels wide.
+   ;   ;lda #$EF
+   ;   ;sta player.2.spriteX;
+   ;   ;lda #$0E
+   ;   ;sta player.2.positionX+1;
+   ;   ;lda #$F0
+   ;   ;sta player.2.positionX;
+   ;   ; Finally, set the velocity to 0 since the player is being "stopped"
+   ;   ;lda #0
+   ;   ;sta player.2.velocityX;
+   ;   rts
+   ; @p2negative_position_x:
+   ;   ; The negative case is really simple, just check if the high order byte of the
+   ;   ; 12.4 fixed point position is negative. If so bound everything to 0.
+   ;   ;lda player.2.positionX+1;
+   ;   bmi @p2bound_lower
+   ;   rts
+   ; @p2bound_lower:
+   ;   ;lda #0
+   ;   ;sta player.2.positionX;
+   ;   ;sta player.2.positionX+1;
+   ;   ;sta player.2.spriteX;
+   ;   ;sta player.2.velocityX;
+   ;   rts
+
+
+
+P2_Sprite_update
+   ;   jsr update_motion_state
+   ;   jsr update_animation_frame
+   ;   jsr update_heading
+   ;   jsr update_idle_state
+   ;   jsr update_sprite_tiles
+   ;   jsr update_sprite_position
+      rts
+ 
+
+P2_update_motion_state
+      lda player.2.motionState
+      cmp Airborne
+      bcc @p2grounded
+    @p2airborne_motion_state:
+      rts
+    @p2grounded:
+      ; If spriteX == 0: STILL    // Left bound animation fix
+      ; If spriteX == MAX: STILL  // Right bound animation fix
+      ; If T = V:
+      ;   // Steady motion
+      ;   If T == 0: STILL
+      ;   Else: WALK
+      ; If T <> V:
+      ;   // Accelerating
+      ;   If <- or -> being pressed:
+      ;     If T > 0 && V < 0: PIVOT
+      ;     If T < 0 && V > 0: PIVOT
+      ;   Else: WALK
+      lda player.2.spriteX_Hi
+      beq @p2stand
+      cmp #$EF
+      beq @p2stand
+      lda player.2.targetVelocityX;
+      cmp player.2.velocityX;
+      bne @p2accelerating
+    @p2steady:
+      lda player.2.velocityX;
+      beq @p2stand
+      bne @p2walk_motion_state
+    @p2stand:
+      lda Still
+      sta player.2.motionState;
+      rts
+    @p2accelerating:
+      lda BUTTON_LEFT
+      ora BUTTON_RIGHT
+      and Joy1Press ;isButtonHeld
+      beq @p2walk_motion_state
+      lda #%10000000
+      and player.2.targetVelocityX;
+      sta $00
+      lda #%10000000
+      and player.2.velocityX;
+      cmp $00
+      ;beq @p2walk_motion_state
+    @p2pivot_motion_state:
+      lda Pivot
+      sta player.2.motionState;
+      rts
+    @p2walk_motion_state:
+      lda Walk
+      sta player.2.motionState;
+      rts
+
+
+P2_update_animation_frame
+      ; If V == 0:
+      ;   Set initial timer
+      ; Else:
+      ;   Decrement timer
+      ;   If frame timer == 0:
+      ;     Reset frame timer based on V
+      ;     Increment the frame
+      lda player.2.velocityX;
+      bne @p2moving
+      ;lda delay_by_velocity
+      sta player.2.animationTimer;
+      rts
+    @p2moving:
+      ;dec player.2.animationTimer;
+      beq @p2next_frame
+      rts
+    @p2next_frame:
+      ldx player.2.velocityX;
+      bpl @p2transition_state
+      lda #0
+      sec
+      sbc player.2.velocityX;
+      tax
+    @p2transition_state:
+      ;lda delay_by_velocity, x
+      sta player.2.animationTimer;
+      lda #1
+      eor player.2.animationFrame;
+      sta player.2.animationFrame;
+      rts
+    ;delay_by_velocity:
+      ;.byte 12, 11, 11, 11, 11, 11, 10, 10, 10, 10, 10
+      ;.byte 9, 9, 9, 9, 9, 8, 8, 8, 8, 8, 7, 7, 7, 7, 7
+      ;.byte 6, 6, 6, 6, 6, 5, 5, 5, 5, 5, 4, 4, 4, 4, 4
+
+
+P2_update_heading
+      ; If the target velocity is 0 then the player isn't pressing left or right and
+      ; the heading doesn't need to change.
+      lda player.2.targetVelocityX;
+      bne @p2check_headingX
+      rts
+      ; If the target velocity is non-zero, check to see if player is heading in the
+      ; desired direction.
+    @p2check_headingX:
+      asl
+      lda #0
+      rol
+      cmp player.2.headingX;
+      bne @p2update_headingX
+      rts
+    @p2update_headingX:
+      ; If the desired heading is not equal to the current heading based on the
+      ; target velocity, then update the heading.
+      sta player.2.headingX;
+      ; Toggle the "horizontal" mirroring on the character sprites
+      lda #%01000000
+      ;eor $200 + OAM_ATTR
+      ;sta $200 + OAM_ATTR
+      ;sta $204 + OAM_ATTR
+      rts
+
+
+P2_update_idle_state
+     ; lda player.2.motionState;
+     ; cmp Still
+     ; beq @p2update_timer
+     ; ;lda ;timers
+     ; sta player.2.idleTimer;
+     ; lda Still
+     ; sta player.2.idleState;
+      rts
+    @p2update_timer:
+      ;dec player.2.idleTimer;
+      beq @p2update_state
+      rts
+    @p2update_state:
+      ldx player.2.idleState;
+      inx
+      cpx #4
+      bne @p2set_state
+      ldx #0
+    @p2set_state:
+      stx player.2.idleState;
+      ;lda ;timers, x
+      sta player.2.idleTimer;
+      rts
+    ;timers:
+      ;.byte 245, 10, 10, 10
+
+
+P2_update_sprite_tiles
+      lda player.2.motionState;
+      cmp Airborne
+      beq @p2airborne_sptite_tiles
+      cmp Pivot
+      beq @p2pivot_sprite_tiles
+      cmp Walk
+      beq @p2walk_sprite_tiles
+    @p2still:
+      lda player.2.idleState;
+      asl
+      asl
+      clc
+      adc player.2.headingX;
+      tax
+      ;lda idle_tiles, x
+      ;sta $200 + OAM_TILE
+      ;lda idle_tiles + 2, x
+      ;sta $204 + OAM_TILE
+      rts
+    @p2airborne_sptite_tiles:
+      ldx player.2.headingX;
+      ;lda jumping_tiles, x
+      ;sta $200 + OAM_TILE
+      ;lda jumping_tiles + 2, x
+      ;sta $204 + OAM_TILE
+      rts
+    @p2walk_sprite_tiles:
+      lda player.2.animationFrame;
+      asl
+      asl
+      clc
+      adc player.2.headingX;
+      tax
+      ;lda walk_tiles, x
+      ;sta $200 + OAM_TILE
+      ;lda walk_tiles +2, x
+      ;sta $204 + OAM_TILE
+      rts
+    @p2pivot_sprite_tiles:
+      ldx player.2.headingX;
+      ;lda pivot_tiles, x
+      ;sta $200 + OAM_TILE
+      ;lda pivot_tiles + 2, x
+      ;sta $204 + OAM_TILE
+      rts
+    ;jumping_tiles:
+      ;.byte $88, $8A, $8A, $88
+    ;pivot_tiles:
+      ;.byte $98, $9A, $9A, $98 ; Pivot is the same no matter the animation frame
+   ; walk_tiles:
+      ;.byte $80, $82, $82, $80 ; Frame 1
+      ;.byte $84, $86, $86, $84 ; Frame 2
+    ;idle_tiles:
+      ;.byte $80, $82, $82, $80
+      ;.byte $9C, $9E, $9E, $9C
+      ;.byte $80, $82, $82, $80
+      ;.byte $9C, $9E, $9E, $9C
+
+
+P2_update_sprite_position
+      ; This is computed in `bound_position` above, so all we have to do is set
+      ; the sprite coordinates appropriately.
+      lda player.2.spriteX_Hi
+      ;sta $200 + OAM_X
+      clc
+      adc #8
+      ;sta $204 + OAM_X
+      lda player.2.spriteY_Hi
+      sta $200
+      sta $204
+      rts 
+	 
+.ends
+
+.bank 0 slot 0
+.org 0
+.section "Player 3 Routine"  	
+	 	  
+MovementUpdateP3:
+      jsr P3_set_target_y_velocity
+      jsr P3_accelerate_y
+      jsr P3_apply_velocity_y
+      jsr P3_bound_position_y
+      jsr P3_set_target_x_velocity
+      jsr P3_accelerate_x
+      jsr P3_apply_velocity_x
+      jsr P3_bound_position_x
+      rts
+
+	 
+;================================================================		
+;==============Player 3 routine==================================	
+;================================================================	
+;================================================================	  
+	  
+P3_set_target_y_velocity
+      ; Check if the B button is being pressed and save the state in the X
+      ; register
+
+	  Rep #$30
+	  lda #$0000
+	  sep #$20
+	  ldx #01
+	  
+   
+    @p3check_down: 
+      lda #BUTTON_DOWN
+	  sta CurrentButton
+      and SJoy3, X
+	  tay
+	  cpy CurrentButton
+      bne @p3check_up
+	  sep #$30
+	  lda #$00
+	  sta player.3.headingY
+	  ldx #down_velocity
+      stx player.3.targetVelocityY
+	  rep #$10
+      rts
+    @p3check_up:
+	 
+      lda #BUTTON_UP
+	  sta CurrentButton
+      and SJoy3, X 
+	  tay
+	  cpy CurrentButton
+      bne @p3no_Y_direction
+	  sep #$30
+	  lda #$01
+	  sta player.3.headingY
+      ldx #down_velocity
+      stx player.3.targetVelocityY
+	  rep #$10
+	  
+      rts
+	  
+    @p3no_Y_direction:
+      lda #0
+      sta player.3.targetVelocityY
+	  
+      rts
+    
+
+
+P3_accelerate_y
+    ;  lda player.3.motionState;
+    @p3airborne_accel:
+      ; When airborne there is no friction, so ignore target velocities of 0
+      sep #$20
+	  rep #$10
+	  
+	  
+	  lda player.3.targetVelocityY
+	  cmp #$00
+      bne @p3check_directional_velocity_y
+	  
+	;no_target_velocity
+	  lda player.3.headingY
+	  cmp #$00
+      bcs @p3negative_deccel_y
+    @p3positive_deccel_y:
+      ; If moving right, only accelerate if the target velocity is higher
+	  lda player.3.velocityY
+	  sbc player.3.targetVelocityY
+      bmi @p3decelerate_y
+      rts
+    @p3negative_deccel_y:
+      ; Similarly, if moving left only do so if the target velocity is lower
+      lda player.3.velocityY
+	  sbc player.3.targetVelocityY
+      bpl @p3decelerate_y
+      rts
+	  
+      
+   
+    @p3check_directional_velocity_y:
+      lda player.3.headingY
+	  cmp #$00
+      bcc @p3negative_accel_y
+    @p3positive_accel_y:
+      ; If moving right, only accelerate if the target velocity is higher
+	  lda player.3.velocityY
+	  sbc player.3.targetVelocityY
+      bmi @p3accelerate_y
+      rts
+    @p3negative_accel_y:
+      ; Similarly, if moving left only do so if the target velocity is lower
+      lda player.3.velocityY
+	  sbc player.3.targetVelocityY
+      bpl @p3accelerate_y
+      rts
+    
+		
+	@p3accelerate_y:
+     
+      lda player.3.velocityY;
+      sec
+      sbc player.3.targetVelocityY;
+      bne @p3check_greater_y
+      rts
+    @p3check_greater_y:
+      bmi @p3lesser_y
+	  rep #$30
+	  lda #$00FF
+	  and player.3.velocityY
+	  tax 
+	  sep #$10
+      dex
+	  stx player.3.velocityY;	
+	  rep #$30
+	  sep #$20	  
+      rts
+    @p3lesser_y:
+     
+	  rep #$30
+	  lda #$00FF
+	  and player.3.velocityY
+	  tax 
+	  sep #$10
+      inx
+	  stx player.3.velocityY;	
+	  rep #$30
+	  sep #$20  
+      rts
+	  
+	  
+	@p3decelerate_y:
+     
+      lda player.3.velocityY;
+      sec
+      sbc player.3.targetVelocityY;
+      bne @p3check_greater_dec_y
+      rts
+    @p3check_greater_dec_y:
+      bmi @p3lesserDec_y
+	  rep #$30
+	  lda #$00FF
+	  and player.3.velocityY
+	  tax 
+	  sep #$10
+      dex
+	  dex
+	  stx player.3.velocityY;	
+	  rep #$30
+	  sep #$20	  
+      rts
+    @p3lesserDec_y:
+     
+	  rep #$30
+	  lda #$00FF
+	  and player.3.velocityY
+	  tax 
+	  sep #$10
+      inx
+	  inx
+	  stx player.3.velocityY;	
+	  rep #$30
+	  sep #$20  
+      rts
+
+
+P3_apply_velocity_y
+ 
+     lda player.3.headingY
+     cmp #$01
+	 beq @p3negative_velocity_Y
+	  
+     @p3positive_velocity_Y:
+      REP #$30
+	  clc
+	  lda #$00FF
+	  and player.3.velocityY
+	  sta $03
+	  lda player.3.positionY_Lo
+      adc $03
+      sta player.3.positionY_Lo;
+	  SEP #$20
+	  rts
+	 
+   @p3negative_velocity_Y:
+      REP #$30
+	  clc
+	  lda #$00FF
+	  and player.3.velocityY
+	  sta $03
+	  lda player.3.positionY_Lo
+      sbc $03
+      sta player.3.positionY_Lo;
+	  SEP #$20
+	  rts
+
+
+P3_bound_position_y
+   ;   ; Convert the fixed point position coordinate into screen coordinates
+   
+    ldy #$01
+      lda player.3.positionY_Lo
+      sta $00
+      lda player.3.positionY_Lo, Y
+      sta $01
+      lsr $01
+      ror $00
+      lsr $01
+      ror $00
+      lsr $01
+      ror $00
+      lsr $01
+      ror $00
+      lda $00
+      sta player.3.spriteY_Lo
+	  lda $01
+	  sta player.3.spriteY_Hi
+	  	
+;================================================================	
+;================================================================	 
+	  
+
+P3_set_target_x_velocity
+      ; Check if the B button is being pressed and save the state in the X
+      ; register
+
+	  Rep #$30
+	  lda #$0000
+	  sep #$20
+	  ldx #01
+	  
+   
+    @p3check_right: 
+      lda #BUTTON_RIGHT
+	  sta CurrentButton
+      and SJoy3, X
+	  tay
+	  cpy CurrentButton
+      bne @p3check_left
+	  sep #$30
+	  lda #$00
+	  sta player.3.headingX
+	  ldx #right_velocity
+      stx player.3.targetVelocityX
+	  rep #$10
+      rts
+    @p3check_left:
+	 
+      lda #BUTTON_LEFT
+	  sta CurrentButton
+      and SJoy3, X 
+	  tay
+	  cpy CurrentButton
+      bne @p3no_direction
+	  sep #$30
+	  lda #$01
+	  sta player.3.headingX
+      ldx #left_velocity
+      stx player.3.targetVelocityX
+	  rep #$10
+	  
+      rts
+	  
+    @p3no_direction:
+      lda #0
+      sta player.3.targetVelocityX
+	  
+      rts
+    
+
+
+P3_accelerate_x
+    ;  lda player.3.motionState;
+   ;   cmp Airborne
+   ;   bne @p3accelerate
+    ;@p3airborne_accel:
+      ; When airborne there is no friction, so ignore target velocities of 0
+      sep #$20
+	  rep #$10
+	  
+	  
+	  lda player.3.targetVelocityX
+	  cmp #$00
+      bne @p3check_directional_velocity
+	  
+	;no_target_velocity
+	  lda player.3.headingX
+	  cmp #$00
+      bcs @p3negative_deccel_x
+    @p3positive_deccel_x:
+      ; If moving right, only accelerate if the target velocity is higher
+	  lda player.3.velocityX
+	  sbc player.3.targetVelocityX
+      bmi @p3decelerate
+      rts
+    @p3negative_deccel_x:
+      ; Similarly, if moving left only do so if the target velocity is lower
+      lda player.3.velocityX
+	  sbc player.3.targetVelocityX
+      bpl @p3decelerate
+      rts
+	  
+      
+    @p3check_directional_velocity:
+      lda player.3.headingX
+	  cmp #$00
+      bcc @p3negative_accel_x
+    @p3positive_accel_x:
+      ; If moving right, only accelerate if the target velocity is higher
+	  lda player.3.velocityX
+	  sbc player.3.targetVelocityX
+      bmi @p3accelerate
+      rts
+    @p3negative_accel_x:
+      ; Similarly, if moving left only do so if the target velocity is lower
+      lda player.3.velocityX
+	  sbc player.3.targetVelocityX
+      bpl @p3accelerate
+      rts
+    
+		
+	
+	@p3accelerate:
+     
+      lda player.3.velocityX;
+      sec
+      sbc player.3.targetVelocityX;
+      bne @p3check_greater
+      rts
+    @p3check_greater:
+      bmi @p3lesser
+	  rep #$30
+	  lda #$00FF
+	  and player.3.velocityX
+	  tax 
+	  sep #$10
+      dex
+	  stx player.3.velocityX;	
+	  rep #$30
+	  sep #$20	  
+      rts
+    @p3lesser:
+     
+	  rep #$30
+	  lda #$00FF
+	  and player.3.velocityX
+	  tax 
+	  sep #$10
+      inx
+	  stx player.3.velocityX;	
+	  rep #$30
+	  sep #$20  
+      rts
+	  
+	  
+	@p3decelerate:
+     
+      lda player.3.velocityX;
+      sec
+      sbc player.3.targetVelocityX;
+      bne @p3check_greater_dec
+      rts
+    @p3check_greater_dec:
+      bmi @p3lesserDec
+	  rep #$30
+	  lda #$00FF
+	  and player.3.velocityX
+	  tax 
+	  sep #$10
+      dex
+	  dex
+	  stx player.3.velocityX;	
+	  rep #$30
+	  sep #$20	  
+      rts
+    @p3lesserDec:
+     
+	  rep #$30
+	  lda #$00FF
+	  and player.3.velocityX
+	  tax 
+	  sep #$10
+      inx
+	  inx
+	  stx player.3.velocityX;	
+	  rep #$30
+	  sep #$20  
+      rts
+
+
+P3_apply_velocity_x
+ 
+     lda player.3.headingX
+     cmp #$01
+	 beq @p3negative_velocity_x
+	  
+     @p3positive_velocity_x:
+      REP #$30
+	  clc
+	  lda #$00FF
+	  and player.3.velocityX
+	  sta $03
+	  lda player.3.positionX_Lo
+      adc $03
+      sta player.3.positionX_Lo;
+	  SEP #$20
+	  rts
+	 
+   @p3negative_velocity_x:
+      REP #$30
+	  clc
+	  lda #$00FF
+	  and player.3.velocityX
+	  sta $03
+	  lda player.3.positionX_Lo
+      sbc $03
+      sta player.3.positionX_Lo;
+	  SEP #$20
+	  rts
+
+
+P3_bound_position_x
+   ;   ; Convert the fixed point position coordinate into screen coordinates
+   
+    ldy #$01
+      lda player.3.positionX_Lo
+      sta $00
+      lda player.3.positionX_Lo, Y
+      sta $01
+      lsr $01
+      ror $00
+      lsr $01
+      ror $00
+      lsr $01
+      ror $00
+      lsr $01
+      ror $00
+      lda $00
+      sta player.3.spriteX_Lo
+	  lda $01
+	  sta player.3.spriteX_Hi
+   
+   ;   ldy sy
+	;  lda player.3.positionX;
+   ;   sta $00
+   ;   lda player.3.positionX;
+   ;   sta $01
+   ;   lsr $01
+   ;   ror $00
+   ;   lsr $01
+   ;   ror $00
+   ;   lsr $01
+   ;   ror $00
+   ;   lsr $01
+   ;   ror $00
+   ;   ; Assume that everything is fine and save the sprite position
+   ;   lda $00
+   ;   ;sta player.3.spriteX;
+   ;   ; Check if we are moving left or right (negative or positive respectively)
+   ;   lda player.3.velocityX;
+   ;   bmi @p3negative_position_x
+   ; @p3positive_position_x:
+   ;   lda $01
+   ;   bne @p3bound_upper
+   ;   lda $00
+   ;   cmp #239
+   ;   bcs @p3bound_upper
+   ;   rts
+   ; @p3bound_upper:
+   ;   ; $EF = 239 = 255 - 16, this is the right bound since the screen is 256 pixels
+   ;   ; wide and the character is 16 pixels wide.
+   ;   ;lda #$EF
+   ;   ;sta player.3.spriteX;
+   ;   ;lda #$0E
+   ;   ;sta player.3.positionX+1;
+   ;   ;lda #$F0
+   ;   ;sta player.3.positionX;
+   ;   ; Finally, set the velocity to 0 since the player is being "stopped"
+   ;   ;lda #0
+   ;   ;sta player.3.velocityX;
+   ;   rts
+   ; @p3negative_position_x:
+   ;   ; The negative case is really simple, just check if the high order byte of the
+   ;   ; 12.4 fixed point position is negative. If so bound everything to 0.
+   ;   ;lda player.3.positionX+1;
+   ;   bmi @p3bound_lower
+   ;   rts
+   ; @p3bound_lower:
+   ;   ;lda #0
+   ;   ;sta player.3.positionX;
+   ;   ;sta player.3.positionX+1;
+   ;   ;sta player.3.spriteX;
+   ;   ;sta player.3.velocityX;
+   ;   rts
+
+
+
+P3_Sprite_update
+   ;   jsr update_motion_state
+   ;   jsr update_animation_frame
+   ;   jsr update_heading
+   ;   jsr update_idle_state
+   ;   jsr update_sprite_tiles
+   ;   jsr update_sprite_position
+      rts
+ 
+
+P3_update_motion_state
+      lda player.3.motionState
+      cmp Airborne
+      bcc @p3grounded
+    @p3airborne_motion_state:
+      rts
+    @p3grounded:
+      ; If spriteX == 0: STILL    // Left bound animation fix
+      ; If spriteX == MAX: STILL  // Right bound animation fix
+      ; If T = V:
+      ;   // Steady motion
+      ;   If T == 0: STILL
+      ;   Else: WALK
+      ; If T <> V:
+      ;   // Accelerating
+      ;   If <- or -> being pressed:
+      ;     If T > 0 && V < 0: PIVOT
+      ;     If T < 0 && V > 0: PIVOT
+      ;   Else: WALK
+      lda player.3.spriteX_Hi
+      beq @p3stand
+      cmp #$EF
+      beq @p3stand
+      lda player.3.targetVelocityX;
+      cmp player.3.velocityX;
+      bne @p3accelerating
+    @p3steady:
+      lda player.3.velocityX;
+      beq @p3stand
+      bne @p3walk_motion_state
+    @p3stand:
+      lda Still
+      sta player.3.motionState;
+      rts
+    @p3accelerating:
+      lda BUTTON_LEFT
+      ora BUTTON_RIGHT
+      and Joy1Press ;isButtonHeld
+      beq @p3walk_motion_state
+      lda #%10000000
+      and player.3.targetVelocityX;
+      sta $00
+      lda #%10000000
+      and player.3.velocityX;
+      cmp $00
+      ;beq @p3walk_motion_state
+    @p3pivot_motion_state:
+      lda Pivot
+      sta player.3.motionState;
+      rts
+    @p3walk_motion_state:
+      lda Walk
+      sta player.3.motionState;
+      rts
+
+
+P3_update_animation_frame
+      ; If V == 0:
+      ;   Set initial timer
+      ; Else:
+      ;   Decrement timer
+      ;   If frame timer == 0:
+      ;     Reset frame timer based on V
+      ;     Increment the frame
+      lda player.3.velocityX;
+      bne @p3moving
+      ;lda delay_by_velocity
+      sta player.3.animationTimer;
+      rts
+    @p3moving:
+      ;dec player.3.animationTimer;
+      beq @p3next_frame
+      rts
+    @p3next_frame:
+      ldx player.3.velocityX;
+      bpl @p3transition_state
+      lda #0
+      sec
+      sbc player.3.velocityX;
+      tax
+    @p3transition_state:
+      ;lda delay_by_velocity, x
+      sta player.3.animationTimer;
+      lda #1
+      eor player.3.animationFrame;
+      sta player.3.animationFrame;
+      rts
+    ;delay_by_velocity:
+      ;.byte 12, 11, 11, 11, 11, 11, 10, 10, 10, 10, 10
+      ;.byte 9, 9, 9, 9, 9, 8, 8, 8, 8, 8, 7, 7, 7, 7, 7
+      ;.byte 6, 6, 6, 6, 6, 5, 5, 5, 5, 5, 4, 4, 4, 4, 4
+
+
+P3_update_heading
+      ; If the target velocity is 0 then the player isn't pressing left or right and
+      ; the heading doesn't need to change.
+      lda player.3.targetVelocityX;
+      bne @p3check_headingX
+      rts
+      ; If the target velocity is non-zero, check to see if player is heading in the
+      ; desired direction.
+    @p3check_headingX:
+      asl
+      lda #0
+      rol
+      cmp player.3.headingX;
+      bne @p3update_headingX
+      rts
+    @p3update_headingX:
+      ; If the desired heading is not equal to the current heading based on the
+      ; target velocity, then update the heading.
+      sta player.3.headingX;
+      ; Toggle the "horizontal" mirroring on the character sprites
+      lda #%01000000
+      ;eor $200 + OAM_ATTR
+      ;sta $200 + OAM_ATTR
+      ;sta $204 + OAM_ATTR
+      rts
+
+
+P3_update_idle_state
+     ; lda player.3.motionState;
+     ; cmp Still
+     ; beq @p3update_timer
+     ; ;lda ;timers
+     ; sta player.3.idleTimer;
+     ; lda Still
+     ; sta player.3.idleState;
+      rts
+    @p3update_timer:
+      ;dec player.3.idleTimer;
+      beq @p3update_state
+      rts
+    @p3update_state:
+      ldx player.3.idleState;
+      inx
+      cpx #4
+      bne @p3set_state
+      ldx #0
+    @p3set_state:
+      stx player.3.idleState;
+      ;lda ;timers, x
+      sta player.3.idleTimer;
+      rts
+    ;timers:
+      ;.byte 245, 10, 10, 10
+
+
+P3_update_sprite_tiles
+      lda player.3.motionState;
+      cmp Airborne
+      beq @p3airborne_sptite_tiles
+      cmp Pivot
+      beq @p3pivot_sprite_tiles
+      cmp Walk
+      beq @p3walk_sprite_tiles
+    @p3still:
+      lda player.3.idleState;
+      asl
+      asl
+      clc
+      adc player.3.headingX;
+      tax
+      ;lda idle_tiles, x
+      ;sta $200 + OAM_TILE
+      ;lda idle_tiles + 2, x
+      ;sta $204 + OAM_TILE
+      rts
+    @p3airborne_sptite_tiles:
+      ldx player.3.headingX;
+      ;lda jumping_tiles, x
+      ;sta $200 + OAM_TILE
+      ;lda jumping_tiles + 2, x
+      ;sta $204 + OAM_TILE
+      rts
+    @p3walk_sprite_tiles:
+      lda player.3.animationFrame;
+      asl
+      asl
+      clc
+      adc player.3.headingX;
+      tax
+      ;lda walk_tiles, x
+      ;sta $200 + OAM_TILE
+      ;lda walk_tiles +2, x
+      ;sta $204 + OAM_TILE
+      rts
+    @p3pivot_sprite_tiles:
+      ldx player.3.headingX;
+      ;lda pivot_tiles, x
+      ;sta $200 + OAM_TILE
+      ;lda pivot_tiles + 2, x
+      ;sta $204 + OAM_TILE
+      rts
+    ;jumping_tiles:
+      ;.byte $88, $8A, $8A, $88
+    ;pivot_tiles:
+      ;.byte $98, $9A, $9A, $98 ; Pivot is the same no matter the animation frame
+    ;walk_tiles:
+      ;.byte $80, $82, $82, $80 ; Frame 1
+      ;.byte $84, $86, $86, $84 ; Frame 2
+    ;idle_tiles:
+      ;.byte $80, $82, $82, $80
+      ;.byte $9C, $9E, $9E, $9C
+      ;.byte $80, $82, $82, $80
+      ;.byte $9C, $9E, $9E, $9C
+
+
+P3_update_sprite_position
+      ; This is computed in `bound_position` above, so all we have to do is set
+      ; the sprite coordinates appropriately.
+      lda player.3.spriteX_Hi
+      ;sta $200 + OAM_X
+      clc
+      adc #8
+      ;sta $204 + OAM_X
+      lda player.3.spriteY_Hi
+      sta $200
+      sta $204
+      rts 
+
+.ends
+
+.bank 0 slot 0
+.org 0
+.section "Player 4 Routine"  	
+	  	  
+MovementUpdateP4:
+      jsr P3_set_target_y_velocity
+      jsr P3_accelerate_y
+      jsr P3_apply_velocity_y
+      jsr P3_bound_position_y
+      jsr P3_set_target_x_velocity
+      jsr P3_accelerate_x
+      jsr P3_apply_velocity_x
+      jsr P3_bound_position_x
+      rts
+	  	  	  
+	  
+;================================================================		
+;==============Player 4 routine==================================	
+;================================================================	
+;================================================================	  
+	  
+P4_set_target_y_velocity
+      ; Check if the B button is being pressed and save the state in the X
+      ; register
+
+	  Rep #$30
+	  lda #$0000
+	  sep #$20
+	  ldx #01
+	  
+   
+    @p4check_down: 
+      lda #BUTTON_DOWN
+	  sta CurrentButton
+      and SJoy4, X
+	  tay
+	  cpy CurrentButton
+      bne @p4check_up
+	  sep #$30
+	  lda #$00
+	  sta player.4.headingY
+	  ldx #down_velocity
+      stx player.4.targetVelocityY
+	  rep #$10
+      rts
+    @p4check_up:
+	 
+      lda #BUTTON_UP
+	  sta CurrentButton
+      and SJoy4, X 
+	  tay
+	  cpy CurrentButton
+      bne @p4no_Y_direction
+	  sep #$30
+	  lda #$01
+	  sta player.4.headingY
+      ldx #down_velocity
+      stx player.4.targetVelocityY
+	  rep #$10
+	  
+      rts
+	  
+    @p4no_Y_direction:
+      lda #0
+      sta player.4.targetVelocityY
+	  
+      rts
+    
+
+
+P4_accelerate_y
+    ;  lda player.4.motionState;
+    @p4airborne_accel:
+      ; When airborne there is no friction, so ignore target velocities of 0
+      sep #$20
+	  rep #$10
+	  
+	  
+	  lda player.4.targetVelocityY
+	  cmp #$00
+      bne @p4check_directional_velocity_y
+	  
+	;no_target_velocity
+	  lda player.4.headingY
+	  cmp #$00
+      bcs @p4negative_deccel_y
+    @p4positive_deccel_y:
+      ; If moving right, only accelerate if the target velocity is higher
+	  lda player.4.velocityY
+	  sbc player.4.targetVelocityY
+      bmi @p4decelerate_y
+      rts
+    @p4negative_deccel_y:
+      ; Similarly, if moving left only do so if the target velocity is lower
+      lda player.4.velocityY
+	  sbc player.4.targetVelocityY
+      bpl @p4decelerate_y
+      rts
+	  
+      
+   
+    @p4check_directional_velocity_y:
+      lda player.4.headingY
+	  cmp #$00
+      bcc @p4negative_accel_y
+    @p4positive_accel_y:
+      ; If moving right, only accelerate if the target velocity is higher
+	  lda player.4.velocityY
+	  sbc player.4.targetVelocityY
+      bmi @p4accelerate_y
+      rts
+    @p4negative_accel_y:
+      ; Similarly, if moving left only do so if the target velocity is lower
+      lda player.4.velocityY
+	  sbc player.4.targetVelocityY
+      bpl @p4accelerate_y
+      rts
+    
+		
+	@p4accelerate_y:
+     
+      lda player.4.velocityY;
+      sec
+      sbc player.4.targetVelocityY;
+      bne @p4check_greater_y
+      rts
+    @p4check_greater_y:
+      bmi @p4lesser_y
+	  rep #$30
+	  lda #$00FF
+	  and player.4.velocityY
+	  tax 
+	  sep #$10
+      dex
+	  stx player.4.velocityY;	
+	  rep #$30
+	  sep #$20	  
+      rts
+    @p4lesser_y:
+     
+	  rep #$30
+	  lda #$00FF
+	  and player.4.velocityY
+	  tax 
+	  sep #$10
+      inx
+	  stx player.4.velocityY;	
+	  rep #$30
+	  sep #$20  
+      rts
+	  
+	  
+	@p4decelerate_y:
+     
+      lda player.4.velocityY;
+      sec
+      sbc player.4.targetVelocityY;
+      bne @p4check_greater_dec_y
+      rts
+    @p4check_greater_dec_y:
+      bmi @p4lesserDec_y
+	  rep #$30
+	  lda #$00FF
+	  and player.4.velocityY
+	  tax 
+	  sep #$10
+      dex
+	  dex
+	  stx player.4.velocityY;	
+	  rep #$30
+	  sep #$20	  
+      rts
+    @p4lesserDec_y:
+     
+	  rep #$30
+	  lda #$00FF
+	  and player.4.velocityY
+	  tax 
+	  sep #$10
+      inx
+	  inx
+	  stx player.4.velocityY;	
+	  rep #$30
+	  sep #$20  
+      rts
+
+
+P4_apply_velocity_y
+ 
+     lda player.4.headingY
+     cmp #$01
+	 beq @p4negative_velocity_Y
+	  
+     @p4positive_velocity_Y:
+      REP #$30
+	  clc
+	  lda #$00FF
+	  and player.4.velocityY
+	  sta $03
+	  lda player.4.positionY_Lo
+      adc $03
+      sta player.4.positionY_Lo;
+	  SEP #$20
+	  rts
+	 
+   @p4negative_velocity_Y:
+      REP #$30
+	  clc
+	  lda #$00FF
+	  and player.4.velocityY
+	  sta $03
+	  lda player.4.positionY_Lo
+      sbc $03
+      sta player.4.positionY_Lo;
+	  SEP #$20
+	  rts
+
+
+P4_bound_position_y
+   ;   ; Convert the fixed point position coordinate into screen coordinates
+   
+    ldy #$01
+      lda player.4.positionY_Lo
+      sta $00
+      lda player.4.positionY_Lo, Y
+      sta $01
+      lsr $01
+      ror $00
+      lsr $01
+      ror $00
+      lsr $01
+      ror $00
+      lsr $01
+      ror $00
+      lda $00
+      sta player.4.spriteY_Lo
+	  lda $01
+	  sta player.4.spriteY_Hi
+
+;================================================================	
+;================================================================	 
+	  
+
+P4_set_target_x_velocity
+      ; Check if the B button is being pressed and save the state in the X
+      ; register
+
+	  Rep #$30
+	  lda #$0000
+	  sep #$20
+	  ldx #01
+	  
+   
+    @p4check_right: 
+      lda #BUTTON_RIGHT
+	  sta CurrentButton
+      and SJoy4, X
+	  tay
+	  cpy CurrentButton
+      bne @p4check_left
+	  sep #$30
+	  lda #$00
+	  sta player.4.headingX
+	  ldx #right_velocity
+      stx player.4.targetVelocityX
+	  rep #$10
+      rts
+    @p4check_left:
+	 
+      lda #BUTTON_LEFT
+	  sta CurrentButton
+      and SJoy4, X 
+	  tay
+	  cpy CurrentButton
+      bne @p4no_direction
+	  sep #$30
+	  lda #$01
+	  sta player.4.headingX
+      ldx #left_velocity
+      stx player.4.targetVelocityX
+	  rep #$10
+	  
+      rts
+	  
+    @p4no_direction:
+      lda #0
+      sta player.4.targetVelocityX
+	  
+      rts
+    
+
+
+P4_accelerate_x
+    ;  lda player.4.motionState;
+   ;   cmp Airborne
+   ;   bne @p4accelerate
+    ;@p4airborne_accel:
+      ; When airborne there is no friction, so ignore target velocities of 0
+      sep #$20
+	  rep #$10
+	  
+	  
+	  lda player.4.targetVelocityX
+	  cmp #$00
+      bne @p4check_directional_velocity
+	  
+	;no_target_velocity
+	  lda player.4.headingX
+	  cmp #$00
+      bcs @p4negative_deccel_x
+    @p4positive_deccel_x:
+      ; If moving right, only accelerate if the target velocity is higher
+	  lda player.4.velocityX
+	  sbc player.4.targetVelocityX
+      bmi @p4decelerate
+      rts
+    @p4negative_deccel_x:
+      ; Similarly, if moving left only do so if the target velocity is lower
+      lda player.4.velocityX
+	  sbc player.4.targetVelocityX
+      bpl @p4decelerate
+      rts
+	  
+      
+    @p4check_directional_velocity:
+      lda player.4.headingX
+	  cmp #$00
+      bcc @p4negative_accel_x
+    @p4positive_accel_x:
+      ; If moving right, only accelerate if the target velocity is higher
+	  lda player.4.velocityX
+	  sbc player.4.targetVelocityX
+      bmi @p4accelerate
+      rts
+    @p4negative_accel_x:
+      ; Similarly, if moving left only do so if the target velocity is lower
+      lda player.4.velocityX
+	  sbc player.4.targetVelocityX
+      bpl @p4accelerate
+      rts
+    
+		
+	
+	@p4accelerate:
+     
+      lda player.4.velocityX;
+      sec
+      sbc player.4.targetVelocityX;
+      bne @p4check_greater
+      rts
+    @p4check_greater:
+      bmi @p4lesser
+	  rep #$30
+	  lda #$00FF
+	  and player.4.velocityX
+	  tax 
+	  sep #$10
+      dex
+	  stx player.4.velocityX;	
+	  rep #$30
+	  sep #$20	  
+      rts
+    @p4lesser:
+     
+	  rep #$30
+	  lda #$00FF
+	  and player.4.velocityX
+	  tax 
+	  sep #$10
+      inx
+	  stx player.4.velocityX;	
+	  rep #$30
+	  sep #$20  
+      rts
+	  
+	  
+	@p4decelerate:
+     
+      lda player.4.velocityX;
+      sec
+      sbc player.4.targetVelocityX;
+      bne @p4check_greater_dec
+      rts
+    @p4check_greater_dec:
+      bmi @p4lesserDec
+	  rep #$30
+	  lda #$00FF
+	  and player.4.velocityX
+	  tax 
+	  sep #$10
+      dex
+	  dex
+	  stx player.4.velocityX;	
+	  rep #$30
+	  sep #$20	  
+      rts
+    @p4lesserDec:
+     
+	  rep #$30
+	  lda #$00FF
+	  and player.4.velocityX
+	  tax 
+	  sep #$10
+      inx
+	  inx
+	  stx player.4.velocityX;	
+	  rep #$30
+	  sep #$20  
+      rts
+
+
+P4_apply_velocity_x
+ 
+     lda player.4.headingX
+     cmp #$01
+	 beq @p4negative_velocity_x
+	  
+     @p4positive_velocity_x:
+      REP #$30
+	  clc
+	  lda #$00FF
+	  and player.4.velocityX
+	  sta $03
+	  lda player.4.positionX_Lo
+      adc $03
+      sta player.4.positionX_Lo;
+	  SEP #$20
+	  rts
+	 
+   @p4negative_velocity_x:
+      REP #$30
+	  clc
+	  lda #$00FF
+	  and player.4.velocityX
+	  sta $03
+	  lda player.4.positionX_Lo
+      sbc $03
+      sta player.4.positionX_Lo;
+	  SEP #$20
+	  rts
+
+
+P4_bound_position_x
+   ;   ; Convert the fixed point position coordinate into screen coordinates
+   
+    ldy #$01
+      lda player.4.positionX_Lo
+      sta $00
+      lda player.4.positionX_Lo, Y
+      sta $01
+      lsr $01
+      ror $00
+      lsr $01
+      ror $00
+      lsr $01
+      ror $00
+      lsr $01
+      ror $00
+      lda $00
+      sta player.4.spriteX_Lo
+	  lda $01
+	  sta player.4.spriteX_Hi
+   
+   ;   ldy sy
+	;  lda player.4.positionX;
+   ;   sta $00
+   ;   lda player.4.positionX;
+   ;   sta $01
+   ;   lsr $01
+   ;   ror $00
+   ;   lsr $01
+   ;   ror $00
+   ;   lsr $01
+   ;   ror $00
+   ;   lsr $01
+   ;   ror $00
+   ;   ; Assume that everything is fine and save the sprite position
+   ;   lda $00
+   ;   ;sta player.4.spriteX;
+   ;   ; Check if we are moving left or right (negative or positive respectively)
+   ;   lda player.4.velocityX;
+   ;   bmi @p4negative_position_x
+   ; @p4positive_position_x:
+   ;   lda $01
+   ;   bne @p4bound_upper
+   ;   lda $00
+   ;   cmp #239
+   ;   bcs @p4bound_upper
+   ;   rts
+   ; @p4bound_upper:
+   ;   ; $EF = 239 = 255 - 16, this is the right bound since the screen is 256 pixels
+   ;   ; wide and the character is 16 pixels wide.
+   ;   ;lda #$EF
+   ;   ;sta player.4.spriteX;
+   ;   ;lda #$0E
+   ;   ;sta player.4.positionX+1;
+   ;   ;lda #$F0
+   ;   ;sta player.4.positionX;
+   ;   ; Finally, set the velocity to 0 since the player is being "stopped"
+   ;   ;lda #0
+   ;   ;sta player.4.velocityX;
+   ;   rts
+   ; @p4negative_position_x:
+   ;   ; The negative case is really simple, just check if the high order byte of the
+   ;   ; 12.4 fixed point position is negative. If so bound everything to 0.
+   ;   ;lda player.4.positionX+1;
+   ;   bmi @p4bound_lower
+   ;   rts
+   ; @p4bound_lower:
+   ;   ;lda #0
+   ;   ;sta player.4.positionX;
+   ;   ;sta player.4.positionX+1;
+   ;   ;sta player.4.spriteX;
+   ;   ;sta player.4.velocityX;
+   ;   rts
+
+
+
+P4_Sprite_update
+   ;   jsr update_motion_state
+   ;   jsr update_animation_frame
+   ;   jsr update_heading
+   ;   jsr update_idle_state
+   ;   jsr update_sprite_tiles
+   ;   jsr update_sprite_position
+      rts
+ 
+
+P4_update_motion_state
+      lda player.4.motionState
+      cmp Airborne
+      bcc @p4grounded
+    @p4airborne_motion_state:
+      rts
+    @p4grounded:
+      ; If spriteX == 0: STILL    // Left bound animation fix
+      ; If spriteX == MAX: STILL  // Right bound animation fix
+      ; If T = V:
+      ;   // Steady motion
+      ;   If T == 0: STILL
+      ;   Else: WALK
+      ; If T <> V:
+      ;   // Accelerating
+      ;   If <- or -> being pressed:
+      ;     If T > 0 && V < 0: PIVOT
+      ;     If T < 0 && V > 0: PIVOT
+      ;   Else: WALK
+      lda player.4.spriteX_Hi
+      beq @p4stand
+      cmp #$EF
+      beq @p4stand
+      lda player.4.targetVelocityX;
+      cmp player.4.velocityX;
+      bne @p4accelerating
+    @p4steady:
+      lda player.4.velocityX;
+      beq @p4stand
+      bne @p4walk_motion_state
+    @p4stand:
+      lda Still
+      sta player.4.motionState;
+      rts
+    @p4accelerating:
+      lda BUTTON_LEFT
+      ora BUTTON_RIGHT
+      and Joy1Press ;isButtonHeld
+      beq @p4walk_motion_state
+      lda #%10000000
+      and player.4.targetVelocityX;
+      sta $00
+      lda #%10000000
+      and player.4.velocityX;
+      cmp $00
+      ;beq @p4walk_motion_state
+    @p4pivot_motion_state:
+      lda Pivot
+      sta player.4.motionState;
+      rts
+    @p4walk_motion_state:
+      lda Walk
+      sta player.4.motionState;
+      rts
+
+
+P4_update_animation_frame
+      ; If V == 0:
+      ;   Set initial timer
+      ; Else:
+      ;   Decrement timer
+      ;   If frame timer == 0:
+      ;     Reset frame timer based on V
+      ;     Increment the frame
+      lda player.4.velocityX;
+      bne @p4moving
+      ;lda delay_by_velocity
+      sta player.4.animationTimer;
+      rts
+    @p4moving:
+      ;dec player.4.animationTimer;
+      beq @p4next_frame
+      rts
+    @p4next_frame:
+      ldx player.4.velocityX;
+      bpl @p4transition_state
+      lda #0
+      sec
+      sbc player.4.velocityX;
+      tax
+    @p4transition_state:
+      ;lda delay_by_velocity, x
+      sta player.4.animationTimer;
+      lda #1
+      eor player.4.animationFrame;
+      sta player.4.animationFrame;
+      rts
+    ;delay_by_velocity:
+      ;.byte 12, 11, 11, 11, 11, 11, 10, 10, 10, 10, 10
+      ;.byte 9, 9, 9, 9, 9, 8, 8, 8, 8, 8, 7, 7, 7, 7, 7
+      ;.byte 6, 6, 6, 6, 6, 5, 5, 5, 5, 5, 4, 4, 4, 4, 4
+
+
+P4_update_heading
+      ; If the target velocity is 0 then the player isn't pressing left or right and
+      ; the heading doesn't need to change.
+      lda player.4.targetVelocityX;
+      bne @p4check_headingX
+      rts
+      ; If the target velocity is non-zero, check to see if player is heading in the
+      ; desired direction.
+    @p4check_headingX:
+      asl
+      lda #0
+      rol
+      cmp player.4.headingX;
+      bne @p4update_headingX
+      rts
+    @p4update_headingX:
+      ; If the desired heading is not equal to the current heading based on the
+      ; target velocity, then update the heading.
+      sta player.4.headingX;
+      ; Toggle the "horizontal" mirroring on the character sprites
+      lda #%01000000
+      ;eor $200 + OAM_ATTR
+      ;sta $200 + OAM_ATTR
+      ;sta $204 + OAM_ATTR
+      rts
+
+
+P4_update_idle_state
+     ; lda player.4.motionState;
+     ; cmp Still
+     ; beq @p4update_timer
+     ; ;lda ;timers
+     ; sta player.4.idleTimer;
+     ; lda Still
+     ; sta player.4.idleState;
+      rts
+    @p4update_timer:
+      ;dec player.4.idleTimer;
+      beq @p4update_state
+      rts
+    @p4update_state:
+      ldx player.4.idleState;
+      inx
+      cpx #4
+      bne @p4set_state
+      ldx #0
+    @p4set_state:
+      stx player.4.idleState;
+      ;lda ;timers, x
+      sta player.4.idleTimer;
+      rts
+    ;timers:
+      ;.byte 245, 10, 10, 10
+
+
+P4_update_sprite_tiles
+      lda player.4.motionState;
+      cmp Airborne
+      beq @p4airborne_sptite_tiles
+      cmp Pivot
+      beq @p4pivot_sprite_tiles
+      cmp Walk
+      beq @p4walk_sprite_tiles
+    @p4still:
+      lda player.4.idleState;
+      asl
+      asl
+      clc
+      adc player.4.headingX;
+      tax
+      ;lda idle_tiles, x
+      ;sta $200 + OAM_TILE
+      ;lda idle_tiles + 2, x
+      ;sta $204 + OAM_TILE
+      rts
+    @p4airborne_sptite_tiles:
+      ldx player.4.headingX;
+      ;lda jumping_tiles, x
+      ;sta $200 + OAM_TILE
+      ;lda jumping_tiles + 2, x
+      ;sta $204 + OAM_TILE
+      rts
+    @p4walk_sprite_tiles:
+      lda player.4.animationFrame;
+      asl
+      asl
+      clc
+      adc player.4.headingX;
+      tax
+      ;lda walk_tiles, x
+      ;sta $200 + OAM_TILE
+      ;lda walk_tiles +2, x
+      ;sta $204 + OAM_TILE
+      rts
+    @p4pivot_sprite_tiles:
+      ldx player.4.headingX;
+      ;lda pivot_tiles, x
+      ;sta $200 + OAM_TILE
+      ;lda pivot_tiles + 2, x
+      ;sta $204 + OAM_TILE
+      rts
+    ;jumping_tiles:
+      ;.byte $88, $8A, $8A, $88
+    ;pivot_tiles:
+      ;.byte $98, $9A, $9A, $98 ; Pivot is the same no matter the animation frame
+    ;walk_tiles:
+      ;.byte $80, $82, $82, $80 ; Frame 1
+      ;.byte $84, $86, $86, $84 ; Frame 2
+    ;idle_tiles:
+      ;.byte $80, $82, $82, $80
+      ;.byte $9C, $9E, $9E, $9C
+      ;.byte $80, $82, $82, $80
+      ;.byte $9C, $9E, $9E, $9C
+
+
+P4_update_sprite_position
+      ; This is computed in `bound_position` above, so all we have to do is set
+      ; the sprite coordinates appropriately.
+      lda player.4.spriteX_Hi
+      ;sta $200 + OAM_X
+      clc
+      adc #8
+      ;sta $204 + OAM_X
+      lda player.4.spriteY_Hi
+      sta $200
+      sta $204
+      rts 	  
 .ENDS

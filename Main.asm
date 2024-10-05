@@ -115,7 +115,7 @@ Next_tile:
 	ldy #$0000
 	CLC
   
--  	jsr PlayerInit
+-  	jsr PlayerInit 
 	INX
 	lda #$0005
 	sta numberofplayers
@@ -137,8 +137,11 @@ InfiniteLoop:
 
 
 	;See what buttons were pressed
-	
-	jsr MovementUpdate
+	ldx #$0000
+-	jsr MovementUpdateP1
+	jsr MovementUpdateP2
+	jsr MovementUpdateP3
+	jsr MovementUpdateP4
 
 	
 	ldy #01
@@ -146,12 +149,24 @@ InfiniteLoop:
 	sep #$30
 
 	
-	;lda player.1.spriteX_Lo
-	;sta SpriteBuf1
+	lda player.1.spriteX_Lo
+	sta SpriteBuf1
 	lda player.1.spriteY_Lo
 	sta SpriteBuf1,Y
-	lda player.1.spriteX_Lo
-	sta MapX
+		lda player.2.spriteX_Lo
+	sta SpriteBuf2
+	lda player.2.spriteY_Lo
+	sta SpriteBuf2,Y
+		lda player.3.spriteX_Lo
+	sta SpriteBuf3
+	lda player.3.spriteY_Lo
+	sta SpriteBuf3,Y
+		lda player.4.spriteX_Lo
+	sta SpriteBuf4
+	lda player.4.spriteY_Lo
+	sta SpriteBuf4,Y
+	;lda player.1.spriteX_Lo
+	;sta MapX
 	
 	
 	JMP InfiniteLoop	;Do this forever

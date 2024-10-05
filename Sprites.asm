@@ -8,6 +8,7 @@
 .DEFINE SpriteBuf1	$0400
 .DEFINE SpriteBuf2	$0420
 .DEFINE SpriteBuf3	$0600
+.DEFINE SpriteBuf4	$0620
 
 
 .DEFINE sx	   		$1

@@ -132,13 +132,14 @@ GetInput:
            and #$0F
            sta Spare0           ;Indicates a nonzero value here if something
            ldx #$10             ;else (ie: mouse) uses $4016 - at this point
+		   @2inputbranchpoint:
 -          lda JOYSER0          ;(and only this point) you can read this
            rep #$20             ;device
            lsr
            rol SRodent          ;Read one word thorugh $4016 bit 0
            sep #$20             ;serially into the rodent pseudoreg
            dex                  ;(I use a BIOS for my coding)
-           bne  -
+           bne  @2inputbranchpoint
 		   ldx SJoy1
 		   cpx Joy1Press
 		   beq +
