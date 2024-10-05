@@ -150,24 +150,24 @@ InfiniteLoop:
 
 	
 	lda player.1.spriteX_Lo
-	sta SpriteBuf1
+	sta SpriteBuf3
 	lda player.1.spriteY_Lo
-	sta SpriteBuf1,Y
+	sta SpriteBuf3,Y
 	
-	;lda player.2.spriteX_Lo
-	;sta SpriteBuf2
-	;lda player.2.spriteY_Lo
-	;sta SpriteBuf2,Y
+	lda player.2.spriteX_Lo
+	sta SpriteBuf3
+	lda player.2.spriteY_Lo
+	sta SpriteBuf3,Y
 	
-	;lda player.3.spriteX_Lo
-	;sta SpriteBuf3
-	;lda player.3.spriteY_Lo
-	;sta SpriteBuf3,Y
+	lda player.3.spriteX_Lo
+	sta SpriteBuf3
+	lda player.3.spriteY_Lo
+	sta SpriteBuf3,Y
 	
-	;lda player.4.spriteX_Lo
-	;sta SpriteBuf4
-	;lda player.4.spriteY_Lo
-	;sta SpriteBuf4,Y
+	lda player.4.spriteX_Lo
+	sta SpriteBuf3
+	lda player.4.spriteY_Lo
+	sta SpriteBuf3,Y
 	
 	;lda player.1.spriteX_Lo
 	;sta MapX
