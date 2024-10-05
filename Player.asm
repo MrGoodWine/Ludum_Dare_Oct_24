@@ -4,9 +4,9 @@
 .DEFINE initialPositionX_LO 	$77
 .DEFINE initialPositionX_HI		$00
 .DEFINE initialSpriteY 			$55
-.DEFINE initialVelocityY 		$44
+.DEFINE initialVelocityY 		$00
 .DEFINE jumpVelocity			$DD
-.DEFINE initialPositionY_LO 	$03
+.DEFINE initialPositionY_LO 	$44
 .DEFINE initialPositionY_HI 	$00
 .DEFINE initID					$00
 
@@ -260,11 +260,12 @@ MovementUpdateP1:
       jsr P1_set_target_y_velocity
       jsr P1_accelerate_y
       jsr P1_apply_velocity_y
-      jsr P1_bound_position_y
+      ;jsr P1_bound_position_y
+	 
       jsr P1_set_target_x_velocity
       jsr P1_accelerate_x
-      jsr P1_apply_velocity_x
-      jsr P1_bound_position_x
+      ;jsr P1_apply_velocity_x
+      ;jsr P1_bound_position_x
       rts
 	
 
@@ -323,6 +324,9 @@ P1_set_target_y_velocity
 
 
 P1_accelerate_y
+
+	
+
     ;  lda player.1.motionState;
     @p1airborne_accel:
       ; When airborne there is no friction, so ignore target velocities of 0
@@ -412,6 +416,9 @@ P1_accelerate_y
       bne @p1check_greater_dec_y
       rts
     @p1check_greater_dec_y:
+	 lda player.1.velocityY;
+      sec
+      sbc player.1.targetVelocityY;
       bmi @p1lesserDec_y
 	  rep #$30
 	  lda #$00FF
@@ -448,7 +455,7 @@ P1_apply_velocity_y
      @p1positive_velocity_Y:
       REP #$30
 	  clc
-	  lda #$00FF
+	  lda #$0000
 	  and player.1.velocityY
 	  sta $03
 	  lda player.1.positionY_Lo
@@ -460,7 +467,7 @@ P1_apply_velocity_y
    @p1negative_velocity_Y:
       REP #$30
 	  clc
-	  lda #$00FF
+	  lda #$0000
 	  and player.1.velocityY
 	  sta $03
 	  lda player.1.positionY_Lo
@@ -487,9 +494,18 @@ P1_bound_position_y
       lsr $01
       ror $00
       lda $00
+	  cmp #$FF
+	  bpl @clamp_bottom
       sta player.1.spriteY_Lo
 	  lda $01
 	  sta player.1.spriteY_Hi
+	  rts
+	  @clamp_bottom:
+	  lda #$FF
+	  sta player.1.spriteY_Lo
+	  lda #$00
+	  sta player.1.spriteY_Hi
+	  rts
 	  
 	  
 ;================================================================		
@@ -522,8 +538,9 @@ P1_set_target_x_velocity
       stx player.1.targetVelocityX
 	  rep #$10
       rts
+	  
+	  
     @p1check_left:
-	 
       lda #BUTTON_LEFT
 	  sta CurrentButton
       and SJoy1, X 
@@ -536,23 +553,17 @@ P1_set_target_x_velocity
       ldx #left_velocity
       stx player.1.targetVelocityX
 	  rep #$10
-	  
       rts
 	  
     @p1no_direction:
       lda #0
       sta player.1.targetVelocityX
-	  
       rts
     
 
 
 P1_accelerate_x
-    ;  lda player.1.motionState;
-   ;   cmp Airborne
-   ;   bne @p1accelerate
-    ;@p1airborne_accel:
-      ; When airborne there is no friction, so ignore target velocities of 0
+
       sep #$20
 	  rep #$10
 	  
@@ -565,14 +576,14 @@ P1_accelerate_x
 	  lda player.1.headingX
 	  cmp #$00
       bcs @p1negative_deccel_x
-    @p1positive_deccel_x:
-      ; If moving right, only accelerate if the target velocity is higher
+	  
+    @p1positive_deccel_x:; If moving right, only accelerate if the target velocity is higher
 	  lda player.1.velocityX
 	  sbc player.1.targetVelocityX
       bmi @p1decelerate
       rts
-    @p1negative_deccel_x:
-      ; Similarly, if moving left only do so if the target velocity is lower
+	  
+    @p1negative_deccel_x:; Similarly, if moving left only do so if the target velocity is lower
       lda player.1.velocityX
 	  sbc player.1.targetVelocityX
       bpl @p1decelerate
@@ -583,12 +594,15 @@ P1_accelerate_x
       lda player.1.headingX
 	  cmp #$00
       bcc @p1negative_accel_x
-    @p1positive_accel_x:
-      ; If moving right, only accelerate if the target velocity is higher
+	  
+	  
+    @p1positive_accel_x:; If moving right, only accelerate if the target velocity is higher
 	  lda player.1.velocityX
 	  sbc player.1.targetVelocityX
       bmi @p1accelerate
       rts
+	  
+	  
     @p1negative_accel_x:
       ; Similarly, if moving left only do so if the target velocity is lower
       lda player.1.velocityX
@@ -599,12 +613,12 @@ P1_accelerate_x
 		
 	
 	@p1accelerate:
-     
       lda player.1.velocityX;
       sec
       sbc player.1.targetVelocityX;
       bne @p1check_greater
       rts
+	  
     @p1check_greater:
       bmi @p1lesser
 	  rep #$30
@@ -617,9 +631,9 @@ P1_accelerate_x
 	  rep #$30
 	  sep #$20	  
       rts
+	  
     @p1lesser:
-     
-	  rep #$30
+      rep #$30
 	  lda #$00FF
 	  and player.1.velocityX
 	  tax 
@@ -632,12 +646,12 @@ P1_accelerate_x
 	  
 	  
 	@p1decelerate:
-     
       lda player.1.velocityX;
       sec
       sbc player.1.targetVelocityX;
       bne @p1check_greater_dec
       rts
+	  
     @p1check_greater_dec:
       bmi @p1lesserDec
 	  rep #$30
@@ -651,9 +665,9 @@ P1_accelerate_x
 	  rep #$30
 	  sep #$20	  
       rts
+	  
     @p1lesserDec:
-     
-	  rep #$30
+      rep #$30
 	  lda #$00FF
 	  and player.1.velocityX
 	  tax 
@@ -717,295 +731,35 @@ P1_bound_position_x
       sta player.1.spriteX_Lo
 	  lda $01
 	  sta player.1.spriteX_Hi
+
+.ends
+
    
-   ;   ldy sy
-	;  lda player.1.positionX;
-   ;   sta $00
-   ;   lda player.1.positionX;
-   ;   sta $01
-   ;   lsr $01
-   ;   ror $00
-   ;   lsr $01
-   ;   ror $00
-   ;   lsr $01
-   ;   ror $00
-   ;   lsr $01
-   ;   ror $00
-   ;   ; Assume that everything is fine and save the sprite position
-   ;   lda $00
-   ;   ;sta player.1.spriteX;
-   ;   ; Check if we are moving left or right (negative or positive respectively)
-   ;   lda player.1.velocityX;
-   ;   bmi @p1negative_position_x
-   ; @p1positive_position_x:
-   ;   lda $01
-   ;   bne @p1bound_upper
-   ;   lda $00
-   ;   cmp #239
-   ;   bcs @p1bound_upper
-   ;   rts
-   ; @p1bound_upper:
-   ;   ; $EF = 239 = 255 - 16, this is the right bound since the screen is 256 pixels
-   ;   ; wide and the character is 16 pixels wide.
-   ;   ;lda #$EF
-   ;   ;sta player.1.spriteX;
-   ;   ;lda #$0E
-   ;   ;sta player.1.positionX+1;
-   ;   ;lda #$F0
-   ;   ;sta player.1.positionX;
-   ;   ; Finally, set the velocity to 0 since the player is being "stopped"
-   ;   ;lda #0
-   ;   ;sta player.1.velocityX;
-   ;   rts
-   ; @p1negative_position_x:
-   ;   ; The negative case is really simple, just check if the high order byte of the
-   ;   ; 12.4 fixed point position is negative. If so bound everything to 0.
-   ;   ;lda player.1.positionX+1;
-   ;   bmi @p1bound_lower
-   ;   rts
-   ; @p1bound_lower:
-   ;   ;lda #0
-   ;   ;sta player.1.positionX;
-   ;   ;sta player.1.positionX+1;
-   ;   ;sta player.1.spriteX;
-   ;   ;sta player.1.velocityX;
-   ;   rts
-
-
-
-P1_Sprite_update
-   ;   jsr update_motion_state
-   ;   jsr update_animation_frame
-   ;   jsr update_heading
-   ;   jsr update_idle_state
-   ;   jsr update_sprite_tiles
-   ;   jsr update_sprite_position
-      rts
- 
-
-P1_update_motion_state
-      lda player.1.motionState
-      cmp Airborne
-      bcc @p1grounded
-    @p1airborne_motion_state:
-      rts
-    @p1grounded:
-      ; If spriteX == 0: STILL    // Left bound animation fix
-      ; If spriteX == MAX: STILL  // Right bound animation fix
-      ; If T = V:
-      ;   // Steady motion
-      ;   If T == 0: STILL
-      ;   Else: WALK
-      ; If T <> V:
-      ;   // Accelerating
-      ;   If <- or -> being pressed:
-      ;     If T > 0 && V < 0: PIVOT
-      ;     If T < 0 && V > 0: PIVOT
-      ;   Else: WALK
-      lda player.1.spriteX_Hi
-      beq @p1stand
-      cmp #$EF
-      beq @p1stand
-      lda player.1.targetVelocityX;
-      cmp player.1.velocityX;
-      bne @p1accelerating
-    @p1steady:
-      lda player.1.velocityX;
-      beq @p1stand
-      bne @p1walk_motion_state
-    @p1stand:
-      lda Still
-      sta player.1.motionState;
-      rts
-    @p1accelerating:
-      lda BUTTON_LEFT
-      ora BUTTON_RIGHT
-      and Joy1Press ;isButtonHeld
-      beq @p1walk_motion_state
-      lda #%10000000
-      and player.1.targetVelocityX;
-      sta $00
-      lda #%10000000
-      and player.1.velocityX;
-      cmp $00
-      ;beq @p1walk_motion_state
-    @p1pivot_motion_state:
-      lda Pivot
-      sta player.1.motionState;
-      rts
-    @p1walk_motion_state:
-      lda Walk
-      sta player.1.motionState;
-      rts
-
-
-P1_update_animation_frame
-      ; If V == 0:
-      ;   Set initial timer
-      ; Else:
-      ;   Decrement timer
-      ;   If frame timer == 0:
-      ;     Reset frame timer based on V
-      ;     Increment the frame
-      lda player.1.velocityX;
-      bne @p1moving
-      ;lda delay_by_velocity
-      sta player.1.animationTimer;
-      rts
-    @p1moving:
-      ;dec player.1.animationTimer;
-      beq @p1next_frame
-      rts
-    @p1next_frame:
-      ldx player.1.velocityX;
-      bpl @p1transition_state
-      lda #0
-      sec
-      sbc player.1.velocityX;
-      tax
-    @p1transition_state:
-      ;lda delay_by_velocity, x
-      sta player.1.animationTimer;
-      lda #1
-      eor player.1.animationFrame;
-      sta player.1.animationFrame;
-      rts
-    ;delay_by_velocity:
-      ;.byte 12, 11, 11, 11, 11, 11, 10, 10, 10, 10, 10
-      ;.byte 9, 9, 9, 9, 9, 8, 8, 8, 8, 8, 7, 7, 7, 7, 7
-      ;.byte 6, 6, 6, 6, 6, 5, 5, 5, 5, 5, 4, 4, 4, 4, 4
-
-
-P1_update_heading
-      ; If the target velocity is 0 then the player isn't pressing left or right and
-      ; the heading doesn't need to change.
-      lda player.1.targetVelocityX;
-      bne @p1check_headingX
-      rts
-      ; If the target velocity is non-zero, check to see if player is heading in the
-      ; desired direction.
-    @p1check_headingX:
-      asl
-      lda #0
-      rol
-      cmp player.1.headingX;
-      bne @p1update_headingX
-      rts
-    @p1update_headingX:
-      ; If the desired heading is not equal to the current heading based on the
-      ; target velocity, then update the heading.
-      sta player.1.headingX;
-      ; Toggle the "horizontal" mirroring on the character sprites
-      lda #%01000000
-      ;eor $200 + OAM_ATTR
-      ;sta $200 + OAM_ATTR
-      ;sta $204 + OAM_ATTR
-      rts
-
-
-P1_update_idle_state
-     ; lda player.1.motionState;
-     ; cmp Still
-     ; beq @p1update_timer
-     ; ;lda ;timers
-     ; sta player.1.idleTimer;
-     ; lda Still
-     ; sta player.1.idleState;
-      rts
-    @p1update_timer:
-      ;dec player.1.idleTimer;
-      beq @p1update_state
-      rts
-    @p1update_state:
-      ldx player.1.idleState;
-      inx
-      cpx #4
-      bne @p1set_state
-      ldx #0
-    @p1set_state:
-      stx player.1.idleState;
-      ;lda ;timers, x
-      sta player.1.idleTimer;
-      rts
-    ;timers:
-      ;.byte 245, 10, 10, 10
-
-
-P1_update_sprite_tiles
-      lda player.1.motionState;
-      cmp Airborne
-      beq @p1airborne_sptite_tiles
-      cmp Pivot
-      beq @p1pivot_sprite_tiles
-      cmp Walk
-      beq @p1walk_sprite_tiles
-    @p1still:
-      lda player.1.idleState;
-      asl
-      asl
-      clc
-      adc player.1.headingX;
-      tax
-      ;lda idle_tiles, x
-      ;sta $200 + OAM_TILE
-      ;lda idle_tiles + 2, x
-      ;sta $204 + OAM_TILE
-      rts
-    @p1airborne_sptite_tiles:
-      ldx player.1.headingX;
-      ;lda jumping_tiles, x
-      ;sta $200 + OAM_TILE
-      ;lda jumping_tiles + 2, x
-      ;sta $204 + OAM_TILE
-      rts
-    @p1walk_sprite_tiles:
-      lda player.1.animationFrame;
-      asl
-      asl
-      clc
-      adc player.1.headingX;
-      tax
-      ;lda walk_tiles, x
-      ;sta $200 + OAM_TILE
-      ;lda walk_tiles +2, x
-      ;sta $204 + OAM_TILE
-      rts
-    @p1pivot_sprite_tiles:
-      ldx player.1.headingX;
-      ;lda pivot_tiles, x
-      ;sta $200 + OAM_TILE
-      ;lda pivot_tiles + 2, x
-      ;sta $204 + OAM_TILE
-      rts
-    ;jumping_tiles:
-      ;.byte $88, $8A, $8A, $88
-    ;pivot_tiles:
-      ;.byte $98, $9A, $9A, $98 ; Pivot is the same no matter the animation frame
-   ; walk_tiles:
-      ;.byte $80, $82, $82, $80 ; Frame 1
-      ;.byte $84, $86, $86, $84 ; Frame 2
-    ;idle_tiles:
-      ;.byte $80, $82, $82, $80
-      ;.byte $9C, $9E, $9E, $9C
-      ;.byte $80, $82, $82, $80
-      ;.byte $9C, $9E, $9E, $9C
-
-
-P1_update_sprite_position
-      ; This is computed in `bound_position` above, so all we have to do is set
-      ; the sprite coordinates appropriately.
-      lda player.1.spriteX_Hi
-      ;sta $200 + OAM_X
-      clc
-      adc #8
-      ;sta $204 + OAM_X
-      lda player.1.spriteY_Hi
-      sta $200
-      sta $204
-      rts 
-	  
-	.ends
-
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
 .bank 0 slot 0
 .org 0
 .section "Player 2 Routine"  	

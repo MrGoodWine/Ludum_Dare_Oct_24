@@ -138,9 +138,9 @@ InfiniteLoop:
 	;See what buttons were pressed
 	ldx #$0000
 -	jsr MovementUpdateP1
-	jsr MovementUpdateP2
-	jsr MovementUpdateP3
-	jsr MovementUpdateP4
+	;jsr MovementUpdateP2
+	;jsr MovementUpdateP3
+	;jsr MovementUpdateP4
 
 	
 	ldy #01
@@ -148,25 +148,47 @@ InfiniteLoop:
 	sep #$30
 
 	
+	
+	
 	lda player.1.spriteX_Lo
+	sta SpriteBuf1
+	lda player.1.spriteX_Hi
 	sta SpriteBuf2
+	
 	lda player.1.spriteY_Lo
-	sta SpriteBuf2,Y
+	sta SpriteBuf1, Y
+	lda player.1.spriteY_Hi
+	sta SpriteBuf2, Y
 	
 	;lda player.2.spriteX_Lo
-	;sta SpriteBuf3
+	;sta SpriteBuf1 + #$2
+	;lda player.2.spriteX_Hi
+	;sta SpriteBuf2 + #$2
+	
 	;lda player.2.spriteY_Lo
-	;sta SpriteBuf3,Y
+	;sta SpriteBuf1 + #$2, Y
+	;lda player.2.spriteY_Hi
+	;sta SpriteBuf2 + #$2, Y
 	
 	;lda player.3.spriteX_Lo
-	;sta SpriteBuf3
+	;sta SpriteBuf1 + #$4
+	;lda player.3.spriteX_Hi
+	;sta SpriteBuf2 + #$4
+	
 	;lda player.3.spriteY_Lo
-	;sta SpriteBuf3,Y
+	;sta SpriteBuf1 + #$4, Y
+	;lda player.3.spriteY_Hi
+	;sta SpriteBuf2 + #$4, Y
 	
 	;lda player.4.spriteX_Lo
-	;sta SpriteBuf3
+	;sta SpriteBuf1 + #$6
+	;lda player.4.spriteX_Hi
+	;sta SpriteBuf2 + #$6
+	
 	;lda player.4.spriteY_Lo
-	;sta SpriteBuf3,Y
+	;sta SpriteBuf1 + #$6, Y
+	;lda player.4.spriteY_Hi
+	;sta SpriteBuf2 + #$6, Y
 	
 	;lda player.1.spriteX_Lo
 	;sta MapX
@@ -188,6 +210,14 @@ BackgroundMap:
 
 ;Color data
 BG_Palette:
+	.INCBIN ".\\Pictures\\dummy_palette00.cgr"
+	.INCBIN ".\\Pictures\\dummy_palette01.cgr"
+	.INCBIN ".\\Pictures\\dummy_palette02.cgr"
+	.INCBIN ".\\Pictures\\dummy_palette03.cgr"
+	.INCBIN ".\\Pictures\\dummy_palette04.cgr"
+	.INCBIN ".\\Pictures\\dummy_palette05.cgr"
+	.INCBIN ".\\Pictures\\dummy_palette06.cgr"
+	.INCBIN ".\\Pictures\\dummy_palette07.cgr"
 	.INCBIN ".\\Pictures\\ant.cgr"
 	.INCBIN ".\\Pictures\\aphid.cgr"
 	.INCBIN ".\\Pictures\\firefly.cgr"
