@@ -188,10 +188,16 @@ BackgroundMap:
 
 ;Color data
 BG_Palette:
-	.INCBIN ".\\Pictures\\bugs.pal"
+	.INCBIN ".\\Pictures\\ant.cgr"
+	.INCBIN ".\\Pictures\\aphid.cgr"
+	.INCBIN ".\\Pictures\\firefly.cgr"
+	;.INCBIN ".\\Pictures\\ladybug.cgr"
 
 SpriteTiles1:
-		.INCBIN ".\\Pictures\\bugs.bin"
+		.INCBIN ".\\Pictures\\ant.vra"
+		.INCBIN ".\\Pictures\\aphid.vra"
+		.INCBIN ".\\Pictures\\firefly.vra"
+		;.INCBIN ".\\Pictures\\ladybug.vra"
 		;.INCBIN ".\\Pictures\\one-bug.bin"
 		;.INCBIN ".\\Pictures\\one-bug-2.bin"
 	
