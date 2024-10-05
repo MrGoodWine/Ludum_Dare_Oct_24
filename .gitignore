@@ -10,3 +10,4 @@ dma_sync_test/
 info/
 wla.txt
 .vs/
+.DS_Store
