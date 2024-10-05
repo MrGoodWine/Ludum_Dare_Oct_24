@@ -6,11 +6,13 @@
 
 ;temporary sprite buffer1 ($0400-$061F)
 .DEFINE SpriteBuf1	$0400
-.DEFINE SpriteBuf2	$0600
+.DEFINE SpriteBuf2	$0420
+.DEFINE SpriteBuf3	$0600
+.DEFINE SpriteBuf4	$0620
 
 
-.DEFINE sx	   		0
-.DEFINE sy	   		1
+.DEFINE sx	   		$1
+.DEFINE sy	   		$0
 .DEFINE sframe 		2
 .DEFINE spriority		3
 
@@ -23,13 +25,21 @@ SpriteInit:
 	rep	#$30	;16bit mem/A, 16 bit X/Y
 
 	ldx #$0000
-	lda #$5555
+	lda #$efef
 _clr:
 	sta SpriteBuf2, x		;initialize all sprites to be off the screen
 	inx
 	inx
-	cpx #$0020
+	cpx #$0200
 	bne _clr	
+	ldx #$0000
+	lda #$5555
+;_clr2:
+;	sta SpriteBuf3, x		;initialize all sprites to be off the screen
+;	inx
+;	inx
+;	cpx #$0020
+;	bne _clr2	
 
 	plp
 	rts

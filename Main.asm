@@ -63,12 +63,10 @@ Main:
 	;Load Tile and Character data to VRAM
 	;LoadBlockToVRAM	BackgroundMap, $0000, $2000	; 64x64 tiles = 4096 words = 8192 bytes
 	LoadBlockToVRAM	ExportedTilemap_Tilemap, $0000, $2000	
-	LoadBlockToVRAM	BackgroundPics, $2000, $6000	; 384 tiles * (8bit color)= 0x6000 bytes
-
-	
-	
+	LoadBlockToVRAM	BackgroundPics, $2000, $6000	; 384 tiles * (8bit color)= 0x6000 bytes	
 	LoadBlockToVRAM	ASCIITiles, $5000, $0800	;128 tiles * (2bit color = 2 planes) --> 2048 bytes
-	LoadBlockToVRAM	SpriteTiles2, $6000, $4000	;16 32x32 tiles * (4bit color = 4 planes) --> 8192 bytes
+	LoadBlockToVRAM	SpriteTiles1, $6000, $2000	;16 32x32 tiles * (4bit color = 4 planes) --> 8192 bytes
+	;LoadBlockToVRAM	SpriteTiles2, $6020, $400
 	;LoadBlockToVRAM	SpriteTiles2, $8000, $2000
 
 	;Set the priority bit of all the BG2 tiles
@@ -76,7 +74,7 @@ Main:
 	STA $2115		;set up the VRAM so we can write just to the high byte
 	LDX #$5800
 	STX $2116
-	LDX #$0200		;32x32 tiles = 1024
+	LDX #$0100		;32x32 tiles = 1024
 	LDA #$20
 Next_tile:
 	STA $2119
@@ -89,14 +87,14 @@ Next_tile:
 
 	;setup our walking sprite
 	;put him in the center of the screen
-	lda #($16-16) 		
+	lda #$0	
 	sta SpriteBuf1+sx
-	lda #(256/2-16)
+	lda #$0	
 	sta SpriteBuf1+sy
 
 	;put sprite #0 on screen
 	lda #$54
-	sta SpriteBuf3
+	sta SpriteBuf2
 
 	;set the sprite to the highest priority
 	lda #$30			
@@ -115,13 +113,14 @@ Next_tile:
 	ldy #$0000
 	CLC
   
--  	jsr PlayerInit 
+  @initjumpback:
+  	jsr PlayerInit 
 	INX
 	lda #$0005
 	sta numberofplayers
 	CPX numberofplayers
 	CLC
-	BNE -
+	BNE @initjumpback
 
 InfiniteLoop:
 	rep #$10
@@ -150,9 +149,9 @@ InfiniteLoop:
 
 	
 	lda player.1.spriteX_Lo
-	sta SpriteBuf3
+	sta SpriteBuf2
 	lda player.1.spriteY_Lo
-	sta SpriteBuf3,Y
+	sta SpriteBuf2,Y
 	
 	;lda player.2.spriteX_Lo
 	;sta SpriteBuf3
@@ -186,26 +185,20 @@ InfiniteLoop:
 ;Map data
 BackgroundMap:
 	.INCBIN ".\\Pictures\\floormap.map"
-	;.INCBIN ".\\Pictures\\GrassyCaveTileset.bin"
-	
-	
-	;00000000000010011
 
 ;Color data
 BG_Palette:
-	;.INCBIN ".\\Pictures\\TestPalette.clr"
 	.INCBIN ".\\Pictures\\bugs.pal"
-	;.INCBIN ".\\Pictures\\dwarf.clr"
-	;.INCBIN ".\\Pictures\\dwarf2.clr"
 
-SpriteTiles:
-	;.INCBIN ".\\Pictures\\dwarf.pic"
-	;.INCBIN ".\\Pictures\\dwarf2.pic"
+SpriteTiles1:
+		.INCBIN ".\\Pictures\\bugs.bin"
+		;.INCBIN ".\\Pictures\\one-bug.bin"
+		;.INCBIN ".\\Pictures\\one-bug-2.bin"
 	
 	
 SpriteTiles2:
 	;.INCBIN ".\\Pictures\\dwarf2.pic"
-	.INCBIN ".\\Pictures\\bugs.bin"
+	
 
 ASCIITiles:
 	.INCBIN ".\\Pictures\\ascii.pic"
@@ -220,7 +213,6 @@ ASCIITiles:
 
 ;character data
 BackgroundPics:
-	;.INCBIN ".\\Pictures\\mymap.pic"
 	.INCBIN ".\\Pictures\\GrassyCaveTileset.bin"
 .ENDS
 
