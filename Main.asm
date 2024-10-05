@@ -68,7 +68,7 @@ Main:
 	
 	
 	LoadBlockToVRAM	ASCIITiles, $5000, $0800	;128 tiles * (2bit color = 2 planes) --> 2048 bytes
-	LoadBlockToVRAM	SpriteTiles, $6000, $4000	;16 32x32 tiles * (4bit color = 4 planes) --> 8192 bytes
+	LoadBlockToVRAM	SpriteTiles2, $6000, $4000	;16 32x32 tiles * (4bit color = 4 planes) --> 8192 bytes
 	;LoadBlockToVRAM	SpriteTiles2, $8000, $2000
 
 	;Set the priority bit of all the BG2 tiles
@@ -153,18 +153,22 @@ InfiniteLoop:
 	sta SpriteBuf1
 	lda player.1.spriteY_Lo
 	sta SpriteBuf1,Y
-		lda player.2.spriteX_Lo
-	sta SpriteBuf2
-	lda player.2.spriteY_Lo
-	sta SpriteBuf2,Y
-		lda player.3.spriteX_Lo
-	sta SpriteBuf3
-	lda player.3.spriteY_Lo
-	sta SpriteBuf3,Y
-		lda player.4.spriteX_Lo
-	sta SpriteBuf4
-	lda player.4.spriteY_Lo
-	sta SpriteBuf4,Y
+	
+	;lda player.2.spriteX_Lo
+	;sta SpriteBuf2
+	;lda player.2.spriteY_Lo
+	;sta SpriteBuf2,Y
+	
+	;lda player.3.spriteX_Lo
+	;sta SpriteBuf3
+	;lda player.3.spriteY_Lo
+	;sta SpriteBuf3,Y
+	
+	;lda player.4.spriteX_Lo
+	;sta SpriteBuf4
+	;lda player.4.spriteY_Lo
+	;sta SpriteBuf4,Y
+	
 	;lda player.1.spriteX_Lo
 	;sta MapX
 	
