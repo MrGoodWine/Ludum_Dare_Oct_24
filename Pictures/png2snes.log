@@ -1,0 +1,577 @@
+Palette contains 16 colors
+CGRAM section is 32 bytes long
+Using 16x16 background tiles
+Using 4 bitplanes
+Image size is 9x1, bit depth is 8
+Tile count: 9 (9x1)
+Outputting on 4 bitplanes
+VRAM section is 1600 bytes long
+Tile Number = 0
+Offset = 0
+Tile Number = 1
+Offset = 32
+Tile Number = 16
+Offset = 512
+Tile Number = 17
+Offset = 544
+Tile Number = 2
+Offset = 64
+Tile Number = 3
+Offset = 96
+Tile Number = 18
+Offset = 576
+Tile Number = 19
+Offset = 608
+Tile Number = 4
+Offset = 128
+Tile Number = 5
+Offset = 160
+Tile Number = 20
+Offset = 640
+Tile Number = 21
+Offset = 672
+Tile Number = 6
+Offset = 192
+Tile Number = 7
+Offset = 224
+Tile Number = 22
+Offset = 704
+Tile Number = 23
+Offset = 736
+Tile Number = 8
+Offset = 256
+Tile Number = 9
+Offset = 288
+Tile Number = 24
+Offset = 768
+Tile Number = 25
+Offset = 800
+Tile Number = 10
+Offset = 320
+Tile Number = 11
+Offset = 352
+Tile Number = 26
+Offset = 832
+Tile Number = 27
+Offset = 864
+Tile Number = 12
+Offset = 384
+Tile Number = 13
+Offset = 416
+Tile Number = 28
+Offset = 896
+Tile Number = 29
+Offset = 928
+Tile Number = 14
+Offset = 448
+Tile Number = 15
+Offset = 480
+Tile Number = 30
+Offset = 960
+Tile Number = 31
+Offset = 992
+Tile Number = 32
+Offset = 1024
+Tile Number = 33
+Offset = 1056
+Tile Number = 48
+Offset = 1536
+Tile Number = 49
+Offset = 1568
+Palette contains 16 colors
+CGRAM section is 32 bytes long
+Using 16x16 background tiles
+Using 4 bitplanes
+Image size is 9x1, bit depth is 8
+Tile count: 9 (9x1)
+Outputting on 4 bitplanes
+VRAM section is 1600 bytes long
+Tile Number = 0
+Offset = 0
+Tile Number = 1
+Offset = 32
+Tile Number = 16
+Offset = 512
+Tile Number = 17
+Offset = 544
+Tile Number = 2
+Offset = 64
+Tile Number = 3
+Offset = 96
+Tile Number = 18
+Offset = 576
+Tile Number = 19
+Offset = 608
+Tile Number = 4
+Offset = 128
+Tile Number = 5
+Offset = 160
+Tile Number = 20
+Offset = 640
+Tile Number = 21
+Offset = 672
+Tile Number = 6
+Offset = 192
+Tile Number = 7
+Offset = 224
+Tile Number = 22
+Offset = 704
+Tile Number = 23
+Offset = 736
+Tile Number = 8
+Offset = 256
+Tile Number = 9
+Offset = 288
+Tile Number = 24
+Offset = 768
+Tile Number = 25
+Offset = 800
+Tile Number = 10
+Offset = 320
+Tile Number = 11
+Offset = 352
+Tile Number = 26
+Offset = 832
+Tile Number = 27
+Offset = 864
+Tile Number = 12
+Offset = 384
+Tile Number = 13
+Offset = 416
+Tile Number = 28
+Offset = 896
+Tile Number = 29
+Offset = 928
+Tile Number = 14
+Offset = 448
+Tile Number = 15
+Offset = 480
+Tile Number = 30
+Offset = 960
+Tile Number = 31
+Offset = 992
+Tile Number = 32
+Offset = 1024
+Tile Number = 33
+Offset = 1056
+Tile Number = 48
+Offset = 1536
+Tile Number = 49
+Offset = 1568
+Palette contains 16 colors
+CGRAM section is 32 bytes long
+Using 16x16 background tiles
+Using 4 bitplanes
+Image size is 9x1, bit depth is 8
+Tile count: 9 (9x1)
+Outputting on 4 bitplanes
+VRAM section is 1600 bytes long
+Tile Number = 0
+Offset = 0
+Tile Number = 1
+Offset = 32
+Tile Number = 16
+Offset = 512
+Tile Number = 17
+Offset = 544
+Tile Number = 2
+Offset = 64
+Tile Number = 3
+Offset = 96
+Tile Number = 18
+Offset = 576
+Tile Number = 19
+Offset = 608
+Tile Number = 4
+Offset = 128
+Tile Number = 5
+Offset = 160
+Tile Number = 20
+Offset = 640
+Tile Number = 21
+Offset = 672
+Tile Number = 6
+Offset = 192
+Tile Number = 7
+Offset = 224
+Tile Number = 22
+Offset = 704
+Tile Number = 23
+Offset = 736
+Tile Number = 8
+Offset = 256
+Tile Number = 9
+Offset = 288
+Tile Number = 24
+Offset = 768
+Tile Number = 25
+Offset = 800
+Tile Number = 10
+Offset = 320
+Tile Number = 11
+Offset = 352
+Tile Number = 26
+Offset = 832
+Tile Number = 27
+Offset = 864
+Tile Number = 12
+Offset = 384
+Tile Number = 13
+Offset = 416
+Tile Number = 28
+Offset = 896
+Tile Number = 29
+Offset = 928
+Tile Number = 14
+Offset = 448
+Tile Number = 15
+Offset = 480
+Tile Number = 30
+Offset = 960
+Tile Number = 31
+Offset = 992
+Tile Number = 32
+Offset = 1024
+Tile Number = 33
+Offset = 1056
+Tile Number = 48
+Offset = 1536
+Tile Number = 49
+Offset = 1568
+More colors (48) than expected (16)
+Palette contains 16 colors
+CGRAM section is 32 bytes long
+Using 16x16 background tiles
+Using 4 bitplanes
+Image size is 2x0, bit depth is 8
+Tile count: 0 (2x0)
+Outputting on 4 bitplanes
+VRAM section is 512 bytes long
+Palette contains 16 colors
+CGRAM section is 32 bytes long
+Using 16x16 background tiles
+Using 4 bitplanes
+Image size is 9x1, bit depth is 8
+Tile count: 9 (9x1)
+Outputting on 4 bitplanes
+VRAM section is 1600 bytes long
+Tile Number = 0
+Offset = 0
+Tile Number = 1
+Offset = 32
+Tile Number = 16
+Offset = 512
+Tile Number = 17
+Offset = 544
+Tile Number = 2
+Offset = 64
+Tile Number = 3
+Offset = 96
+Tile Number = 18
+Offset = 576
+Tile Number = 19
+Offset = 608
+Tile Number = 4
+Offset = 128
+Tile Number = 5
+Offset = 160
+Tile Number = 20
+Offset = 640
+Tile Number = 21
+Offset = 672
+Tile Number = 6
+Offset = 192
+Tile Number = 7
+Offset = 224
+Tile Number = 22
+Offset = 704
+Tile Number = 23
+Offset = 736
+Tile Number = 8
+Offset = 256
+Tile Number = 9
+Offset = 288
+Tile Number = 24
+Offset = 768
+Tile Number = 25
+Offset = 800
+Tile Number = 10
+Offset = 320
+Tile Number = 11
+Offset = 352
+Tile Number = 26
+Offset = 832
+Tile Number = 27
+Offset = 864
+Tile Number = 12
+Offset = 384
+Tile Number = 13
+Offset = 416
+Tile Number = 28
+Offset = 896
+Tile Number = 29
+Offset = 928
+Tile Number = 14
+Offset = 448
+Tile Number = 15
+Offset = 480
+Tile Number = 30
+Offset = 960
+Tile Number = 31
+Offset = 992
+Tile Number = 32
+Offset = 1024
+Tile Number = 33
+Offset = 1056
+Tile Number = 48
+Offset = 1536
+Tile Number = 49
+Offset = 1568
+Palette contains 16 colors
+CGRAM section is 32 bytes long
+Using 16x16 background tiles
+Using 4 bitplanes
+Image size is 9x1, bit depth is 8
+Tile count: 9 (9x1)
+Outputting on 4 bitplanes
+VRAM section is 1600 bytes long
+Tile Number = 0
+Offset = 0
+Tile Number = 1
+Offset = 32
+Tile Number = 16
+Offset = 512
+Tile Number = 17
+Offset = 544
+Tile Number = 2
+Offset = 64
+Tile Number = 3
+Offset = 96
+Tile Number = 18
+Offset = 576
+Tile Number = 19
+Offset = 608
+Tile Number = 4
+Offset = 128
+Tile Number = 5
+Offset = 160
+Tile Number = 20
+Offset = 640
+Tile Number = 21
+Offset = 672
+Tile Number = 6
+Offset = 192
+Tile Number = 7
+Offset = 224
+Tile Number = 22
+Offset = 704
+Tile Number = 23
+Offset = 736
+Tile Number = 8
+Offset = 256
+Tile Number = 9
+Offset = 288
+Tile Number = 24
+Offset = 768
+Tile Number = 25
+Offset = 800
+Tile Number = 10
+Offset = 320
+Tile Number = 11
+Offset = 352
+Tile Number = 26
+Offset = 832
+Tile Number = 27
+Offset = 864
+Tile Number = 12
+Offset = 384
+Tile Number = 13
+Offset = 416
+Tile Number = 28
+Offset = 896
+Tile Number = 29
+Offset = 928
+Tile Number = 14
+Offset = 448
+Tile Number = 15
+Offset = 480
+Tile Number = 30
+Offset = 960
+Tile Number = 31
+Offset = 992
+Tile Number = 32
+Offset = 1024
+Tile Number = 33
+Offset = 1056
+Tile Number = 48
+Offset = 1536
+Tile Number = 49
+Offset = 1568
+Palette contains 16 colors
+CGRAM section is 32 bytes long
+Using 16x16 background tiles
+Using 4 bitplanes
+Image size is 9x1, bit depth is 8
+Tile count: 9 (9x1)
+Outputting on 4 bitplanes
+VRAM section is 1600 bytes long
+Tile Number = 0
+Offset = 0
+Tile Number = 1
+Offset = 32
+Tile Number = 16
+Offset = 512
+Tile Number = 17
+Offset = 544
+Tile Number = 2
+Offset = 64
+Tile Number = 3
+Offset = 96
+Tile Number = 18
+Offset = 576
+Tile Number = 19
+Offset = 608
+Tile Number = 4
+Offset = 128
+Tile Number = 5
+Offset = 160
+Tile Number = 20
+Offset = 640
+Tile Number = 21
+Offset = 672
+Tile Number = 6
+Offset = 192
+Tile Number = 7
+Offset = 224
+Tile Number = 22
+Offset = 704
+Tile Number = 23
+Offset = 736
+Tile Number = 8
+Offset = 256
+Tile Number = 9
+Offset = 288
+Tile Number = 24
+Offset = 768
+Tile Number = 25
+Offset = 800
+Tile Number = 10
+Offset = 320
+Tile Number = 11
+Offset = 352
+Tile Number = 26
+Offset = 832
+Tile Number = 27
+Offset = 864
+Tile Number = 12
+Offset = 384
+Tile Number = 13
+Offset = 416
+Tile Number = 28
+Offset = 896
+Tile Number = 29
+Offset = 928
+Tile Number = 14
+Offset = 448
+Tile Number = 15
+Offset = 480
+Tile Number = 30
+Offset = 960
+Tile Number = 31
+Offset = 992
+Tile Number = 32
+Offset = 1024
+Tile Number = 33
+Offset = 1056
+Tile Number = 48
+Offset = 1536
+Tile Number = 49
+Offset = 1568
+Palette contains 16 colors
+CGRAM section is 32 bytes long
+Using 16x16 background tiles
+Using 4 bitplanes
+Image size is 9x1, bit depth is 8
+Tile count: 9 (9x1)
+Outputting on 4 bitplanes
+VRAM section is 1600 bytes long
+Tile Number = 0
+Offset = 0
+Tile Number = 1
+Offset = 32
+Tile Number = 16
+Offset = 512
+Tile Number = 17
+Offset = 544
+Tile Number = 2
+Offset = 64
+Tile Number = 3
+Offset = 96
+Tile Number = 18
+Offset = 576
+Tile Number = 19
+Offset = 608
+Tile Number = 4
+Offset = 128
+Tile Number = 5
+Offset = 160
+Tile Number = 20
+Offset = 640
+Tile Number = 21
+Offset = 672
+Tile Number = 6
+Offset = 192
+Tile Number = 7
+Offset = 224
+Tile Number = 22
+Offset = 704
+Tile Number = 23
+Offset = 736
+Tile Number = 8
+Offset = 256
+Tile Number = 9
+Offset = 288
+Tile Number = 24
+Offset = 768
+Tile Number = 25
+Offset = 800
+Tile Number = 10
+Offset = 320
+Tile Number = 11
+Offset = 352
+Tile Number = 26
+Offset = 832
+Tile Number = 27
+Offset = 864
+Tile Number = 12
+Offset = 384
+Tile Number = 13
+Offset = 416
+Tile Number = 28
+Offset = 896
+Tile Number = 29
+Offset = 928
+Tile Number = 14
+Offset = 448
+Tile Number = 15
+Offset = 480
+Tile Number = 30
+Offset = 960
+Tile Number = 31
+Offset = 992
+Tile Number = 32
+Offset = 1024
+Tile Number = 33
+Offset = 1056
+Tile Number = 48
+Offset = 1536
+Tile Number = 49
+Offset = 1568
+Palette contains 16 colors
+CGRAM section is 32 bytes long
+Using 16x16 background tiles
+Using 4 bitplanes
+Image size is 2x0, bit depth is 8
+Tile count: 0 (2x0)
+Outputting on 4 bitplanes
+VRAM section is 512 bytes long
