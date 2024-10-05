@@ -11,7 +11,7 @@ SetupVideo:
 	rep #$10		;A/mem = 8bit, X/Y=16bit
 	sep #$20
       
-	lda #$63		;Sprites 16x16 or 32x32, character data at $6000 (word address)
+	lda #$03		;Sprites 16x16 or 32x32, character data at $6000 (word address)
 					;$2101  wb++?- 
 					;     sssnnbbb
 					;     sss       = Object size:

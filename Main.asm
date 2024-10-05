@@ -56,7 +56,7 @@ Main:
 	; Load the first SPC
 	lda 	#0
 	;jsr 	LoadSPC
-      
+   	
 	;Load palette to make our pictures look correct
 	LoadPalette	BG_Palette
 
@@ -76,7 +76,7 @@ Main:
 	STA $2115		;set up the VRAM so we can write just to the high byte
 	LDX #$5800
 	STX $2116
-	LDX #$0400		;32x32 tiles = 1024
+	LDX #$0200		;32x32 tiles = 1024
 	LDA #$20
 Next_tile:
 	STA $2119
@@ -154,20 +154,20 @@ InfiniteLoop:
 	lda player.1.spriteY_Lo
 	sta SpriteBuf3,Y
 	
-	lda player.2.spriteX_Lo
-	sta SpriteBuf3
-	lda player.2.spriteY_Lo
-	sta SpriteBuf3,Y
+	;lda player.2.spriteX_Lo
+	;sta SpriteBuf3
+	;lda player.2.spriteY_Lo
+	;sta SpriteBuf3,Y
 	
-	lda player.3.spriteX_Lo
-	sta SpriteBuf3
-	lda player.3.spriteY_Lo
-	sta SpriteBuf3,Y
+	;lda player.3.spriteX_Lo
+	;sta SpriteBuf3
+	;lda player.3.spriteY_Lo
+	;sta SpriteBuf3,Y
 	
-	lda player.4.spriteX_Lo
-	sta SpriteBuf3
-	lda player.4.spriteY_Lo
-	sta SpriteBuf3,Y
+	;lda player.4.spriteX_Lo
+	;sta SpriteBuf3
+	;lda player.4.spriteY_Lo
+	;sta SpriteBuf3,Y
 	
 	;lda player.1.spriteX_Lo
 	;sta MapX
@@ -194,7 +194,7 @@ BackgroundMap:
 ;Color data
 BG_Palette:
 	;.INCBIN ".\\Pictures\\TestPalette.clr"
-	.INCBIN ".\\Pictures\\GrassyPalette.pal"
+	.INCBIN ".\\Pictures\\bugs.pal"
 	;.INCBIN ".\\Pictures\\dwarf.clr"
 	;.INCBIN ".\\Pictures\\dwarf2.clr"
 
@@ -205,7 +205,7 @@ SpriteTiles:
 	
 SpriteTiles2:
 	;.INCBIN ".\\Pictures\\dwarf2.pic"
-	.INCBIN ".\\Pictures\\liltestguy.bin"
+	.INCBIN ".\\Pictures\\bugs.bin"
 
 ASCIITiles:
 	.INCBIN ".\\Pictures\\ascii.pic"
