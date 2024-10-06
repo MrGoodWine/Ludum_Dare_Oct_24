@@ -129,14 +129,13 @@ p3_set_target_y_velocity
 	  Rep #$30
 	  lda #$0000
 	  sep #$20
-	  
+	  ldx #01
 	  
    
     @p3check_down: 
-	  ldx #02
       lda #BUTTON_DOWN
 	  sta CurrentButton
-      and SJoy2, X
+      and SJoy1, X
 	  tay
 	  cpy CurrentButton
       bne @p3check_up
@@ -148,10 +147,10 @@ p3_set_target_y_velocity
 	  rep #$10
       rts
     @p3check_up:
-	  ldx #02
+	 
       lda #BUTTON_UP
 	  sta CurrentButton
-      and SJoy2, X 
+      and SJoy1, X 
 	  tay
 	  cpy CurrentButton
       bne @p3no_Y_direction
@@ -179,14 +178,13 @@ p3_set_target_x_velocity
 	  Rep #$30
 	  lda #$0000
 	  sep #$20
-	  
+	  ldx #01
 	  
    
     @p3check_right: 
-	  ldx #02
       lda #BUTTON_RIGHT
 	  sta CurrentButton
-      and SJoy2, X
+      and SJoy1, X
 	  tay
 	  cpy CurrentButton
       bne @p3check_left
@@ -200,10 +198,9 @@ p3_set_target_x_velocity
 	  
 	  
     @p3check_left:
-	  ldx #02
       lda #BUTTON_LEFT
 	  sta CurrentButton
-      and SJoy2, X 
+      and SJoy1, X 
 	  tay
 	  cpy CurrentButton
       bne @p3no_direction

@@ -129,11 +129,10 @@ p2_set_target_y_velocity
 	  Rep #$30
 	  lda #$0000
 	  sep #$20
-	  
+	  ldx #01
 	  
    
     @p2check_down: 
-	  ldx #01
       lda #BUTTON_DOWN
 	  sta CurrentButton
       and SJoy1, X
@@ -148,7 +147,7 @@ p2_set_target_y_velocity
 	  rep #$10
       rts
     @p2check_up:
-	  ldx #01
+	 
       lda #BUTTON_UP
 	  sta CurrentButton
       and SJoy1, X 
@@ -179,11 +178,10 @@ p2_set_target_x_velocity
 	  Rep #$30
 	  lda #$0000
 	  sep #$20
-	  
+	  ldx #01
 	  
    
     @p2check_right: 
-	  ldx #01
       lda #BUTTON_RIGHT
 	  sta CurrentButton
       and SJoy1, X
@@ -200,7 +198,6 @@ p2_set_target_x_velocity
 	  
 	  
     @p2check_left:
-	  ldx #01
       lda #BUTTON_LEFT
 	  sta CurrentButton
       and SJoy1, X 

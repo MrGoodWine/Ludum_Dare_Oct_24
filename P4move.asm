@@ -129,14 +129,13 @@ p4_set_target_y_velocity
 	  Rep #$30
 	  lda #$0000
 	  sep #$20
-	  
+	  ldx #01
 	  
    
     @p4check_down: 
-	  ldx #03
       lda #BUTTON_DOWN
 	  sta CurrentButton
-      and SJoy3, X
+      and SJoy1, X
 	  tay
 	  cpy CurrentButton
       bne @p4check_up
@@ -148,10 +147,10 @@ p4_set_target_y_velocity
 	  rep #$10
       rts
     @p4check_up:
-	  ldx #03
+	 
       lda #BUTTON_UP
 	  sta CurrentButton
-      and SJoy3, X 
+      and SJoy1, X 
 	  tay
 	  cpy CurrentButton
       bne @p4no_Y_direction
@@ -179,14 +178,13 @@ p4_set_target_x_velocity
 	  Rep #$30
 	  lda #$0000
 	  sep #$20
-	 
+	  ldx #01
 	  
    
     @p4check_right: 
-	  ldx #03
       lda #BUTTON_RIGHT
 	  sta CurrentButton
-      and SJoy3, X
+      and SJoy1, X
 	  tay
 	  cpy CurrentButton
       bne @p4check_left
@@ -200,10 +198,9 @@ p4_set_target_x_velocity
 	  
 	  
     @p4check_left:
-	  ldx #03
       lda #BUTTON_LEFT
 	  sta CurrentButton
-      and SJoy3, X 
+      and SJoy1, X 
 	  tay
 	  cpy CurrentButton
       bne @p4no_direction
