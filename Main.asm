@@ -18,7 +18,7 @@
 .INCLUDE "Sprites.asm"
 .INCLUDE "Strings.asm"
 .INCLUDE "Player.asm"
-.INCLUDE ".\\Tilemaps\\ExportedTilemap.asm"
+.INCLUDE ".\\Tilemaps\\bg.asm"
 .INCLUDE "VBLANK.asm"
 .INCLUDE "SetupVideo.asm"
 
@@ -60,14 +60,22 @@ Main:
 	;Load palette to make our pictures look correct
 	LoadPalette	BG_Palette
 
-	;Load Tile and Character data to VRAM
-	;LoadBlockToVRAM	BackgroundMap, $0000, $2000	; 64x64 tiles = 4096 words = 8192 bytes
-	LoadBlockToVRAM	ExportedTilemap_Tilemap, $0000, $2000	
-	LoadBlockToVRAM	BackgroundPics, $2000, $6000	; 384 tiles * (8bit color)= 0x6000 bytes	
-	LoadBlockToVRAM	ASCIITiles, $5000, $0800	;128 tiles * (2bit color = 2 planes) --> 2048 bytes
-	LoadBlockToVRAM	SpriteTiles1, $6000, $2000	;16 32x32 tiles * (4bit color = 4 planes) --> 8192 bytes
-	;LoadBlockToVRAM	SpriteTiles2, $6020, $400
-	;LoadBlockToVRAM	SpriteTiles2, $8000, $2000
+	; Load 16x14 tiles = 224 tiles = 448 words = 7168 bytes
+	LoadBlockToVRAM	bg_Tilemap, $0000, $1C00
+	
+	; Load 384 tiles * (8bit color) = 0x6000 bytes
+	LoadBlockToVRAM	BackgroundPics, $2000, $6000	
+	
+	; Load 128 tiles * (2bit color = 2 planes) = 2048 bytes
+	LoadBlockToVRAM	ASCIITiles, $5000, $0800	
+	
+	; Load 16 16x16 tiles * (4bit color = 4 planes) = 4096 bytes
+	LoadBlockToVRAM	SpriteTiles1, $6000, $1000	
+	
+	; LoadBlockToVRAM	SpriteTiles2, $6020, $400
+	; LoadBlockToVRAM	SpriteTiles2, $8000, $2000
+
+
 
 	;Set the priority bit of all the BG2 tiles
 	LDA #$80
@@ -204,13 +212,10 @@ InfiniteLoop:
 .ORG 0
 .SECTION "CharacterData"
 
-;Map data
-BackgroundMap:
-	.INCBIN ".\\Pictures\\floormap.map"
 
 ;Color data
 BG_Palette:
-	.INCBIN ".\\Pictures\\dummy_palette00.cgr"
+	.INCBIN ".\\Pictures\\bg-palette.cgr"
 	.INCBIN ".\\Pictures\\dummy_palette01.cgr"
 	.INCBIN ".\\Pictures\\dummy_palette02.cgr"
 	.INCBIN ".\\Pictures\\dummy_palette03.cgr"
@@ -249,7 +254,7 @@ ASCIITiles:
 
 ;character data
 BackgroundPics:
-	.INCBIN ".\\Pictures\\bg.bin"
+	.INCBIN ".\\Pictures\\bg.vra"
 .ENDS
 
 ;==========================================================================================

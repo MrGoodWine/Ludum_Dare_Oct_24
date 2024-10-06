@@ -1,5 +1,9 @@
 #!/bin/bash
 
+rm -rf Main.o
+rm -rf Main.obj
+rm -rf Main.smc
+rm -rf 'Super Bug Bash.smc'
 # Compile the assembly code
 wla-65816 -o Main.o Main.asm 
 
