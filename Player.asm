@@ -3,17 +3,17 @@
 .DEFINE initialVelocityX 		$00
 .DEFINE initialPositionX_LO 	$77
 .DEFINE initialPositionX_HI		$00
-.DEFINE initialSpriteY 			$55
+.DEFINE initialSpriteY 			$99
 .DEFINE initialVelocityY 		$00
 .DEFINE jumpVelocity			$DD
-.DEFINE initialPositionY_LO 	$44
+.DEFINE initialPositionY_LO 	$00
 .DEFINE initialPositionY_HI 	$00
 .DEFINE initID					$00
 
-.DEFINE right_velocity 			$12
-.DEFINE left_velocity 			$12
-.DEFINE down_velocity 			$12
-.DEFINE up_velocity 			$12
+.DEFINE right_velocity 			$01
+.DEFINE left_velocity 			$01
+.DEFINE down_velocity 			$01
+.DEFINE up_velocity 			$01
 
 
   ;Heading
@@ -58,15 +58,24 @@
 	targetVelocityX   	DB ;C1
 	targetVelocityY   	DB ;C2
 	velocityX        	DB ;C3
+	byte21				DB ;D4
 	positionX_Lo       	DB ;C4
 	positionX_Hi       	DB ;C5
+	byte22				DB ;D4
+	byte23				DB ;D5
+
 	spriteX_Lo       	DB ;C6
 	spriteX_Hi       	DB ;C7
 	headingX          	DB ;C8
 
 	velocityY        	DB ;C9
+	byte24				DB ;D6
+	
 	positionY_Lo        DB ;CA
 	positionY_Hi        DB ;CB
+	byte25				DB ;D7
+	byte26				DB ;D8
+	
 	spriteY_Lo       	DB ;CC
 	spriteY_Hi       	DB ;CD
 	headingY          	DB ;CE
@@ -76,12 +85,10 @@
 	animationTimer   	DB ;D1
 	idleState         	DB ;D2
 	idleTimer        	DB ;D3
-	byte21				DB ;D4
-	byte22				DB ;D4
-	byte23				DB ;D5
-	byte24				DB ;D6
-	byte25				DB ;D7
-	byte26				DB ;D8
+	
+
+
+
 	byte27				DB ;D9
 	byte28				DB ;DA
 	byte29				DB ;DB
@@ -150,9 +157,8 @@ init_x_p1:
 
 
 init_y_p1:
-	lda #initialSpriteY
     lda #initialSpriteY 
-    sta player.1.spriteY_Hi
+    sta player.1.spriteY_Lo
     lda #initialPositionY_LO
     sta player.1.positionY_Lo
     lda #initialPositionY_HI
@@ -258,15 +264,52 @@ init_y_p4:
 	  
 MovementUpdateP1:
       jsr P1_set_target_y_velocity
-      jsr P1_accelerate_y
-      jsr P1_apply_velocity_y
+      ;jsr P1_accelerate_y
+      ;jsr P1_apply_velocity_y
+	  ;lda #$00
+	  ;STA player.1.positionY_Hi
+	  ;lda player.1.positionY_Lo
+	  ;cmp #$CF
+	  ;bmi @P1_clamp_bottom
+	  ;lda player.1.positionY_Lo
+	  ;cmp #$10
+	  ;bpl @P1_XDir
+	  ;lda #$10
+	  ;sta player.1.positionY_Lo
+	  ;jmp @P1_XDir
+	  ;
+	  ;@P1_clamp_bottom:
+	  ;lda #$CF
+	  ;sta player.1.positionY_Lo
       ;jsr P1_bound_position_y
-	 
+	  
+	  
+	 @P1_XDir:
       jsr P1_set_target_x_velocity
-      jsr P1_accelerate_x
+      ;jsr P1_accelerate_x
       ;jsr P1_apply_velocity_x
       ;jsr P1_bound_position_x
-      rts
+	  
+	  lda player.1.positionY_Lo
+	  adc player.1.targetVelocityY
+	  sta player.1.positionY_Lo	 
+	  sta player.1.spriteY_Lo		  
+
+	  lda player.1.positionX_Lo
+	  adc player.1.targetVelocityX
+	  sta player.1.positionX_Lo
+	  sta player.1.spriteX_Lo
+	  	  
+
+	  lda #$0000
+	  sta player.1.byte21
+	  sta player.1.byte22
+	  sta player.1.byte23
+	  sta player.1.byte24
+	  sta player.1.byte25
+	  sta player.1.byte26
+	  rts
+	
 	
 
 ;================================================================		
@@ -421,7 +464,7 @@ P1_accelerate_y
       sbc player.1.targetVelocityY;
       bmi @p1lesserDec_y
 	  rep #$30
-	  lda #$00FF
+	  lda #$FFFF
 	  and player.1.velocityY
 	  tax 
 	  sep #$10
@@ -434,7 +477,7 @@ P1_accelerate_y
     @p1lesserDec_y:
      
 	  rep #$30
-	  lda #$00FF
+	  lda #$FFFF
 	  and player.1.velocityY
 	  tax 
 	  sep #$10
@@ -447,6 +490,10 @@ P1_accelerate_y
 
 
 P1_apply_velocity_y
+ 
+	lda player.1.velocityY
+	cmp #$00F0
+	;bne @P1_Underflow
  
      lda player.1.headingY
      cmp #$01
@@ -464,7 +511,7 @@ P1_apply_velocity_y
 	  SEP #$20
 	  rts
 	 
-   @p1negative_velocity_Y:
+	 	@p1negative_velocity_Y:
       REP #$30
 	  clc
 	  lda #$0000
@@ -476,6 +523,10 @@ P1_apply_velocity_y
 	  SEP #$20
 	  rts
 
+@P1_Underflow:
+	lda #$0000
+	sta player.1.velocityY
+	rts
 
 P1_bound_position_y
    ;   ; Convert the fixed point position coordinate into screen coordinates
@@ -495,12 +546,12 @@ P1_bound_position_y
       ror $00
       lda $00
 	  cmp #$FF
-	  bpl @clamp_bottom
+	  ;bpl @clamp_bottom
       sta player.1.spriteY_Lo
 	  lda $01
 	  sta player.1.spriteY_Hi
 	  rts
-	  @clamp_bottom:
+	  ;@clamp_bottom:
 	  lda #$FF
 	  sta player.1.spriteY_Lo
 	  lda #$00
