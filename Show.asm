@@ -237,8 +237,7 @@ SetupVideo:
 
 ;don't put these in a section ... the macro does that for us
 
-	IncludePicture window-1
-	IncludePicture window-2
+	IncludePicture SpitterSummer
 	;IncludePicture cutewendy1
 	;IncludePicture cutewendy2
 	;IncludePicture cutewendy3
@@ -273,8 +272,7 @@ num_pictures:
 .db NUM_PICTS
 
 picture_list:
-	IncludePictInfo window-1
-	IncludePictInfo window-2
+	IncludePictInfo SpitterSummer
 	;IncludePictInfo cutewendy1
 	;IncludePictInfo cutewendy2
 	;IncludePictInfo cutewendy3
