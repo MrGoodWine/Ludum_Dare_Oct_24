@@ -18,6 +18,10 @@
 .INCLUDE "Sprites.asm"
 .INCLUDE "Strings.asm"
 .INCLUDE "Player.asm"
+.INCLUDE "P1move.asm"
+.INCLUDE "P2move.asm"
+.INCLUDE "P3move.asm"
+.INCLUDE "P4move.asm"
 ;.INCLUDE ".\\Tilemaps\\bg.asm"
 .INCLUDE "VBLANK.asm"
 .INCLUDE "SetupVideo.asm"
@@ -91,28 +95,8 @@ Next_tile:
 	
 	JSR SpriteInit	;setup the sprite buffer
 	JSR JoyInit		;setup joypads and enable NMI
-
-
-	;setup our walking sprite
-	;put him in the center of the screen
-	lda #$0	
-	sta SpriteBuf1+sx
-	lda #$0	
-	sta SpriteBuf1+sy
-
-	;put sprite #0 on screen
-	lda #$AA
-	sta SpriteBuf2
-
-	;set the sprite to the highest priority
-	lda #$30			
-	sta SpriteBuf1+spriority
-
-	;setup the video modes and such, then turn on the screen
-	JSR SetupVideo	
 	
-	
-	.DEFINE numberofplayers $10
+		.DEFINE numberofplayers $10
 	;.DEFINE initID $0000
   
   
@@ -129,6 +113,81 @@ Next_tile:
 	CPX numberofplayers
 	CLC
 	BNE @initjumpback
+	
+	
+
+;====================================================================================
+	;setup our walking sprite
+	;put him in the center of the screen
+	lda #$0	
+	sta SpriteBuf1+sx
+	lda #$0	
+	sta SpriteBuf1+sy
+
+	;put sprites #0 on screen
+	lda #$AA
+	sta SpriteBuf2
+
+	;set the sprite to the highest priority
+	lda player.1.animationFrame
+	sta SpriteBuf1+stile
+	lda player.1.priorityPalette			
+	sta SpriteBuf1+sprioritypalette
+
+;====================================================================================
+	;setup our walking sprite
+	;put him in the center of the screen
+	lda #$0	
+	sta SpriteBuf1+sx2
+	lda #$0	
+	sta SpriteBuf1+sy2
+
+
+	;set the sprite to the highest priority
+	lda player.2.animationFrame
+	sta SpriteBuf1+stile2
+	lda player.2.priorityPalette			
+	sta SpriteBuf1+sprioritypalette2
+
+;====================================================================================
+		;setup our walking sprite
+	;put him in the center of the screen
+	lda #$0	
+	sta SpriteBuf1+sx3
+	lda #$0	
+	sta SpriteBuf1+sy3
+
+
+	;set the sprite to the highest priority
+	lda player.3.animationFrame
+	sta SpriteBuf1+stile3
+	lda player.3.priorityPalette			
+	sta SpriteBuf1+sprioritypalette3
+
+;====================================================================================
+
+		;setup our walking sprite
+	;put him in the center of the screen
+	lda #$0	
+	sta SpriteBuf1+sx4
+	lda #$0	
+	sta SpriteBuf1+sy4
+
+
+
+	;set the sprite to the highest priority
+	lda player.4.animationFrame
+	sta SpriteBuf1+stile4
+	lda player.4.priorityPalette			
+	sta SpriteBuf1+sprioritypalette4
+
+;====================================================================================
+	
+	;setup the video modes and such, then turn on the screen
+	JSR SetupVideo	
+	
+	
+
 
 InfiniteLoop:
 	rep #$10
@@ -146,9 +205,9 @@ InfiniteLoop:
 	;See what buttons were pressed
 	ldx #$0000
 -	jsr MovementUpdateP1
-	;jsr MovementUpdateP2
-	;jsr MovementUpdateP3
-	;jsr MovementUpdateP4
+	jsr MovementUpdateP2
+	jsr MovementUpdateP3
+	jsr MovementUpdateP4
 
 	
 	ldy #01
@@ -160,43 +219,29 @@ InfiniteLoop:
 	
 	lda player.1.spriteX_Lo
 	sta SpriteBuf1
-	lda #$AA
-	sta SpriteBuf2
-	
 	lda player.1.spriteY_Lo
 	sta SpriteBuf1, Y
-	lda #$AA
-	sta SpriteBuf2, Y
+
 	
-	;lda player.2.spriteX_Lo
-	;sta SpriteBuf1 + #$2
-	;lda player.2.spriteX_Hi
-	;sta SpriteBuf2 + #$2
+	lda player.2.spriteX_Lo
+	sta SpriteBuf1+sx2
+	lda player.2.spriteY_Lo
+	sta SpriteBuf1+sy2
 	
-	;lda player.2.spriteY_Lo
-	;sta SpriteBuf1 + #$2, Y
-	;lda player.2.spriteY_Hi
-	;sta SpriteBuf2 + #$2, Y
 	
-	;lda player.3.spriteX_Lo
-	;sta SpriteBuf1 + #$4
-	;lda player.3.spriteX_Hi
-	;sta SpriteBuf2 + #$4
+	lda player.3.spriteX_Lo
+	sta SpriteBuf1+sx3
+	lda player.3.spriteY_Lo
+	sta SpriteBuf1+sy3
 	
-	;lda player.3.spriteY_Lo
-	;sta SpriteBuf1 + #$4, Y
-	;lda player.3.spriteY_Hi
-	;sta SpriteBuf2 + #$4, Y
 	
-	;lda player.4.spriteX_Lo
-	;sta SpriteBuf1 + #$6
-	;lda player.4.spriteX_Hi
-	;sta SpriteBuf2 + #$6
+	lda player.4.spriteX_Lo
+	sta SpriteBuf1+sx4
+	lda player.4.spriteY_Lo
+	sta SpriteBuf1+sy4
+
 	
-	;lda player.4.spriteY_Lo
-	;sta SpriteBuf1 + #$6, Y
-	;lda player.4.spriteY_Hi
-	;sta SpriteBuf2 + #$6, Y
+	
 	
 	;lda player.1.spriteX_Lo
 	;sta MapX
@@ -214,11 +259,11 @@ InfiniteLoop:
 
 ;Map data
 BackgroundMap:
-	.INCBIN ".\\Tilemaps\\bg.hex"
+	.INCBIN ".\\Tilemaps\\hexmap.hex"
 
 ;Color data
 BG_Palette:
-	.INCBIN ".\\Pictures\\bg.cgr"
+	.INCBIN ".\\Pictures\\bg-palette.cgr"
 	.INCBIN ".\\Pictures\\dummy_palette01.cgr"
 	.INCBIN ".\\Pictures\\dummy_palette02.cgr"
 	.INCBIN ".\\Pictures\\dummy_palette03.cgr"
