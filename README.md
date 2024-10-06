@@ -1,7 +1,7 @@
 # **Super Bug Bash**  
 ### *"It ain’t over till the last bash!"*
 
-*Made by [Aaron Goodwine](https://itch.io/profile/mrgoodwine) and [fufroom (Alex Bezuska)](https://fufroom.art) for Ludum Dare 56*
+*Made by [Aaron Goodwine](https://itch.io/profile/mrgoodwine), [fufroom (Alex Bezuska)](https://fufroom.art) and [Colton Ramos](https://imakedagames.itch.io/) for Ludum Dare 56*
 
 Get ready for a wild 4-player competition in **Super Bug Bash**, where you and your bug friends race to gather the most pollen before time runs out. But watch out – your opponents will bash you into thorny vines, causing you to drop your pollen, and they’ll be quick to swoop in and snatch it! With the lead changing in an instant, every second counts.
 
