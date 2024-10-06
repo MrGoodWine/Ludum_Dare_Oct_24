@@ -1,20 +1,8 @@
 //this file generated with SNES GSS tool
 
-#define SOUND_EFFECTS_ALL	1
+#define SOUND_EFFECTS_ALL	0
 
 #define MUSIC_ALL	1
-
-//sound effect aliases
-
-enum {
-	SFX_DING=0
-};
-
-//sound effect names
-
-const char* const soundEffectsNames[SOUND_EFFECTS_ALL]={
-	"DING"	//0
-};
 
 //music effect aliases
 

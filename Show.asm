@@ -238,27 +238,6 @@ SetupVideo:
 ;don't put these in a section ... the macro does that for us
 
 	IncludePicture SpitterSummer
-	;IncludePicture cutewendy1
-	;IncludePicture cutewendy2
-	;IncludePicture cutewendy3
-	;IncludePicture cutewendy4
-    ;
-	;IncludePicture fauxpas
-	;IncludePicture fauxpas1
-	;IncludePicture fauxpas2
-	;IncludePicture fauxpas3
-    ;
-	;IncludePicture millie
-	;IncludePicture millie1
-	;IncludePicture millie2
-	;IncludePicture millie3
-	;IncludePicture millie4
-    ;
-	;IncludePicture sinfest
-	;IncludePicture sinfest1
-	;IncludePicture sinfest2
-	;IncludePicture sinfest3
-	;IncludePicture sinfest4
 
 ;==========================================================================================
 
@@ -273,24 +252,6 @@ num_pictures:
 
 picture_list:
 	IncludePictInfo SpitterSummer
-	;IncludePictInfo cutewendy1
-	;IncludePictInfo cutewendy2
-	;IncludePictInfo cutewendy3
-	;IncludePictInfo cutewendy4
-	;IncludePictInfo fauxpas
-	;IncludePictInfo fauxpas1
-	;IncludePictInfo fauxpas2
-	;IncludePictInfo fauxpas3
-	;IncludePictInfo millie
-	;IncludePictInfo millie1
-	;IncludePictInfo millie2
-	;IncludePictInfo millie3
-	;IncludePictInfo millie4
-	;IncludePictInfo sinfest
-	;IncludePictInfo sinfest1
-	;IncludePictInfo sinfest2
-	;IncludePictInfo sinfest3
-	;IncludePictInfo sinfest4
 
 .ENDS
 

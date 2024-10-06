@@ -61,7 +61,7 @@ Main:
 	LoadPalette	BG_Palette
 
 	; Load 16x14 tiles = 224 tiles = 448 words = 7168 bytes
-	LoadBlockToVRAM	bg_Tilemap, $0000, $2000
+	LoadBlockToVRAM	BackgroundMap, $0000, $2000
 	
 	; Load 384 tiles * (8bit color) = 0x6000 bytes
 	LoadBlockToVRAM	BackgroundPics, $2000, $6000	
@@ -82,7 +82,7 @@ Main:
 	STA $2115		;set up the VRAM so we can write just to the high byte
 	LDX #$5800
 	STX $2116
-	LDX #$0100		;32x32 tiles = 1024
+	LDX #$0400		;32x32 tiles = 1024
 	LDA #$20
 Next_tile:
 	STA $2119
@@ -212,6 +212,9 @@ InfiniteLoop:
 .ORG 0
 .SECTION "CharacterData"
 
+;Map data
+BackgroundMap:
+	.INCBIN ".\\Tilemaps\\hexmap.asm"
 
 ;Color data
 BG_Palette:
