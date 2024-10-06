@@ -10,45 +10,7 @@ MovementUpdateP2:
       jsr p2_set_target_y_velocity
       jsr p2_set_target_x_velocity
 	  
-@p2_up_move:
 	  lda $31
-	  cmp #$08 ;up
-	  bne @p2_left_move  
-	  lda player.2.positionY_Lo
-	  sbc player.2.targetVelocityY
-	  sbc player.2.targetVelocityY
-	  sta player.2.positionY_Lo	 
-	  sta player.2.spriteY_Lo
-	  jmp @p2_set_clear_bytes
-	  
-@p2_left_move:
-	  cmp #$02 ;left
-	  bne @p2_down_move  
-	  lda player.2.positionX_Lo
-	  sbc player.2.targetVelocityX
-	  sbc player.2.targetVelocityX
-	  sta player.2.positionX_Lo	 
-	  sta player.2.spriteX_Lo
-	  jmp @p2_set_clear_bytes	  
-	  
-@p2_down_move:  
-	  cmp #$04 ;down
-	  bne @p2_right_move
-	  lda player.2.positionY_Lo
-	  adc player.2.targetVelocityY
-	  sta player.2.positionY_Lo	 
-	  sta player.2.spriteY_Lo
-	  jmp @p2_set_clear_bytes	
-	  
-@p2_right_move:
-	  cmp #$01 ;right
-	  bne  @p2_right_down_move
-	  lda player.2.positionX_Lo
-	  adc player.2.targetVelocityX
-	  sta player.2.positionX_Lo	 
-	  sta player.2.spriteX_Lo
-jmp @p2_set_clear_bytes		  
-	  
 @p2_right_down_move:
 	  cmp #$05 ;right down
 	  bne @p2_right_up_move
@@ -60,6 +22,13 @@ jmp @p2_set_clear_bytes
 	  adc player.2.targetVelocityY
 	  sta player.2.positionY_Lo	 
 	  sta player.2.spriteY_Lo	
+	  lda #$3E
+	  sta player.2.animationFrame
+	  lda player.2.priorityPalette	
+	  and #$BF
+	  ora #$80	  
+	  sta player.2.priorityPalette
+	  
 	  jmp @p2_set_clear_bytes	
 	  
 @p2_right_up_move:
@@ -74,6 +43,11 @@ jmp @p2_set_clear_bytes
 	  sbc player.2.targetVelocityY
 	  sta player.2.positionY_Lo	 
 	  sta player.2.spriteY_Lo
+	  lda #$3E
+	  sta player.2.animationFrame
+	  lda player.2.priorityPalette	
+	  and #$3F
+	  sta player.2.priorityPalette
 	  jmp @p2_set_clear_bytes	
 	  
 @p2_left_up_move:
@@ -89,11 +63,17 @@ jmp @p2_set_clear_bytes
 	  sbc player.2.targetVelocityX
 	  sta player.2.positionX_Lo	 
 	  sta player.2.spriteX_Lo	
+	  lda #$3E
+	  sta player.2.animationFrame
+	  lda player.2.priorityPalette	
+	  and #$7F
+	  ora #$40	  
+	  sta player.2.priorityPalette
 	  jmp @p2_set_clear_bytes	
 	  
 @p2_left_down_move:
 	  cmp #$06 ;left down
-	  bne @p2_set_clear_bytes
+	  bne @p2_up_move
 	  lda player.2.positionX_Lo
 	  sbc player.2.targetVelocityX
 	  sbc player.2.targetVelocityX
@@ -103,6 +83,74 @@ jmp @p2_set_clear_bytes
 	  adc player.2.targetVelocityY
 	  sta player.2.positionY_Lo	 
 	  sta player.2.spriteY_Lo	
+	  lda #$3E
+	  sta player.2.animationFrame
+	  lda player.2.priorityPalette	
+	  ora #$C0
+	  sta player.2.priorityPalette
+	    
+	  jmp @p2_set_clear_bytes
+	  
+@p2_up_move:
+
+	  cmp #$08 ;up
+	  bne @p2_left_move  
+	  lda player.2.positionY_Lo
+	  sbc player.2.targetVelocityY
+	  sbc player.2.targetVelocityY
+	  sta player.2.positionY_Lo	 
+	  sta player.2.spriteY_Lo
+	  lda #$32
+	  sta player.2.animationFrame
+	  lda player.2.priorityPalette
+	  and #$3F
+	  sta player.2.priorityPalette
+	  jmp @p2_set_clear_bytes
+	  
+@p2_left_move:
+	  cmp #$02 ;left
+	  bne @p2_down_move  
+	  lda player.2.positionX_Lo
+	  sbc player.2.targetVelocityX
+	  sbc player.2.targetVelocityX
+	  sta player.2.positionX_Lo	 
+	  sta player.2.spriteX_Lo
+	  lda #$38
+	  sta player.2.animationFrame
+	  lda player.2.priorityPalette	
+	  and #$7F
+	  ora #$40
+	  sta player.2.priorityPalette
+	  jmp @p2_set_clear_bytes	  
+	  
+@p2_down_move:  
+	  cmp #$04 ;down
+	  bne @p2_right_move
+	  lda player.2.positionY_Lo
+	  adc player.2.targetVelocityY
+	  sta player.2.positionY_Lo	 
+	  sta player.2.spriteY_Lo
+	  lda #$32
+	  sta player.2.animationFrame
+	  lda player.2.priorityPalette	
+	  ora #$80
+	  and #$BF
+	  sta player.2.priorityPalette
+	  jmp @p2_set_clear_bytes	
+	  
+@p2_right_move:
+	  cmp #$01 ;right
+	  bne  @p2_set_clear_bytes
+	  lda player.2.positionX_Lo
+	  adc player.2.targetVelocityX
+	  sta player.2.positionX_Lo	 
+	  sta player.2.spriteX_Lo
+	  lda #$38
+	  sta player.2.animationFrame
+	  lda player.2.priorityPalette
+	  and #$3F
+	  sta player.2.priorityPalette
+jmp @p2_set_clear_bytes		  
 
 @p2_set_clear_bytes:	
 	  lda #$0000

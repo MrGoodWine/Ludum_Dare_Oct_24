@@ -10,46 +10,8 @@ MovementUpdateP3:
       jsr p3_set_target_y_velocity
       jsr p3_set_target_x_velocity
 	  
-@p3_up_move:
 	  lda $33
-	  cmp #$08 ;up
-	  bne @p3_left_move  
-	  lda player.3.positionY_Lo
-	  sbc player.3.targetVelocityY
-	  sbc player.3.targetVelocityY
-	  sta player.3.positionY_Lo	 
-	  sta player.3.spriteY_Lo
-	  jmp @p3_set_clear_bytes
-	  
-@p3_left_move:
-	  cmp #$02 ;left
-	  bne @p3_down_move  
-	  lda player.3.positionX_Lo
-	  sbc player.3.targetVelocityX
-	  sbc player.3.targetVelocityX
-	  sta player.3.positionX_Lo	 
-	  sta player.3.spriteX_Lo
-	  jmp @p3_set_clear_bytes	  
-	  
-@p3_down_move:  
-	  cmp #$04 ;down
-	  bne @p3_right_move
-	  lda player.3.positionY_Lo
-	  adc player.3.targetVelocityY
-	  sta player.3.positionY_Lo	 
-	  sta player.3.spriteY_Lo
-	  jmp @p3_set_clear_bytes	
-	  
-@p3_right_move:
-	  cmp #$01 ;right
-	  bne  @p3_right_down_move
-	  lda player.3.positionX_Lo
-	  adc player.3.targetVelocityX
-	  sta player.3.positionX_Lo	 
-	  sta player.3.spriteX_Lo
-jmp @p3_set_clear_bytes		  
-	  
-@p3_right_down_move:
+	@p3_right_down_move:
 	  cmp #$05 ;right down
 	  bne @p3_right_up_move
 	  lda player.3.positionX_Lo
@@ -60,6 +22,13 @@ jmp @p3_set_clear_bytes
 	  adc player.3.targetVelocityY
 	  sta player.3.positionY_Lo	 
 	  sta player.3.spriteY_Lo	
+	  lda #$70
+	  sta player.3.animationFrame
+	  lda player.3.priorityPalette	
+	  and #$BF
+	  ora #$80	  
+	  sta player.3.priorityPalette
+	  
 	  jmp @p3_set_clear_bytes	
 	  
 @p3_right_up_move:
@@ -74,6 +43,11 @@ jmp @p3_set_clear_bytes
 	  sbc player.3.targetVelocityY
 	  sta player.3.positionY_Lo	 
 	  sta player.3.spriteY_Lo
+	  lda #$70
+	  sta player.3.animationFrame
+	  lda player.3.priorityPalette	
+	  and #$3F
+	  sta player.3.priorityPalette
 	  jmp @p3_set_clear_bytes	
 	  
 @p3_left_up_move:
@@ -89,11 +63,17 @@ jmp @p3_set_clear_bytes
 	  sbc player.3.targetVelocityX
 	  sta player.3.positionX_Lo	 
 	  sta player.3.spriteX_Lo	
+	  lda #$70
+	  sta player.3.animationFrame
+	  lda player.3.priorityPalette	
+	  and #$7F
+	  ora #$40	  
+	  sta player.3.priorityPalette
 	  jmp @p3_set_clear_bytes	
 	  
 @p3_left_down_move:
 	  cmp #$06 ;left down
-	  bne @p3_set_clear_bytes
+	  bne @p3_up_move
 	  lda player.3.positionX_Lo
 	  sbc player.3.targetVelocityX
 	  sbc player.3.targetVelocityX
@@ -103,6 +83,74 @@ jmp @p3_set_clear_bytes
 	  adc player.3.targetVelocityY
 	  sta player.3.positionY_Lo	 
 	  sta player.3.spriteY_Lo	
+	  lda #$70
+	  sta player.3.animationFrame
+	  lda player.3.priorityPalette	
+	  ora #$C0
+	  sta player.3.priorityPalette
+	    
+	  jmp @p3_set_clear_bytes
+	  
+@p3_up_move:
+
+	  cmp #$08 ;up
+	  bne @p3_left_move  
+	  lda player.3.positionY_Lo
+	  sbc player.3.targetVelocityY
+	  sbc player.3.targetVelocityY
+	  sta player.3.positionY_Lo	 
+	  sta player.3.spriteY_Lo
+	  lda #$64
+	  sta player.3.animationFrame
+	  lda player.3.priorityPalette
+	  and #$3F
+	  sta player.3.priorityPalette
+	  jmp @p3_set_clear_bytes
+	  
+@p3_left_move:
+	  cmp #$02 ;left
+	  bne @p3_down_move  
+	  lda player.3.positionX_Lo
+	  sbc player.3.targetVelocityX
+	  sbc player.3.targetVelocityX
+	  sta player.3.positionX_Lo	 
+	  sta player.3.spriteX_Lo
+	  lda #$6A
+	  sta player.3.animationFrame
+	  lda player.3.priorityPalette	
+	  and #$7F
+	  ora #$40
+	  sta player.3.priorityPalette
+	  jmp @p3_set_clear_bytes	  
+	  
+@p3_down_move:  
+	  cmp #$04 ;down
+	  bne @p3_right_move
+	  lda player.3.positionY_Lo
+	  adc player.3.targetVelocityY
+	  sta player.3.positionY_Lo	 
+	  sta player.3.spriteY_Lo
+	  lda #$64
+	  sta player.3.animationFrame
+	  lda player.3.priorityPalette	
+	  ora #$80
+	  and #$BF
+	  sta player.3.priorityPalette
+	  jmp @p3_set_clear_bytes	
+	  
+@p3_right_move:
+	  cmp #$01 ;right
+	  bne  @p3_set_clear_bytes
+	  lda player.3.positionX_Lo
+	  adc player.3.targetVelocityX
+	  sta player.3.positionX_Lo	 
+	  sta player.3.spriteX_Lo
+	  lda #$6A
+	  sta player.3.animationFrame
+	  lda player.3.priorityPalette
+	  and #$3F
+	  sta player.3.priorityPalette
+jmp @p3_set_clear_bytes		  
 
 @p3_set_clear_bytes:	
 	  lda #$0000

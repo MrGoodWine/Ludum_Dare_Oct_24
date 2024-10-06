@@ -221,24 +221,40 @@ InfiniteLoop:
 	sta SpriteBuf1
 	lda player.1.spriteY_Lo
 	sta SpriteBuf1, Y
+	lda player.1.animationFrame
+	sta SpriteBuf1+stile
+	lda player.1.priorityPalette			
+	sta SpriteBuf1+sprioritypalette
 
 	
 	lda player.2.spriteX_Lo
 	sta SpriteBuf1+sx2
 	lda player.2.spriteY_Lo
 	sta SpriteBuf1+sy2
+	lda player.2.animationFrame
+	sta SpriteBuf1+stile2
+	lda player.2.priorityPalette			
+	sta SpriteBuf1+sprioritypalette2
 	
 	
 	lda player.3.spriteX_Lo
 	sta SpriteBuf1+sx3
 	lda player.3.spriteY_Lo
 	sta SpriteBuf1+sy3
+	lda player.3.animationFrame
+	sta SpriteBuf1+stile3
+	lda player.3.priorityPalette			
+	sta SpriteBuf1+sprioritypalette3
 	
 	
 	lda player.4.spriteX_Lo
 	sta SpriteBuf1+sx4
 	lda player.4.spriteY_Lo
 	sta SpriteBuf1+sy4
+	lda player.4.animationFrame
+	sta SpriteBuf1+stile4
+	lda player.4.priorityPalette			
+	sta SpriteBuf1+sprioritypalette4
 
 	
 	
@@ -259,11 +275,11 @@ InfiniteLoop:
 
 ;Map data
 BackgroundMap:
-	.INCBIN ".\\Tilemaps\\bg.hex"
+	.INCBIN ".\\Tilemaps\\hexmap.hex"
 
 ;Color data
 BG_Palette:
-	.INCBIN ".\\Pictures\\bg.cgr"
+	.INCBIN ".\\Pictures\\bg-palette.cgr"
 	.INCBIN ".\\Pictures\\dummy_palette01.cgr"
 	.INCBIN ".\\Pictures\\dummy_palette02.cgr"
 	.INCBIN ".\\Pictures\\dummy_palette03.cgr"

@@ -10,46 +10,8 @@ MovementUpdateP4:
       jsr p4_set_target_y_velocity
       jsr p4_set_target_x_velocity
 	  
-@p4_up_move:
 	  lda $35
-	  cmp #$08 ;up
-	  bne @p4_left_move  
-	  lda player.4.positionY_Lo
-	  sbc player.4.targetVelocityY
-	  sbc player.4.targetVelocityY
-	  sta player.4.positionY_Lo	 
-	  sta player.4.spriteY_Lo
-	  jmp @p4_set_clear_bytes
-	  
-@p4_left_move:
-	  cmp #$02 ;left
-	  bne @p4_down_move  
-	  lda player.4.positionX_Lo
-	  sbc player.4.targetVelocityX
-	  sbc player.4.targetVelocityX
-	  sta player.4.positionX_Lo	 
-	  sta player.4.spriteX_Lo
-	  jmp @p4_set_clear_bytes	  
-	  
-@p4_down_move:  
-	  cmp #$04 ;down
-	  bne @p4_right_move
-	  lda player.4.positionY_Lo
-	  adc player.4.targetVelocityY
-	  sta player.4.positionY_Lo	 
-	  sta player.4.spriteY_Lo
-	  jmp @p4_set_clear_bytes	
-	  
-@p4_right_move:
-	  cmp #$01 ;right
-	  bne  @p4_right_down_move
-	  lda player.4.positionX_Lo
-	  adc player.4.targetVelocityX
-	  sta player.4.positionX_Lo	 
-	  sta player.4.spriteX_Lo
-jmp @p4_set_clear_bytes		  
-	  
-@p4_right_down_move:
+	@p4_right_down_move:
 	  cmp #$05 ;right down
 	  bne @p4_right_up_move
 	  lda player.4.positionX_Lo
@@ -60,6 +22,13 @@ jmp @p4_set_clear_bytes
 	  adc player.4.targetVelocityY
 	  sta player.4.positionY_Lo	 
 	  sta player.4.spriteY_Lo	
+	  lda #$A2
+	  sta player.4.animationFrame
+	  lda player.4.priorityPalette	
+	  and #$BF
+	  ora #$80	  
+	  sta player.4.priorityPalette
+	  
 	  jmp @p4_set_clear_bytes	
 	  
 @p4_right_up_move:
@@ -74,6 +43,11 @@ jmp @p4_set_clear_bytes
 	  sbc player.4.targetVelocityY
 	  sta player.4.positionY_Lo	 
 	  sta player.4.spriteY_Lo
+	  lda #$A2
+	  sta player.4.animationFrame
+	  lda player.4.priorityPalette	
+	  and #$3F
+	  sta player.4.priorityPalette
 	  jmp @p4_set_clear_bytes	
 	  
 @p4_left_up_move:
@@ -89,11 +63,17 @@ jmp @p4_set_clear_bytes
 	  sbc player.4.targetVelocityX
 	  sta player.4.positionX_Lo	 
 	  sta player.4.spriteX_Lo	
+	  lda #$A2
+	  sta player.4.animationFrame
+	  lda player.4.priorityPalette	
+	  and #$7F
+	  ora #$40	  
+	  sta player.4.priorityPalette
 	  jmp @p4_set_clear_bytes	
 	  
 @p4_left_down_move:
 	  cmp #$06 ;left down
-	  bne @p4_set_clear_bytes
+	  bne @p4_up_move
 	  lda player.4.positionX_Lo
 	  sbc player.4.targetVelocityX
 	  sbc player.4.targetVelocityX
@@ -103,6 +83,74 @@ jmp @p4_set_clear_bytes
 	  adc player.4.targetVelocityY
 	  sta player.4.positionY_Lo	 
 	  sta player.4.spriteY_Lo	
+	  lda #$A2
+	  sta player.4.animationFrame
+	  lda player.4.priorityPalette	
+	  ora #$C0
+	  sta player.4.priorityPalette
+	    
+	  jmp @p4_set_clear_bytes
+	  
+@p4_up_move:
+
+	  cmp #$08 ;up
+	  bne @p4_left_move  
+	  lda player.4.positionY_Lo
+	  sbc player.4.targetVelocityY
+	  sbc player.4.targetVelocityY
+	  sta player.4.positionY_Lo	 
+	  sta player.4.spriteY_Lo
+	  lda #$96
+	  sta player.4.animationFrame
+	  lda player.4.priorityPalette
+	  and #$3F
+	  sta player.4.priorityPalette
+	  jmp @p4_set_clear_bytes
+	  
+@p4_left_move:
+	  cmp #$02 ;left
+	  bne @p4_down_move  
+	  lda player.4.positionX_Lo
+	  sbc player.4.targetVelocityX
+	  sbc player.4.targetVelocityX
+	  sta player.4.positionX_Lo	 
+	  sta player.4.spriteX_Lo
+	  lda #$9c
+	  sta player.4.animationFrame
+	  lda player.4.priorityPalette	
+	  and #$7F
+	  ora #$40
+	  sta player.4.priorityPalette
+	  jmp @p4_set_clear_bytes	  
+	  
+@p4_down_move:  
+	  cmp #$04 ;down
+	  bne @p4_right_move
+	  lda player.4.positionY_Lo
+	  adc player.4.targetVelocityY
+	  sta player.4.positionY_Lo	 
+	  sta player.4.spriteY_Lo
+	  lda #$96
+	  sta player.4.animationFrame
+	  lda player.4.priorityPalette	
+	  ora #$80
+	  and #$BF
+	  sta player.4.priorityPalette
+	  jmp @p4_set_clear_bytes	
+	  
+@p4_right_move:
+	  cmp #$01 ;right
+	  bne  @p4_set_clear_bytes
+	  lda player.4.positionX_Lo
+	  adc player.4.targetVelocityX
+	  sta player.4.positionX_Lo	 
+	  sta player.4.spriteX_Lo
+	  lda #$9C
+	  sta player.4.animationFrame
+	  lda player.4.priorityPalette
+	  and #$3F
+	  sta player.4.priorityPalette
+jmp @p4_set_clear_bytes		  
 
 @p4_set_clear_bytes:	
 	  lda #$0000
