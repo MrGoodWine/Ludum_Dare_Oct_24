@@ -23,7 +23,7 @@ SpriteInit:
 	rep	#$30	;16bit mem/A, 16 bit X/Y
 
 	ldx #$0000
-	lda #$5555
+	lda #$AAAA
 _clr:
 	sta SpriteBuf2, x		;initialize all sprites to be off the screen
 	inx

@@ -101,7 +101,7 @@ Next_tile:
 	sta SpriteBuf1+sy
 
 	;put sprite #0 on screen
-	lda #$54
+	lda #$AA
 	sta SpriteBuf2
 
 	;set the sprite to the highest priority
@@ -160,12 +160,12 @@ InfiniteLoop:
 	
 	lda player.1.spriteX_Lo
 	sta SpriteBuf1
-	lda player.1.spriteX_Hi
+	lda #$AA
 	sta SpriteBuf2
 	
 	lda player.1.spriteY_Lo
 	sta SpriteBuf1, Y
-	lda player.1.spriteY_Hi
+	lda #$AA
 	sta SpriteBuf2, Y
 	
 	;lda player.2.spriteX_Lo
