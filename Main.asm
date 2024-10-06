@@ -18,7 +18,7 @@
 .INCLUDE "Sprites.asm"
 .INCLUDE "Strings.asm"
 .INCLUDE "Player.asm"
-.INCLUDE ".\\Tilemaps\\bg.asm"
+;.INCLUDE ".\\Tilemaps\\bg.asm"
 .INCLUDE "VBLANK.asm"
 .INCLUDE "SetupVideo.asm"
 
@@ -214,11 +214,11 @@ InfiniteLoop:
 
 ;Map data
 BackgroundMap:
-	.INCBIN ".\\Tilemaps\\hexmap.asm"
+	.INCBIN ".\\Tilemaps\\bg.hex"
 
 ;Color data
 BG_Palette:
-	.INCBIN ".\\Pictures\\bg-palette.cgr"
+	.INCBIN ".\\Pictures\\bg.cgr"
 	.INCBIN ".\\Pictures\\dummy_palette01.cgr"
 	.INCBIN ".\\Pictures\\dummy_palette02.cgr"
 	.INCBIN ".\\Pictures\\dummy_palette03.cgr"
