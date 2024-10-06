@@ -275,11 +275,11 @@ InfiniteLoop:
 
 ;Map data
 BackgroundMap:
-	.INCBIN ".\\Tilemaps\\hexmap.hex"
+	.INCBIN ".\\Tilemaps\\bg.hex"
 
 ;Color data
 BG_Palette:
-	.INCBIN ".\\Pictures\\bg-palette.cgr"
+	.INCBIN ".\\Pictures\\bg.cgr"
 	.INCBIN ".\\Pictures\\dummy_palette01.cgr"
 	.INCBIN ".\\Pictures\\dummy_palette02.cgr"
 	.INCBIN ".\\Pictures\\dummy_palette03.cgr"
@@ -322,4 +322,3 @@ BackgroundPics:
 .ENDS
 
 ;==========================================================================================
-
