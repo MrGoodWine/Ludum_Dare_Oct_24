@@ -9,7 +9,7 @@
 ;------------------------------------------------------------------------
 
 ;=== Include MemoryMap, VectorTable, HeaderInfo ===
-.INCLUDE "Header.asm"
+.INCLUDE "header.asm"
 
 ;=== Include Library Routines & Macros ===
 .INCLUDE "LoadGraphics.asm"
@@ -249,7 +249,7 @@ ASCIITiles:
 
 ;character data
 BackgroundPics:
-	.INCBIN ".\\Pictures\\GrassyCaveTileset.bin"
+	.INCBIN ".\\Pictures\\bg.bin"
 .ENDS
 
 ;==========================================================================================

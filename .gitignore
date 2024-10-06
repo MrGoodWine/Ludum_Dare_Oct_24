@@ -11,3 +11,6 @@ info/
 wla.txt
 .vs/
 .DS_Store
+*.smc
+Main.o
+Main.obj
