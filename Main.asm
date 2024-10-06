@@ -61,7 +61,7 @@ Main:
 	LoadPalette	BG_Palette
 
 	; Load 16x14 tiles = 224 tiles = 448 words = 7168 bytes
-	LoadBlockToVRAM	bg_Tilemap, $0000, $1C00
+	LoadBlockToVRAM	bg_Tilemap, $0000, $2000
 	
 	; Load 384 tiles * (8bit color) = 0x6000 bytes
 	LoadBlockToVRAM	BackgroundPics, $2000, $6000	
@@ -70,7 +70,7 @@ Main:
 	LoadBlockToVRAM	ASCIITiles, $5000, $0800	
 	
 	; Load 16 16x16 tiles * (4bit color = 4 planes) = 4096 bytes
-	LoadBlockToVRAM	SpriteTiles1, $6000, $1000	
+	LoadBlockToVRAM	SpriteTiles1, $6000, $2000	
 	
 	; LoadBlockToVRAM	SpriteTiles2, $6020, $400
 	; LoadBlockToVRAM	SpriteTiles2, $8000, $2000
