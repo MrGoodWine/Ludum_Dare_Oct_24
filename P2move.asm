@@ -11,7 +11,7 @@ MovementUpdateP2:
       jsr p2_set_target_x_velocity
 	  
 @p2_up_move:
-	  lda $2F
+	  lda $31
 	  cmp #$08 ;up
 	  bne @p2_left_move  
 	  lda player.2.positionY_Lo
@@ -135,7 +135,7 @@ p2_set_target_y_velocity
     @p2check_down: 
       lda #BUTTON_DOWN
 	  sta CurrentButton
-      and SJoy1, X
+      and $31
 	  tay
 	  cpy CurrentButton
       bne @p2check_up
@@ -150,7 +150,7 @@ p2_set_target_y_velocity
 	 
       lda #BUTTON_UP
 	  sta CurrentButton
-      and SJoy1, X 
+      and $31
 	  tay
 	  cpy CurrentButton
       bne @p2no_Y_direction
@@ -184,7 +184,7 @@ p2_set_target_x_velocity
     @p2check_right: 
       lda #BUTTON_RIGHT
 	  sta CurrentButton
-      and SJoy1, X
+      and $31
 	  tay
 	  cpy CurrentButton
       bne @p2check_left
@@ -200,7 +200,7 @@ p2_set_target_x_velocity
     @p2check_left:
       lda #BUTTON_LEFT
 	  sta CurrentButton
-      and SJoy1, X 
+      and $31
 	  tay
 	  cpy CurrentButton
       bne @p2no_direction

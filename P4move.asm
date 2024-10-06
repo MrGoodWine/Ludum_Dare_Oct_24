@@ -11,7 +11,7 @@ MovementUpdateP4:
       jsr p4_set_target_x_velocity
 	  
 @p4_up_move:
-	  lda $2F
+	  lda $35
 	  cmp #$08 ;up
 	  bne @p4_left_move  
 	  lda player.4.positionY_Lo
@@ -135,7 +135,7 @@ p4_set_target_y_velocity
     @p4check_down: 
       lda #BUTTON_DOWN
 	  sta CurrentButton
-      and SJoy1, X
+      and $35
 	  tay
 	  cpy CurrentButton
       bne @p4check_up
@@ -150,7 +150,7 @@ p4_set_target_y_velocity
 	 
       lda #BUTTON_UP
 	  sta CurrentButton
-      and SJoy1, X 
+      and $35
 	  tay
 	  cpy CurrentButton
       bne @p4no_Y_direction
@@ -184,7 +184,7 @@ p4_set_target_x_velocity
     @p4check_right: 
       lda #BUTTON_RIGHT
 	  sta CurrentButton
-      and SJoy1, X
+      and $35
 	  tay
 	  cpy CurrentButton
       bne @p4check_left
@@ -200,7 +200,7 @@ p4_set_target_x_velocity
     @p4check_left:
       lda #BUTTON_LEFT
 	  sta CurrentButton
-      and SJoy1, X 
+      and $35
 	  tay
 	  cpy CurrentButton
       bne @p4no_direction

@@ -135,7 +135,7 @@ P1_set_target_y_velocity
     @p1check_down: 
       lda #BUTTON_DOWN
 	  sta CurrentButton
-      and SJoy0, X
+      and $2F
 	  tay
 	  cpy CurrentButton
       bne @p1check_up
@@ -150,7 +150,7 @@ P1_set_target_y_velocity
 	 
       lda #BUTTON_UP
 	  sta CurrentButton
-      and SJoy0, X 
+      and $2F
 	  tay
 	  cpy CurrentButton
       bne @p1no_Y_direction
@@ -184,7 +184,7 @@ P1_set_target_x_velocity
     @p1check_right: 
       lda #BUTTON_RIGHT
 	  sta CurrentButton
-      and SJoy0, X
+      and $2F
 	  tay
 	  cpy CurrentButton
       bne @p1check_left
@@ -200,7 +200,7 @@ P1_set_target_x_velocity
     @p1check_left:
       lda #BUTTON_LEFT
 	  sta CurrentButton
-      and SJoy0, X 
+      and $2F
 	  tay
 	  cpy CurrentButton
       bne @p1no_direction

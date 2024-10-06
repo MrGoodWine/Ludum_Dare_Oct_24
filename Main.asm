@@ -204,7 +204,7 @@ InfiniteLoop:
 
 	;See what buttons were pressed
 	ldx #$0000
--	jsr MovementUpdateP1
+	jsr MovementUpdateP1
 	jsr MovementUpdateP2
 	jsr MovementUpdateP3
 	jsr MovementUpdateP4
