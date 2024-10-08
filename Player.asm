@@ -25,8 +25,7 @@
   ;MotionState
 .DEFINE Standing	0
 .DEFINE Walk		1
-.DEFINE Pivot		2
-.DEFINE Airborne	3
+.DEFINE Bash		2
 
   ;IdleState
 .DEFINE Still	0
@@ -159,7 +158,7 @@ init_y_p1:
     sta player.1.positionY_Lo
     lda #initialVelocityY
     sta player.1.velocityY
-	lda #Airborne
+	lda #Standing
     sta player.1.motionState
 	lda #$00
 	sta player.1.animationFrame
@@ -184,7 +183,7 @@ init_y_p2:
     sta player.2.positionY_Lo
     lda #initialVelocityY
     sta player.2.velocityY
-	lda #Airborne
+	lda #Standing
     sta player.2.motionState
 	lda #$32
 	sta player.2.animationFrame
@@ -208,7 +207,7 @@ init_y_p3:
     sta player.3.positionY_Lo
     lda #initialVelocityY
     sta player.3.velocityY
-	lda #Airborne
+	lda #Standing
     sta player.3.motionState
 	lda #$64
 	sta player.3.animationFrame
@@ -232,7 +231,7 @@ init_y_p4:
     sta player.4.positionY_Lo
     lda #initialVelocityY
     sta player.4.velocityY
-	lda #Airborne
+	lda #Standing
     sta player.4.motionState
 	lda #$96
 	sta player.4.animationFrame

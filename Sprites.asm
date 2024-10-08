@@ -37,14 +37,23 @@ SpriteInit:
 	rep	#$30	;16bit mem/A, 16 bit X/Y
 
 	ldx #$0000
-	lda #$ffff
+	lda #$FFFF
 _clr:
-	sta SpriteBuf1, x
 	sta SpriteBuf2, x		;initialize all sprites to be off the screen
 	inx
 	inx
 	cpx #$0020
 	bne _clr	
+	
+	
+	ldx #$0000
+	lda #$eeee
+_clr2:
+	sta SpriteBuf1, x		;initialize all sprites to be off the screen
+	inx
+	inx
+	cpx #$0200
+	bne _clr2	
 
 	plp
 	rts

@@ -46,8 +46,9 @@ SetupVideo:
       sta $2100		
 
 	lda #$FF		;Scroll BG2 down 1 pixel
-	sta $2110
-	sta $2110         
+	sta $210E
+	sta $210E         
+	
 
 	plp
 	rts
