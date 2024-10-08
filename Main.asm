@@ -275,7 +275,7 @@ InfiniteLoop:
 
 ;Map data
 BackgroundMap:
-	.INCBIN ".\\Tilemaps\\bg.hex"
+	.INCBIN ".\\Tilemaps\\bg.bin"
 
 ;Color data
 BG_Palette:
