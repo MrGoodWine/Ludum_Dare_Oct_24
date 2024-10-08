@@ -39,6 +39,7 @@ SpriteInit:
 	ldx #$0000
 	lda #$ffff
 _clr:
+	sta SpriteBuf1, x
 	sta SpriteBuf2, x		;initialize all sprites to be off the screen
 	inx
 	inx
