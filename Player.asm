@@ -14,13 +14,26 @@
 .DEFINE left_velocity 			$01
 .DEFINE down_velocity 			$01
 .DEFINE up_velocity 			$01
+.DEFINE bash_velocity 			$08
 
 
   ;Heading
-.DEFINE Right	0
-.DEFINE Left	1
-.DEFINE Down	0
-.DEFINE Up		1
+  
+  
+  
+  
+.DEFINE RightDown	$00
+.DEFINE RightUp		$01
+.DEFINE LeftDown	$02
+.DEFINE LeftUp		$03
+.DEFINE Right		$04
+.DEFINE Up			$05
+.DEFINE Down		$06
+.DEFINE Left		$07
+
+.DEFINE Angled		$08
+.DEFINE UpDown 		$09
+.DEFINE RightLeft	$0A
 
   ;MotionState
 .DEFINE Standing	0
@@ -44,56 +57,40 @@
 
 .STRUCT playerCharacter 
 	
-	;spriteX 		DW ;48
-	;velocityX 		DW ;0
-	;positionX_LO 	DW ;$00
-	;positionX_HI	DW ;$03
-	;spriteY 		DW ;143
-	;velocityY 		DW ;0
-	;positionY_LO 	DW ;$F0
-	;positionY_HI 	DW ;$08
 
 	playerID			DB ;C0
 	targetVelocityX   	DB ;C1
 	targetVelocityY   	DB ;C2
 	velocityX        	DB ;C3
-	byte21				DB ;D4
-	positionX_Lo       	DB ;C4
-	positionX_Hi       	DB ;C5
-	byte22				DB ;D4
-	byte23				DB ;D5
-
-	spriteX_Lo       	DB ;C6
-	spriteX_Hi       	DB ;C7
-	headingX          	DB ;C8
-
-	velocityY        	DB ;C9
-	byte24				DB ;D6
+	byte21				DB ;C4
+	positionX_Lo       	DB ;C5
+	positionX_Hi       	DB ;C6
+	byte22				DB ;C7
+	byte23				DB ;C8
+	spriteX_Lo       	DB ;C9
+	spriteX_Hi       	DB ;CA
+	headingX          	DB ;CB
+	velocityY        	DB ;CC
+	byte24				DB ;CD
+	positionY_Lo        DB ;CE
+	positionY_Hi        DB ;CF
+	byte32				DB ;D0
+	byte25				DB ;D1
+	byte26				DB ;D2
+	spriteY_Lo       	DB ;D3
+	spriteY_Hi       	DB ;D4
+	headingY          	DB ;D5
+	motionState      	DB ;D6
+	animationFrame   	DB ;D7
+	animationTimer   	DB ;D8
+	idleState         	DB ;D9
+	idleTimer        	DB ;DA
+	combinedHeading		DB ;DB
+	priorityPalette		DB ;DC
+	headingSpecific		DB ;DD
+	cooldown			DB ;DE
+	byte31				DB ;DF
 	
-	positionY_Lo        DB ;CA
-	positionY_Hi        DB ;CB
-	byte25				DB ;D7
-	byte26				DB ;D8
-	
-	spriteY_Lo       	DB ;CC
-	spriteY_Hi       	DB ;CD
-	headingY          	DB ;CE
-
-	motionState      	DB ;CF
-	animationFrame   	DB ;D0
-	animationTimer   	DB ;D1
-	idleState         	DB ;D2
-	idleTimer        	DB ;D3
-	
-
-
-
-	combinedHeading		DB ;D9
-	priorityPalette		DB ;DA
-	byte29				DB ;DB
-	byte30				DB ;DC
-	byte31				DB ;DE
-	byte32				DB ;DF
 	
 
 
@@ -110,13 +107,6 @@ player INSTANCEOF playerCharacter 5
 
 PlayerInit:
     
-	
-	;rol initID
-	;rol initID
-	;rol initID
-	;rol initID
-	;rol initID
-	;ldy initID
 	cpx #$01
 	bne +
 	stx player.1.playerID
@@ -139,7 +129,7 @@ PlayerInit:
     jsr init_y_p4
 +	
 	
-    ;jsr init_sprites
+
 	rts
 
 init_x_p1:
