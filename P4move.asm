@@ -101,7 +101,7 @@ p4_set_target_y_velocity
     @p4check_down: 
       lda #BUTTON_DOWN
 	  sta CurrentButton
-      and $33
+      and $35
 	  tay
 	  cpy CurrentButton
       bne @p4check_up
@@ -116,7 +116,7 @@ p4_set_target_y_velocity
 	 
       lda #BUTTON_UP
 	  sta CurrentButton
-      and $33
+      and $35
 	  tay
 	  cpy CurrentButton
       bne @p4no_Y_direction
@@ -150,7 +150,7 @@ p4_set_target_x_velocity
     @p4check_right: 
       lda #BUTTON_RIGHT
 	  sta CurrentButton
-      and $33
+      and $35
 	  tay
 	  cpy CurrentButton
       bne @p4check_left
@@ -166,7 +166,7 @@ p4_set_target_x_velocity
     @p4check_left:
       lda #BUTTON_LEFT
 	  sta CurrentButton
-      and $33
+      and $35
 	  tay
 	  cpy CurrentButton
       bne @p4no_direction
@@ -189,7 +189,7 @@ p4_apply_movement
 	  
 	  
 	@p4_right_down_move:
-	  lda $33
+	  lda $35
 	  cmp #$05 ;right down
 	  bne @p4_right_up_move
 	  lda player.4.positionX_Lo

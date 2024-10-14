@@ -101,7 +101,7 @@ p3_set_target_y_velocity
     @p3check_down: 
       lda #BUTTON_DOWN
 	  sta CurrentButton
-      and $31
+      and $33
 	  tay
 	  cpy CurrentButton
       bne @p3check_up
@@ -116,7 +116,7 @@ p3_set_target_y_velocity
 	 
       lda #BUTTON_UP
 	  sta CurrentButton
-      and $31
+      and $33
 	  tay
 	  cpy CurrentButton
       bne @p3no_Y_direction
@@ -150,7 +150,7 @@ p3_set_target_x_velocity
     @p3check_right: 
       lda #BUTTON_RIGHT
 	  sta CurrentButton
-      and $31
+      and $33
 	  tay
 	  cpy CurrentButton
       bne @p3check_left
@@ -166,7 +166,7 @@ p3_set_target_x_velocity
     @p3check_left:
       lda #BUTTON_LEFT
 	  sta CurrentButton
-      and $31
+      and $33
 	  tay
 	  cpy CurrentButton
       bne @p3no_direction
@@ -189,7 +189,7 @@ p3_apply_movement
 	  
 	  
 	@p3_right_down_move:
-	  lda $31
+	  lda $33
 	  cmp #$05 ;right down
 	  bne @p3_right_up_move
 	  lda player.3.positionX_Lo
