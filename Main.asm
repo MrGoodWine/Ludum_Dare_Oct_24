@@ -73,7 +73,7 @@ Main:
 	LoadBlockToVRAM	BackgroundPics, $2000, $6000	
 	
 	; Load 128 tiles * (2bit color = 2 planes) = 2048 bytes
-	LoadBlockToVRAM	ASCIITiles, $5000, $0800	
+	;LoadBlockToVRAM	ASCIITiles, $5000, $0800	
 	
 	; Load 16 16x16 tiles * (4bit color = 4 planes) = 4096 bytes
 	LoadBlockToVRAM	SpriteTiles1, $6000, $2000	
@@ -282,7 +282,7 @@ BackgroundMap:
 ;Color data
 BG_Palette:
 	.INCBIN ".\\Pictures\\bg.cgr"
-	.INCBIN ".\\Pictures\\dummy_palette01.cgr"
+	.INCBIN ".\\Pictures\\bird-seed-font.cgr"
 	.INCBIN ".\\Pictures\\dummy_palette02.cgr"
 	.INCBIN ".\\Pictures\\dummy_palette03.cgr"
 	.INCBIN ".\\Pictures\\dummy_palette04.cgr"
@@ -293,8 +293,9 @@ BG_Palette:
 	.INCBIN ".\\Pictures\\aphid.cgr"
 	.INCBIN ".\\Pictures\\firefly.cgr"
 	.INCBIN ".\\Pictures\\ladybug.cgr"
+	
+	.INCBIN ".\\Pictures\\bash.cgr"
 	.INCBIN ".\\Pictures\\pollen.cgr"
-	;.INCBIN ".\\Pictures\\bash.cgr"
 
 SpriteTiles1:
 		
@@ -302,8 +303,9 @@ SpriteTiles1:
 		.INCBIN ".\\Pictures\\aphid.vra"
 		.INCBIN ".\\Pictures\\firefly.vra"
 		.INCBIN ".\\Pictures\\ladybug.vra"
+		
+		.INCBIN ".\\Pictures\\bash.vra"
 		.INCBIN ".\\Pictures\\pollen.vra"
-		;.INCBIN ".\\Pictures\\bash.vra"
 		
 	
 SpriteTiles2:
@@ -324,6 +326,7 @@ ASCIITiles:
 ;character data
 BackgroundPics:
 	.INCBIN ".\\Pictures\\bg.vra"
+	.INCBIN ".\\Pictures\\bird-seed-font.vra"
 .ENDS
 
 ;==========================================================================================
