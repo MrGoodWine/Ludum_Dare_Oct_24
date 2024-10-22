@@ -259,7 +259,7 @@ InfiniteLoop:
 	sta SpriteBuf1+sprioritypalette4
 
 	
-	SpawnPollen #$C0, #$C0
+	SpawnPollen $C0, $C0
 	
 	;lda player.1.spriteX_Lo
 	;sta MapX
@@ -294,7 +294,7 @@ BG_Palette:
 	.INCBIN ".\\Pictures\\firefly.cgr"
 	.INCBIN ".\\Pictures\\ladybug.cgr"
 	.INCBIN ".\\Pictures\\pollen.cgr"
-	.INCBIN ".\\Pictures\\bash.cgr"
+	;.INCBIN ".\\Pictures\\bash.cgr"
 
 SpriteTiles1:
 		
@@ -303,7 +303,7 @@ SpriteTiles1:
 		.INCBIN ".\\Pictures\\firefly.vra"
 		.INCBIN ".\\Pictures\\ladybug.vra"
 		.INCBIN ".\\Pictures\\pollen.vra"
-		.INCBIN ".\\Pictures\\bash.vra"
+		;.INCBIN ".\\Pictures\\bash.vra"
 		
 	
 SpriteTiles2:
