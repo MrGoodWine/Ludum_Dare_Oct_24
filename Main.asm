@@ -259,7 +259,7 @@ InfiniteLoop:
 	sta SpriteBuf1+sprioritypalette4
 
 	
-	
+	SpawnPollen #$C0, #$C0
 	
 	;lda player.1.spriteX_Lo
 	;sta MapX
