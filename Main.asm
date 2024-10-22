@@ -73,7 +73,7 @@ Main:
 	LoadBlockToVRAM	BackgroundPics, $2000, $6000	
 	
 	; Load 128 tiles * (2bit color = 2 planes) = 2048 bytes
-	;LoadBlockToVRAM	ASCIITiles, $5000, $0800	
+	LoadBlockToVRAM	ASCIITiles, $5000, $0800	
 	
 	; Load 16 16x16 tiles * (4bit color = 4 planes) = 4096 bytes
 	LoadBlockToVRAM	SpriteTiles1, $6000, $2000	
