@@ -122,9 +122,9 @@ Next_tile:
 	;setup our walking sprite
 	;put him in the center of the screen
 	lda #$0	
-	sta SpriteBuf1+sx
+	sta SpriteBuf1+sx1
 	lda #$0	
-	sta SpriteBuf1+sy
+	sta SpriteBuf1+sy1
 
 	;put sprites #0 on screen
 	lda #$AA
@@ -132,9 +132,9 @@ Next_tile:
 
 	;set the sprite to the highest priority
 	lda player.1.animationFrame
-	sta SpriteBuf1+stile
+	sta SpriteBuf1+stile1
 	lda player.1.priorityPalette			
-	sta SpriteBuf1+sprioritypalette
+	sta SpriteBuf1+sprioritypalette1
 
 ;====================================================================================
 	;setup our walking sprite
@@ -212,54 +212,13 @@ InfiniteLoop:
 	jsr MovementUpdatep4
 
 	
+	
+	
+	jsr SpriteUpdate
+	
 	ldy #01
 	nop
 	sep #$30
-
-	
-	
-	
-	lda player.1.spriteX_Lo
-	sta SpriteBuf1
-	lda player.1.spriteY_Lo
-	sta SpriteBuf1, Y
-	lda player.1.animationFrame
-	sta SpriteBuf1+stile
-	lda player.1.priorityPalette			
-	sta SpriteBuf1+sprioritypalette
-
-	
-	lda player.2.spriteX_Lo
-	sta SpriteBuf1+sx2
-	lda player.2.spriteY_Lo
-	sta SpriteBuf1+sy2
-	lda player.2.animationFrame
-	sta SpriteBuf1+stile2
-	lda player.2.priorityPalette			
-	sta SpriteBuf1+sprioritypalette2
-	
-	
-	lda player.3.spriteX_Lo
-	sta SpriteBuf1+sx3
-	lda player.3.spriteY_Lo
-	sta SpriteBuf1+sy3
-	lda player.3.animationFrame
-	sta SpriteBuf1+stile3
-	lda player.3.priorityPalette			
-	sta SpriteBuf1+sprioritypalette3
-	
-	
-	lda player.4.spriteX_Lo
-	sta SpriteBuf1+sx4
-	lda player.4.spriteY_Lo
-	sta SpriteBuf1+sy4
-	lda player.4.animationFrame
-	sta SpriteBuf1+stile4
-	lda player.4.priorityPalette			
-	sta SpriteBuf1+sprioritypalette4
-
-	
-	SpawnPollen $C0, $C0
 	
 	;lda player.1.spriteX_Lo
 	;sta MapX
@@ -295,7 +254,7 @@ BG_Palette:
 	.INCBIN ".\\Pictures\\ladybug.cgr"
 	
 	.INCBIN ".\\Pictures\\bash.cgr"
-	.INCBIN ".\\Pictures\\pollen.cgr"
+	;.INCBIN ".\\Pictures\\pollen.cgr"
 
 SpriteTiles1:
 		
@@ -305,7 +264,7 @@ SpriteTiles1:
 		.INCBIN ".\\Pictures\\ladybug.vra"
 		
 		.INCBIN ".\\Pictures\\bash.vra"
-		.INCBIN ".\\Pictures\\pollen.vra"
+		;.INCBIN ".\\Pictures\\pollen.vra"
 		
 	
 SpriteTiles2:

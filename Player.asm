@@ -58,45 +58,45 @@
 .STRUCT playerCharacter 
 	
 
-	playerID			DB ;C0
-	targetVelocityX   	DB ;C1
-	targetVelocityY   	DB ;C2
-	velocityX        	DB ;C3
-	byte21				DB ;C4
-	positionX_Lo       	DB ;C5
-	positionX_Hi       	DB ;C6
-	byte22				DB ;C7
-	byte23				DB ;C8
-	spriteX_Lo       	DB ;C9
-	spriteX_Hi       	DB ;CA
-	headingX          	DB ;CB
-	velocityY        	DB ;CC
-	byte24				DB ;CD
-	positionY_Lo        DB ;CE
-	positionY_Hi        DB ;CF
-	byte32				DB ;D0
-	byte25				DB ;D1
-	byte26				DB ;D2
-	spriteY_Lo       	DB ;D3
-	spriteY_Hi       	DB ;D4
-	headingY          	DB ;D5
-	motionState      	DB ;D6
-	animationFrame   	DB ;D7
-	animationTimer   	DB ;D8
-	idleState         	DB ;D9
-	idleTimer        	DB ;DA
-	combinedHeading		DB ;DB
-	priorityPalette		DB ;DC
-	headingSpecific		DB ;DD
-	cooldown			DB ;DE
-	byte31				DB ;DF
+	playerID			DB ;80
+	targetVelocityX   	DB ;81
+	targetVelocityY   	DB ;82
+	velocityX        	DB ;83
+	byte21				DB ;84
+	positionX_Lo       	DB ;85
+	positionX_Hi       	DB ;86
+	byte22				DB ;87
+	byte23				DB ;88
+	spriteX_Lo       	DB ;89
+	spriteX_Hi       	DB ;8A
+	headingX          	DB ;8B
+	velocityY        	DB ;8C
+	byte24				DB ;8D
+	positionY_Lo        DB ;8E
+	positionY_Hi        DB ;8F
+	byte32				DB ;90
+	byte25				DB ;91
+	byte26				DB ;92
+	spriteY_Lo       	DB ;93
+	spriteY_Hi       	DB ;94
+	headingY          	DB ;95
+	motionState      	DB ;96
+	animationFrame   	DB ;97
+	animationTimer   	DB ;98
+	idleState         	DB ;99
+	idleTimer        	DB ;9A
+	combinedHeading		DB ;9B
+	priorityPalette		DB ;9C
+	headingSpecific		DB ;9D
+	cooldown			DB ;9E
+	byte31				DB ;9F
 	
 	
 
 
 .ENDST
 
-.ENUM $C0
+.ENUM $80
 player INSTANCEOF playerCharacter 5
 .ENDE
 
