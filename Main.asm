@@ -74,7 +74,7 @@ Main:
 	LoadBlockToVRAM	BackgroundPics, $2000, $6000	
 	
 	; Load 128 tiles * (2bit color = 2 planes) = 2048 bytes
-	LoadBlockToVRAM	ASCIITiles, $5000, $0800	
+	LoadBlockToVRAM	ASCIITiles, $52F0, $0800	
 	
 	; Load 16 16x16 tiles * (4bit color = 4 planes) = 4096 bytes
 	LoadBlockToVRAM	SpriteTiles1, $6000, $2000	
@@ -100,10 +100,15 @@ Next_tile:
 	JSR JoyInit		;setup joypads and enable NMI
 	
 	
-	PrintString "\n 0123456789"
-	PrintString "\n QWERTYUIOP"
-	PrintString "\n ASDFGHJKL"
-	PrintString "\n ZXCVBNM"
+	PrintString "\n0123456789"
+	PrintString "\nABCDEFGHIJKLM"
+	PrintString "\nNOPQRSTUVWXYZ"
+	PrintString "\nabcdefghijklm"
+	PrintString "\nnopqrstuvwxyz"
+	
+	
+	
+	
 		.DEFINE numberofplayers $10
 	;.DEFINE initID $0000
   
@@ -292,8 +297,7 @@ ASCIITiles:
 ;character data
 BackgroundPics:
 	.INCBIN ".\\Pictures\\bg.vra"
-	
-	;.INCBIN ".\\Pictures\\hud.vra"
+	.INCBIN ".\\Pictures\\hud.vra"
 .ENDS
 
 ;==========================================================================================
