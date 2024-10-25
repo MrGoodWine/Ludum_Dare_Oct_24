@@ -29,6 +29,7 @@
 .INCLUDE "SpawnSprites.asm"
 
 
+
 ;==============================================================================
 ; main
 ;==============================================================================
@@ -73,7 +74,7 @@ Main:
 	LoadBlockToVRAM	BackgroundPics, $2000, $6000	
 	
 	; Load 128 tiles * (2bit color = 2 planes) = 2048 bytes
-	;LoadBlockToVRAM	ASCIITiles, $5000, $0800	
+	LoadBlockToVRAM	ASCIITiles, $5000, $0800	
 	
 	; Load 16 16x16 tiles * (4bit color = 4 planes) = 4096 bytes
 	LoadBlockToVRAM	SpriteTiles1, $6000, $2000	
@@ -98,6 +99,11 @@ Next_tile:
 	JSR SpriteInit	;setup the sprite buffer
 	JSR JoyInit		;setup joypads and enable NMI
 	
+	
+	PrintString "\n 0123456789"
+	PrintString "\n QWERTYUIOP"
+	PrintString "\n ASDFGHJKL"
+	PrintString "\n ZXCVBNM"
 		.DEFINE numberofplayers $10
 	;.DEFINE initID $0000
   
@@ -222,7 +228,7 @@ InfiniteLoop:
 	
 	;lda player.1.spriteX_Lo
 	;sta MapX
-	
+	;PrintString " 'Look Ma, I can Walk!' \n"
 	
 	JMP InfiniteLoop	;Do this forever
 	
@@ -242,7 +248,7 @@ BackgroundMap:
 BG_Palette:
 	.INCBIN ".\\Pictures\\bg.cgr"
 	.INCBIN ".\\Pictures\\bird-seed-font.cgr"
-	.INCBIN ".\\Pictures\\dummy_palette02.cgr"
+	.INCBIN ".\\Pictures\\hud.cgr"
 	.INCBIN ".\\Pictures\\dummy_palette03.cgr"
 	.INCBIN ".\\Pictures\\dummy_palette04.cgr"
 	.INCBIN ".\\Pictures\\dummy_palette05.cgr"
@@ -268,11 +274,12 @@ SpriteTiles1:
 		
 	
 SpriteTiles2:
-	;.INCBIN ".\\Pictures\\dwarf2.pic"
+	
 	
 
 ASCIITiles:
-	.INCBIN ".\\Pictures\\ascii.pic"
+	.INCBIN ".\\Pictures\\bird-seed-font.vra"
+	;.INCBIN ".\\Pictures\\ascii.pic"
 
 .ENDS
 
@@ -285,7 +292,8 @@ ASCIITiles:
 ;character data
 BackgroundPics:
 	.INCBIN ".\\Pictures\\bg.vra"
-	.INCBIN ".\\Pictures\\bird-seed-font.vra"
+	
+	;.INCBIN ".\\Pictures\\hud.vra"
 .ENDS
 
 ;==========================================================================================
