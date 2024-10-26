@@ -75,6 +75,7 @@ Main:
 	
 	; Load 128 tiles * (2bit color = 2 planes) = 2048 bytes
 	LoadBlockToVRAM	ASCIITiles, $52F0, $0800	
+	LoadBlockToVRAM	HudMap, $5800, $0380
 	
 	; Load 16 16x16 tiles * (4bit color = 4 planes) = 4096 bytes
 	LoadBlockToVRAM	SpriteTiles1, $6000, $2000	
@@ -100,11 +101,11 @@ Next_tile:
 	JSR JoyInit		;setup joypads and enable NMI
 	
 	
-	PrintString "\n0123456789"
-	PrintString "\nABCDEFGHIJKLM"
-	PrintString "\nNOPQRSTUVWXYZ"
-	PrintString "\nabcdefghijklm"
-	PrintString "\nnopqrstuvwxyz"
+	;PrintString "\n0123456789"
+	;PrintString "\nABCDEFGHIJKLM"
+	;PrintString "\nNOPQRSTUVWXYZ"
+	;PrintString "\nabcdefghijklm"
+	;PrintString "\nnopqrstuvwxyz"
 	
 	
 	
@@ -248,6 +249,9 @@ InfiniteLoop:
 ;Map data
 BackgroundMap:
 	.INCBIN ".\\Tilemaps\\bg.bin"
+	
+HudMap:	
+	.INCBIN ".\\Tilemaps\\bg2.bin"
 
 ;Color data
 BG_Palette:
