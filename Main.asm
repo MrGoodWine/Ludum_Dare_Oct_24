@@ -22,7 +22,6 @@
 .INCLUDE "P2move.asm"
 .INCLUDE "P3move.asm"
 .INCLUDE "P4move.asm"
-;.INCLUDE ".\\Tilemaps\\bg.asm"
 .INCLUDE "VBLANK.asm"
 .INCLUDE "SetupVideo.asm"
 ;.INCLUDE "collision.asm"
@@ -74,7 +73,9 @@ Main:
 	LoadBlockToVRAM	BackgroundPics, $2000, $6000	
 	
 	; Load 128 tiles * (2bit color = 2 planes) = 2048 bytes
-	LoadBlockToVRAM	ASCIITiles, $52F0, $0800	
+	;LoadBlockToVRAM	ASCIITiles, $52F0, $0800	
+	LoadBlockToVRAM	HudPics, $5000, $0800
+	
 	LoadBlockToVRAM	HudMap, $5800, $0380
 	
 	; Load 16 16x16 tiles * (4bit color = 4 planes) = 4096 bytes
@@ -301,7 +302,11 @@ ASCIITiles:
 ;character data
 BackgroundPics:
 	.INCBIN ".\\Pictures\\bg.vra"
+	
+	
+HudPics:
 	.INCBIN ".\\Pictures\\hud.vra"
+	.INCBIN ".\\Pictures\\bird-seed-font.vra"
 .ENDS
 
 ;==========================================================================================
