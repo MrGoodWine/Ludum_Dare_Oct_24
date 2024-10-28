@@ -437,13 +437,9 @@ P1_apply_movement
 
 
 	@p1_set_clear_bytes:	
-	  lda #$0000
-	  sta player.1.byte21
-	  sta player.1.byte22
-	  sta player.1.byte23
-	  sta player.1.byte24
-	  sta player.1.byte25
-	  sta player.1.byte26
+	 
+	
+	 
 rts
 	  
 	  

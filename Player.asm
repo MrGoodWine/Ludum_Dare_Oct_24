@@ -65,8 +65,8 @@
 	byte21				DB ;84
 	positionX_Lo       	DB ;85
 	positionX_Hi       	DB ;86
-	byte22				DB ;87
-	byte23				DB ;88
+	leftBBox			DB ;87
+	rightBBox			DB ;88
 	spriteX_Lo       	DB ;89
 	spriteX_Hi       	DB ;8A
 	headingX          	DB ;8B
@@ -74,9 +74,9 @@
 	byte24				DB ;8D
 	positionY_Lo        DB ;8E
 	positionY_Hi        DB ;8F
-	byte32				DB ;90
-	byte25				DB ;91
-	byte26				DB ;92
+	topBBox				DB ;90
+	bottomBBox			DB ;91
+	isColliding			DB ;92
 	spriteY_Lo       	DB ;93
 	spriteY_Hi       	DB ;94
 	headingY          	DB ;95
@@ -89,7 +89,7 @@
 	priorityPalette		DB ;9C
 	headingSpecific		DB ;9D
 	cooldown			DB ;9E
-	byte31				DB ;9F
+	pollenCollected		DB ;9F
 	
 	
 

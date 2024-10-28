@@ -434,13 +434,9 @@ p4_apply_movement
 
 
 	@p4_set_clear_bytes:	
-	  lda #$0000
-	  sta player.4.byte21
-	  sta player.4.byte22
-	  sta player.4.byte23
-	  sta player.4.byte24
-	  sta player.4.byte25
-	  sta player.4.byte26
+	  
+	 
+	  
 rts
 	  
 	  

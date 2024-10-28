@@ -434,13 +434,9 @@ p3_apply_movement
 
 
 	@p3_set_clear_bytes:	
-	  lda #$0000
-	  sta player.3.byte21
-	  sta player.3.byte22
-	  sta player.3.byte23
-	  sta player.3.byte24
-	  sta player.3.byte25
-	  sta player.3.byte26
+	  
+	 
+	  
 rts
 	  
 	  

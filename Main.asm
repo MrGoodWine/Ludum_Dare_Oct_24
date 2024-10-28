@@ -24,7 +24,7 @@
 .INCLUDE "P4move.asm"
 .INCLUDE "VBLANK.asm"
 .INCLUDE "SetupVideo.asm"
-;.INCLUDE "collision.asm"
+.INCLUDE "collision.asm"
 .INCLUDE "SpawnSprites.asm"
 
 
@@ -73,10 +73,11 @@ Main:
 	LoadBlockToVRAM	BackgroundPics, $2000, $6000	
 	
 	; Load 128 tiles * (2bit color = 2 planes) = 2048 bytes
-	;LoadBlockToVRAM	ASCIITiles, $52F0, $0800	
-	LoadBlockToVRAM	HudPics, $5000, $0800
 	
-	LoadBlockToVRAM	HudMap, $0800, $0380
+	LoadBlockToVRAM	HudPics, $5000, $0800
+	LoadBlockToVRAM	ASCIITiles, $5200, $0800	
+	
+	LoadBlockToVRAM	HudMap, $6000, $0400
 	
 	; Load 16 16x16 tiles * (4bit color = 4 planes) = 4096 bytes
 	LoadBlockToVRAM	SpriteTiles1, $6000, $2000	
@@ -102,11 +103,11 @@ Next_tile:
 	JSR JoyInit		;setup joypads and enable NMI
 	
 	
-	;PrintString "\n0123456789"
-	;PrintString "\nABCDEFGHIJKLM"
-	;PrintString "\nNOPQRSTUVWXYZ"
-	;PrintString "\nabcdefghijklm"
-	;PrintString "\nnopqrstuvwxyz"
+	PrintString "\n 0123456789"
+	PrintString "\n ABCDEFGHIJKLM"
+	PrintString "\n NOPQRSTUVWXYZ"
+	PrintString "\n abcdefghijklm"
+	PrintString "\n nopqrstuvwxyz"
 	
 	
 	
@@ -224,10 +225,11 @@ InfiniteLoop:
 	jsr MovementUpdatep3
 	jsr MovementUpdatep4
 
-	
+	jsr CollisionCalc
 	
 	
 	jsr SpriteUpdate
+	
 	
 	ldy #01
 	nop
@@ -305,8 +307,9 @@ BackgroundPics:
 	
 	
 HudPics:
-	.INCBIN ".\\Pictures\\hud.vra"
+	
 	.INCBIN ".\\Pictures\\bird-seed-font.vra"
+	.INCBIN ".\\Pictures\\hud.vra"
 .ENDS
 
 ;==========================================================================================

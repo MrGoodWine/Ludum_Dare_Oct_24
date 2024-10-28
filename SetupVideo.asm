@@ -27,7 +27,7 @@ SetupVideo:
 					;          bbb  = Name Base Select (Addr>>14)	
       sta $2101         
 
-	lda #$12		;Set video mode 2, 16x16 tiles (256 color BG1, 4 color BG2)
+	lda #$11		;Set video mode 2, 16x16 tiles (256 color BG1, 4 color BG2)
       sta $2105         
 
 	lda #$00		;Set BG1's Tile Map VRAM offset to $0000 (word address)
@@ -38,6 +38,9 @@ SetupVideo:
 
 	lda #$58		;Set BG2's Tile Map VRAM offset to $5800 (word address)
       sta $2108		;   and the Tile Map size to 32 tiles x 32 tiles
+	  
+	lda #$60		;<--------------------------------------------------------------------------
+	  sta $2109
 
 	lda #$13		;Turn on BG1 and BG2 and Sprites
       sta $212C
