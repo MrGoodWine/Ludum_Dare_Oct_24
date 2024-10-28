@@ -76,7 +76,7 @@ Main:
 	;LoadBlockToVRAM	ASCIITiles, $52F0, $0800	
 	LoadBlockToVRAM	HudPics, $5000, $0800
 	
-	LoadBlockToVRAM	HudMap, $5800, $0380
+	LoadBlockToVRAM	HudMap, $0800, $0380
 	
 	; Load 16 16x16 tiles * (4bit color = 4 planes) = 4096 bytes
 	LoadBlockToVRAM	SpriteTiles1, $6000, $2000	
