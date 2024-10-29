@@ -14,6 +14,9 @@ jsr @p1Collisions
 jsr @p2Collisions
 jsr @p3Collisions
 jsr @p4Collisions
+
+jsr @BashingCollisions
+
 rts
 
 @setupBBoxes
@@ -208,9 +211,6 @@ rts
 
 
 @p1NoCollision:	
-		;lda player.1.isColliding
-		;and #$00
-		;sta player.1.isColliding
 	
 		rts
 
@@ -274,9 +274,6 @@ rts
 
 @p2NoCollision:	
 		
-		;lda player.2.isColliding
-		;and #$01
-		;sta player.2.isColliding
 	
 		rts
 		
@@ -312,10 +309,6 @@ rts
 
 @p3NoCollision:	
 		
-		;lda player.3.isColliding
-		;and #$01
-		;;and #$02
-		;sta player.3.isColliding
 	
 		rts	
 		
@@ -327,13 +320,175 @@ rts
 	
 @p4NoCollision:	
 		
-		;lda player.4.isColliding
-		;and #$01
-		;;and #$02
-		;;and #$04
-		;sta player.4.isColliding
 	
 		rts	
 		
 		
+;================================================================
+;================================================================
+;================================================================
+
+@BashingCollisions:
+
+jsr @p1Bashing
+jsr @p2Bashing
+jsr @p3Bashing
+jsr @p4Bashing
+
+rts
+;================================================================
+
+@p1Bashing
+
+		lda player.1.motionState
+		cmp #Bash
+		bne @p1BashReturn
+		lda player.1.isColliding
+		cmp #$02
+		bne @p1BashCheckP3
+		lda #Still
+		sta player.2.motionState
+	  
+		lda #$20
+		sta player.2.cooldown
+		
+@p1BashCheckP3:
+		lda player.1.isColliding
+		cmp #$04
+		bne @p1BashCheckP4
+		lda #Still
+		sta player.3.motionState
+	  
+		lda #$20
+		sta player.3.cooldown
+		
+@p1BashCheckP4:
+		lda player.1.isColliding
+		cmp #$08
+		bne @p1BashReturn
+		lda #Still
+		sta player.4.motionState
+	  
+		lda #$20
+		sta player.4.cooldown	
+
+
+@p1BashReturn:		
+rts
+
+;================================================================
+@p2Bashing
+
+
+		lda player.2.motionState
+		cmp #Bash
+		bne @p2BashReturn
+		lda player.2.isColliding
+		cmp #$01
+		bne @p2BashCheckP3
+		lda #Still
+		sta player.1.motionState
+	  
+		lda #$20
+		sta player.1.cooldown
+		
+@p2BashCheckP3:
+		lda player.2.isColliding
+		cmp #$04
+		bne @p2BashCheckP4
+		lda #Still
+		sta player.3.motionState
+	  
+		lda #$20
+		sta player.3.cooldown
+		
+@p2BashCheckP4:
+		lda player.2.isColliding
+		cmp #$08
+		bne @p2BashReturn
+		lda #Still
+		sta player.4.motionState
+	  
+		lda #$20
+		sta player.4.cooldown	
+
+@p2BashReturn: 
+rts
+
+;================================================================
+@p3Bashing
+
+		lda player.3.motionState
+		cmp #Bash
+		bne @p3BashReturn
+		lda player.3.isColliding
+		cmp #$01
+		bne @p3BashCheckP2
+		lda #Still
+		sta player.1.motionState
+	  
+		lda #$20
+		sta player.1.cooldown
+		
+@p3BashCheckP2:
+		lda player.3.isColliding
+		cmp #$04
+		bne @p3BashCheckP4
+		lda #Still
+		sta player.2.motionState
+	  
+		lda #$20
+		sta player.2.cooldown
+		
+@p3BashCheckP4:
+		lda player.3.isColliding
+		cmp #$08
+		bne @p3BashReturn
+		lda #Still
+		sta player.4.motionState
+	  
+		lda #$20
+		sta player.4.cooldown	
+	
+@p3BashReturn:
+rts
+
+;================================================================
+@p4Bashing
+
+		lda player.4.motionState
+		cmp #Bash
+		bne @p4BashReturn
+		lda player.4.isColliding
+		cmp #$01
+		bne @p4BashCheckP3
+		lda #Still
+		sta player.1.motionState
+	  
+		lda #$20
+		sta player.1.cooldown
+		
+@p4BashCheckP3:
+		lda player.4.isColliding
+		cmp #$02
+		bne @p4BashCheckP4
+		lda #Still
+		sta player.2.motionState
+	  
+		lda #$20
+		sta player.2.cooldown
+		
+@p4BashCheckP4:
+		lda player.4.isColliding
+		cmp #$04
+		bne @p4BashReturn
+		lda #Still
+		sta player.3.motionState
+	  
+		lda #$20
+		sta player.3.cooldown	
+	
+@p4BashReturn:
+rts
+
 .ends

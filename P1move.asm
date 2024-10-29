@@ -16,7 +16,7 @@ MovementUpdateP1:
 
 	  
 	  
-	   lda player.1.motionState
+	  lda player.1.motionState
 	  cmp #Bash
 	  beq @P1_inBash
 	  
