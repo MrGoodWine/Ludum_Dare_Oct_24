@@ -103,11 +103,7 @@ Next_tile:
 	JSR JoyInit		;setup joypads and enable NMI
 	
 	
-	PrintString "\n 0123456789"
-	PrintString "\n ABCDEFGHIJKLM"
-	PrintString "\n NOPQRSTUVWXYZ"
-	PrintString "\n abcdefghijklm"
-	PrintString "\n nopqrstuvwxyz"
+	
 	
 	
 	
@@ -218,26 +214,47 @@ InfiniteLoop:
 	lda #$0000
 
 
+	SetCursorPos 10, 10
+	ldy player.1.pollenCollected
+	PrintString "P1 Pollen = %b    "
+	SetCursorPos 11, 10
+	ldy player.2.pollenCollected
+	PrintString "P2 Pollen = %b    "
+	SetCursorPos 12, 10
+	ldy player.3.pollenCollected
+	PrintString "P3 Pollen = %b    "
+	SetCursorPos 13, 10
+	ldy player.4.pollenCollected
+	PrintString "P4 Pollen = %b    "
+	
+	
+	
+	
 	;See what buttons were pressed
 	ldx #$0000
 	jsr MovementUpdateP1
 	jsr MovementUpdatep2
 	jsr MovementUpdatep3
 	jsr MovementUpdatep4
-
+	
 	jsr CollisionCalc
 	
 	
 	jsr SpriteUpdate
 	
 	
-	ldy #01
-	nop
-	sep #$30
+	
 	
 	;lda player.1.spriteX_Lo
 	;sta MapX
 	;PrintString " 'Look Ma, I can Walk!' \n"
+	
+	
+	
+	
+	ldy #01
+	nop
+	sep #$30
 	
 	JMP InfiniteLoop	;Do this forever
 	

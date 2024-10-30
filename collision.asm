@@ -1,3 +1,15 @@
+
+;================================================================		
+;================================================================	
+;================================================================
+
+;Walls
+.DEFINE TopWall	 		$10
+.DEFINE BottomWall	 	$CF
+.DEFINE LeftWall 		$10
+.DEFINE RightWall		$EF
+
+
 ;================================================================		
 ;================================================================	
 ;================================================================	
@@ -16,6 +28,8 @@ jsr @p3Collisions
 jsr @p4Collisions
 
 jsr @BashingCollisions
+
+jsr @wallCollisions
 
 rts
 
@@ -490,5 +504,311 @@ rts
 	
 @p4BashReturn:
 rts
+
+
+
+;================================================================
+@wallCollisions:
+
+
+
+jsr @p1WallCheck
+jsr @p2WallCheck
+jsr @p3WallCheck
+jsr @p4WallCheck
+
+rts
+
+;================================================================
+@p1WallCheck:
+
+		lda #BottomWall 
+		cmp player.1.bottomBBox
+		bcs @p1TopWall  
+		lda #$01
+		sta player.1.headingY
+		;ldx #bash_velocity
+		;stx player.1.targetVelocityY
+		lda player.1.positionY_Lo
+		sbc #$08
+		sta player.1.positionY_Lo
+		sta player.1.spriteY_Lo
+		lda #Still
+		sta player.1.motionState
+		lda #$20
+		sta player.1.cooldown	
+
+@p1TopWall:		
+		lda #TopWall
+		cmp player.1.topBBox
+		bcc @p1RightWall  
+		lda #$00
+		sta player.1.headingY
+		;ldx #bash_velocity
+		;stx player.1.targetVelocityY
+		lda player.1.positionY_Lo
+		adc #$08
+		sta player.1.positionY_Lo
+		sta player.1.spriteY_Lo
+		lda #Still
+		sta player.1.motionState
+		lda #$20
+		sta player.1.cooldown	
+
+@p1RightWall:		
+		lda #RightWall
+		cmp player.1.rightBBox 
+		bcs @p1LeftWall 
+		lda #$01
+		sta player.1.headingX
+		;ldx #bash_velocity
+		;stx player.1.targetVelocityX
+		lda player.1.positionX_Lo
+		sbc #$08
+		sta player.1.positionX_Lo
+		sta player.1.spriteX_Lo
+		lda #Still
+		sta player.1.motionState
+		lda #$20
+		sta player.1.cooldown	
+
+@p1LeftWall:		
+		lda #LeftWall
+		cmp player.1.leftBBox
+		bcc @p1NoWall 
+		lda #$00
+		sta player.1.headingX
+		;ldx #bash_velocity
+		;stx player.1.targetVelocityX
+		lda player.1.positionX_Lo
+		adc #$08
+		sta player.1.positionX_Lo
+		sta player.1.spriteX_Lo
+		lda #Still
+		sta player.1.motionState
+		lda #$20
+		sta player.1.cooldown	
+		
+@p1NoWall:	
+rts
+;================================================================
+@p2WallCheck:
+
+		lda #BottomWall 
+		cmp player.2.bottomBBox
+		bcs @p2TopWall  
+		lda #$01
+		sta player.2.headingY
+		;ldx #bash_velocity
+		;stx player.1.targetVelocityY
+		lda player.2.positionY_Lo
+		sbc #$08
+		sta player.2.positionY_Lo
+		sta player.2.spriteY_Lo
+		lda #Still
+		sta player.2.motionState
+		lda #$20
+		sta player.2.cooldown	
+
+@p2TopWall:		
+		lda #TopWall
+		cmp player.2.topBBox
+		bcc @p2RightWall  
+		lda #$00
+		sta player.2.headingY
+		;ldx #bash_velocity
+		;stx player.1.targetVelocityY
+		lda player.2.positionY_Lo
+		adc #$08
+		sta player.2.positionY_Lo
+		sta player.2.spriteY_Lo
+		lda #Still
+		sta player.2.motionState
+		lda #$20
+		sta player.2.cooldown	
+
+@p2RightWall:		
+		lda #RightWall
+		cmp player.2.rightBBox 
+		bcs @p2LeftWall 
+		lda #$01
+		sta player.2.headingX
+		;ldx #bash_velocity
+		;stx player.1.targetVelocityX
+		lda player.2.positionX_Lo
+		sbc #$08
+		sta player.2.positionX_Lo
+		sta player.2.spriteX_Lo
+		lda #Still
+		sta player.2.motionState
+		lda #$20
+		sta player.2.cooldown	
+
+@p2LeftWall:		
+		lda #LeftWall
+		cmp player.2.leftBBox
+		bcc @p2NoWall 
+		lda #$00
+		sta player.2.headingX
+		;ldx #bash_velocity
+		;stx player.1.targetVelocityX
+		lda player.2.positionX_Lo
+		adc #$08
+		sta player.2.positionX_Lo
+		sta player.2.spriteX_Lo
+		lda #Still
+		sta player.2.motionState
+		lda #$20
+		sta player.2.cooldown	
+		
+@p2NoWall:	
+rts
+;================================================================
+@p3WallCheck:
+
+		
+		lda #BottomWall 
+		cmp player.3.bottomBBox
+		bcs @p3TopWall  
+		lda #$01
+		sta player.3.headingY
+		;ldx #bash_velocity
+		;stx player.1.targetVelocityY
+		lda player.3.positionY_Lo
+		sbc #$08
+		sta player.3.positionY_Lo
+		sta player.3.spriteY_Lo
+		lda #Still
+		sta player.3.motionState
+		lda #$20
+		sta player.3.cooldown	
+
+@p3TopWall:		
+		lda #TopWall
+		cmp player.3.topBBox
+		bcc @p3RightWall  
+		lda #$00
+		sta player.3.headingY
+		;ldx #bash_velocity
+		;stx player.1.targetVelocityY
+		lda player.3.positionY_Lo
+		adc #$08
+		sta player.3.positionY_Lo
+		sta player.3.spriteY_Lo
+		lda #Still
+		sta player.3.motionState
+		lda #$20
+		sta player.3.cooldown	
+
+@p3RightWall:		
+		lda #RightWall
+		cmp player.3.rightBBox 
+		bcs @p3LeftWall 
+		lda #$01
+		sta player.3.headingX
+		;ldx #bash_velocity
+		;stx player.1.targetVelocityX
+		lda player.3.positionX_Lo
+		sbc #$08
+		sta player.3.positionX_Lo
+		sta player.3.spriteX_Lo
+		lda #Still
+		sta player.3.motionState
+		lda #$20
+		sta player.3.cooldown	
+
+@p3LeftWall:		
+		lda #LeftWall
+		cmp player.3.leftBBox
+		bcc @p3NoWall 
+		lda #$00
+		sta player.3.headingX
+		;ldx #bash_velocity
+		;stx player.1.targetVelocityX
+		lda player.3.positionX_Lo
+		adc #$08
+		sta player.3.positionX_Lo
+		sta player.3.spriteX_Lo
+		lda #Still
+		sta player.3.motionState
+		lda #$20
+		sta player.3.cooldown	
+		
+@p3NoWall:	
+rts
+;================================================================
+@p4WallCheck:
+
+		lda #BottomWall 
+		cmp player.4.bottomBBox
+		bcs @p4TopWall  
+		lda #$01
+		sta player.4.headingY
+		;ldx #bash_velocity
+		;stx player.1.targetVelocityY
+		lda player.4.positionY_Lo
+		sbc #$08
+		sta player.4.positionY_Lo
+		sta player.4.spriteY_Lo
+		lda #Still
+		sta player.4.motionState
+		lda #$20
+		sta player.4.cooldown	
+
+@p4TopWall:		
+		lda #TopWall
+		cmp player.4.topBBox
+		bcc @p4RightWall  
+		lda #$00
+		sta player.4.headingY
+		;ldx #bash_velocity
+		;stx player.1.targetVelocityY
+		lda player.4.positionY_Lo
+		adc #$08
+		sta player.4.positionY_Lo
+		sta player.4.spriteY_Lo
+		lda #Still
+		sta player.4.motionState
+		lda #$20
+		sta player.4.cooldown	
+
+@p4RightWall:		
+		lda #RightWall
+		cmp player.4.rightBBox 
+		bcs @p4LeftWall 
+		lda #$01
+		sta player.4.headingX
+		;ldx #bash_velocity
+		;stx player.1.targetVelocityX
+		lda player.4.positionX_Lo
+		sbc #$08
+		sta player.4.positionX_Lo
+		sta player.4.spriteX_Lo
+		lda #Still
+		sta player.4.motionState
+		lda #$20
+		sta player.4.cooldown	
+
+@p4LeftWall:		
+		lda #LeftWall
+		cmp player.4.leftBBox
+		bcc @p4NoWall 
+		lda #$00
+		sta player.4.headingX
+		;ldx #bash_velocity
+		;stx player.1.targetVelocityX
+		lda player.4.positionX_Lo
+		adc #$08
+		sta player.4.positionX_Lo
+		sta player.4.spriteX_Lo
+		lda #Still
+		sta player.4.motionState
+		lda #$20
+		sta player.4.cooldown	
+		
+@p4NoWall:	
+rts
+
+;================================================================
 
 .ends
