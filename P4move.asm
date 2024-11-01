@@ -703,7 +703,7 @@ p4_apply_bash
 	  lda #Still
 	  sta player.4.motionState
 	  
-	  lda #$20
+	  lda #$10
 	  sta player.4.cooldown
 	  rts
 	  
@@ -717,7 +717,7 @@ p4_apply_bash
 	  cmp #$00
 	  bne @p4_bash_end_Y
 	  
-	  lda #$20
+	  lda #$10
 	  sta player.4.cooldown
 	  rts
 	  
@@ -726,7 +726,7 @@ p4_apply_bash
 	  
 	  dea
 	  sta player.4.targetVelocityY
-	  lda #$20
+	  lda #$10
 	  sta player.4.cooldown
 rts  
 	  

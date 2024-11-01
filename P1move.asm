@@ -707,7 +707,7 @@ P1_apply_bash
 	  lda #Still
 	  sta player.1.motionState
 	  
-	  lda #$20
+	  lda #$10
 	  sta player.1.cooldown
 	  rts
 	  
@@ -721,7 +721,7 @@ P1_apply_bash
 	  cmp #$00
 	  bne @p1_bash_end_Y
 	  
-	  lda #$20
+	  lda #$10
 	  sta player.1.cooldown
 	  rts
 	  
@@ -730,7 +730,7 @@ P1_apply_bash
 	  
 	  dea
 	  sta player.1.targetVelocityY
-	  lda #$20
+	  lda #$10
 	  sta player.1.cooldown
 rts  
 	  

@@ -4,10 +4,10 @@
 ;================================================================
 
 ;Walls
-.DEFINE TopWall	 		$10
-.DEFINE BottomWall	 	$CF
-.DEFINE LeftWall 		$10
-.DEFINE RightWall		$EF
+.DEFINE TopWall	 		$08
+.DEFINE BottomWall	 	$DF
+.DEFINE LeftWall 		$08
+.DEFINE RightWall		$F8
 
 
 ;================================================================		
@@ -30,6 +30,8 @@ jsr @p4Collisions
 jsr @BashingCollisions
 
 jsr @wallCollisions
+
+jsr PollenCollisions
 
 rts
 
@@ -661,6 +663,7 @@ rts
 		lda #$20
 		sta player.2.cooldown	
 		
+		
 @p2NoWall:	
 rts
 ;================================================================
@@ -807,6 +810,513 @@ rts
 		sta player.4.cooldown	
 		
 @p4NoWall:	
+rts
+
+;================================================================
+
+PollenCollisions:
+
+		lda pollen1Timer
+		cmp #$05
+		;bcs @Pollen2
+		jsr @pollen1CollisionCheck
+		
+	@Pollen2:
+		lda pollen2Timer
+		cmp #$05
+		;bcs @Pollen3
+		jsr @pollen2CollisionCheck
+		
+	@Pollen3:
+		lda pollen3Timer
+		cmp #$05
+		;bcs @Pollen4
+		jsr @pollen3CollisionCheck
+		
+	@Pollen4:	
+		lda pollen4Timer
+		cmp #$05
+		;bcs @PollenEnd
+		jsr @pollen4CollisionCheck
+		
+@PollenEnd:
+rts		
+
+;================================================================	
+
+@pollen1CollisionCheck:
+
+@pollen1Player1:
+		lda pollenY1
+		adc #$18
+		cmp player.1.topBBox
+		bcc @pollen1Player2
+		
+		lda pollenY1
+		adc #$08
+		cmp player.1.bottomBBox
+		bcs @pollen1Player2  
+		
+		lda pollenX1
+		adc #$18
+		cmp player.1.leftBBox
+		bcc @pollen1Player2 
+		
+		lda pollenX1
+		adc #$08
+		cmp player.1.rightBBox
+		bcs @pollen1Player2
+		
+		lda player.1.pollenCollected
+		ina 
+		sta player.1.pollenCollected
+		
+		ClearPollen1
+		rts
+		
+@pollen1Player2:
+		lda pollenY1
+		adc #$18
+		cmp player.2.topBBox
+		bcc @pollen1Player3
+		
+		lda pollenY1
+		adc #$08
+		cmp player.2.bottomBBox
+		bcs @pollen1Player3  
+		
+		lda pollenX1
+		adc #$18
+		cmp player.2.leftBBox
+		bcc @pollen1Player3  
+		
+		lda pollenX1
+		adc #$08
+		cmp player.2.rightBBox
+		bcs @pollen1Player3
+		
+		lda player.2.pollenCollected
+		ina 
+		sta player.2.pollenCollected
+		
+		ClearPollen1
+		rts
+		
+@pollen1Player3:
+		lda pollenY1
+		adc #$18
+		cmp player.3.topBBox
+		bcc @pollen1Player4
+		
+		lda pollenY1
+		adc #$08
+		cmp player.3.bottomBBox
+		bcs @pollen1Player4 
+		
+		lda pollenX1
+		adc #$18
+		cmp player.3.leftBBox
+		bcc @pollen1Player4 
+		
+		lda pollenX1
+		adc #$08
+		cmp player.3.rightBBox
+		bcs @pollen1Player4
+		
+		lda player.3.pollenCollected
+		ina 
+		sta player.3.pollenCollected
+		
+		ClearPollen1
+		rts
+		
+@pollen1Player4:
+		lda pollenY1
+		adc #$18
+		cmp player.4.topBBox
+		bcc @pollen1NoCollision
+		
+		lda pollenY1
+		adc #$08
+		cmp player.4.bottomBBox
+		bcs @pollen1NoCollision  
+		
+		lda pollenX1
+		adc #$18
+		cmp player.4.leftBBox
+		bcc @pollen1NoCollision  
+		
+		lda pollenX1
+		adc #$08
+		cmp player.4.rightBBox
+		bcs @pollen1NoCollision
+		
+		lda player.4.pollenCollected
+		ina
+		sta player.4.pollenCollected
+		
+		ClearPollen1
+		rts
+
+@pollen1NoCollision:
+rts
+
+;================================================================
+
+@pollen2CollisionCheck:
+
+@pollen2Player1:
+		lda pollenY2
+		adc #$18
+		cmp player.1.topBBox
+		bcc @pollen2Player2
+		
+		lda pollenY2
+		adc #$08
+		cmp player.1.bottomBBox
+		bcs @pollen2Player2  
+		
+		lda pollenX2
+		adc #$18
+		cmp player.1.leftBBox
+		bcc @pollen2Player2 
+		
+		lda pollenX2
+		adc #$08
+		cmp player.1.rightBBox
+		bcs @pollen2Player2
+		
+		lda player.1.pollenCollected
+		ina 
+		sta player.1.pollenCollected
+		
+		ClearPollen2
+		rts
+		
+@pollen2Player2:
+		lda pollenY2
+		adc #$18
+		cmp player.2.topBBox
+		bcc @pollen2Player3
+		
+		lda pollenY2
+		adc #$08
+		cmp player.2.bottomBBox
+		bcs @pollen2Player3  
+		
+		lda pollenX2
+		adc #$18
+		cmp player.2.leftBBox
+		bcc @pollen2Player3  
+		
+		lda pollenX2
+		adc #$08
+		cmp player.2.rightBBox
+		bcs @pollen2Player3
+		
+		lda player.2.pollenCollected
+		ina
+		sta player.2.pollenCollected
+		
+		ClearPollen2
+		rts
+		
+@pollen2Player3:
+		lda pollenY2
+		adc #$18
+		cmp player.3.topBBox
+		bcc @pollen2Player4
+		
+		lda pollenY2
+		adc #$08
+		cmp player.3.bottomBBox
+		bcs @pollen2Player4 
+		
+		lda pollenX2
+		adc #$18
+		cmp player.3.leftBBox
+		bcc @pollen2Player4 
+		
+		lda pollenX2
+		adc #$08
+		cmp player.3.rightBBox
+		bcs @pollen2Player4
+		
+		lda player.3.pollenCollected
+		ina 
+		sta player.3.pollenCollected
+		
+		ClearPollen2
+		rts
+		
+@pollen2Player4:
+		lda pollenY2
+		adc #$18
+		cmp player.4.topBBox
+		bcc @pollen2NoCollision
+		
+		lda pollenY2
+		adc #$08
+		cmp player.4.bottomBBox
+		bcs @pollen2NoCollision  
+		
+		lda pollenX2
+		adc #$18
+		cmp player.4.leftBBox
+		bcc @pollen2NoCollision  
+		
+		lda pollenX2
+		adc #$08
+		cmp player.4.rightBBox
+		bcs @pollen2NoCollision
+		
+		lda player.4.pollenCollected
+		ina 
+		sta player.4.pollenCollected
+		
+		ClearPollen2
+		rts
+
+@pollen2NoCollision:
+rts
+
+
+;================================================================
+
+@pollen3CollisionCheck:
+
+@pollen3Player1:
+		lda pollenY3
+		adc #$18
+		cmp player.1.topBBox
+		bcc @pollen3Player2
+		
+		lda pollenY3
+		adc #$08
+		cmp player.1.bottomBBox
+		bcs @pollen3Player2  
+		
+		lda pollenX3
+		adc #$18
+		cmp player.1.leftBBox
+		bcc @pollen3Player2 
+		
+		lda pollenX3
+		adc #$08
+		cmp player.1.rightBBox
+		bcs @pollen3Player2
+		
+		lda player.1.pollenCollected
+		ina 
+		sta player.1.pollenCollected
+		
+		ClearPollen3
+		rts
+		
+@pollen3Player2:
+		lda pollenY3
+		adc #$18
+		cmp player.2.topBBox
+		bcc @pollen3Player3
+		
+		lda pollenY3
+		adc #$08
+		cmp player.2.bottomBBox
+		bcs @pollen3Player3  
+		
+		lda pollenX3
+		adc #$18
+		cmp player.2.leftBBox
+		bcc @pollen3Player3  
+		
+		lda pollenX3
+		adc #$08
+		cmp player.2.rightBBox
+		bcs @pollen3Player3
+		
+		lda player.2.pollenCollected
+		ina 
+		sta player.2.pollenCollected
+		
+		ClearPollen3
+		rts
+		
+@pollen3Player3:
+		lda pollenY3
+		adc #$18
+		cmp player.3.topBBox
+		bcc @pollen3Player4
+		
+		lda pollenY3
+		adc #$08
+		cmp player.3.bottomBBox
+		bcs @pollen3Player4 
+		
+		lda pollenX3
+		adc #$18
+		cmp player.3.leftBBox
+		bcc @pollen3Player4 
+		
+		lda pollenX3
+		adc #$08
+		cmp player.3.rightBBox
+		bcs @pollen3Player4
+		
+		lda player.3.pollenCollected
+		ina 
+		sta player.3.pollenCollected
+		
+		ClearPollen3
+		rts
+		
+@pollen3Player4:
+		lda pollenY3
+		adc #$18
+		cmp player.4.topBBox
+		bcc @pollen3NoCollision
+		
+		lda pollenY3
+		adc #$08
+		cmp player.4.bottomBBox
+		bcs @pollen3NoCollision  
+		
+		lda pollenX3
+		adc #$18
+		cmp player.4.leftBBox
+		bcc @pollen3NoCollision  
+		
+		lda pollenX3
+		adc #$08
+		cmp player.4.rightBBox
+		bcs @pollen3NoCollision
+		
+		lda player.4.pollenCollected
+		ina 
+		sta player.4.pollenCollected
+		
+		ClearPollen3
+		rts
+
+@pollen3NoCollision:
+rts
+
+;================================================================
+
+@pollen4CollisionCheck:
+
+@pollen4Player1:
+		lda pollenY4
+		adc #$18
+		cmp player.1.topBBox
+		bcc @pollen4Player2
+		
+		lda pollenY4
+		adc #$08
+		cmp player.1.bottomBBox
+		bcs @pollen4Player2  
+		
+		lda pollenX4
+		adc #$18
+		cmp player.1.leftBBox
+		bcc @pollen4Player2 
+		
+		lda pollenX4
+		adc #$08
+		cmp player.1.rightBBox
+		bcs @pollen4Player2
+		
+		lda player.1.pollenCollected
+		ina 
+		sta player.1.pollenCollected
+		
+		ClearPollen4
+		rts
+		
+@pollen4Player2:
+		lda pollenY4
+		adc #$18
+		cmp player.2.topBBox
+		bcc @pollen4Player3
+		
+		lda pollenY4
+		adc #$08
+		cmp player.2.bottomBBox
+		bcs @pollen4Player3  
+		
+		lda pollenX4
+		adc #$18
+		cmp player.2.leftBBox
+		bcc @pollen4Player3  
+		
+		lda pollenX4
+		adc #$08
+		cmp player.2.rightBBox
+		bcs @pollen4Player3
+		
+		lda player.2.pollenCollected
+		ina 
+		sta player.2.pollenCollected
+		
+		ClearPollen4
+		rts
+		
+@pollen4Player3:
+		lda pollenY4
+		adc #$18
+		cmp player.3.topBBox
+		bcc @pollen4Player4
+		
+		lda pollenY4
+		adc #$08
+		cmp player.3.bottomBBox
+		bcs @pollen4Player4 
+		
+		lda pollenX4
+		adc #$18
+		cmp player.3.leftBBox
+		bcc @pollen4Player4 
+		
+		lda pollenX4
+		adc #$08
+		cmp player.3.rightBBox
+		bcs @pollen4Player4
+		
+		lda player.3.pollenCollected
+		ina 
+		sta player.3.pollenCollected
+		
+		ClearPollen4
+		rts
+		
+@pollen4Player4:
+		lda pollenY4
+		adc #$18
+		cmp player.4.topBBox
+		bcc @pollen4NoCollision
+		
+		lda pollenY4
+		adc #$08
+		cmp player.4.bottomBBox
+		bcs @pollen4NoCollision  
+		
+		lda pollenX4
+		adc #$18
+		cmp player.4.leftBBox
+		bcc @pollen4NoCollision  
+		
+		lda pollenX4
+		adc #$08
+		cmp player.4.rightBBox
+		bcs @pollen4NoCollision
+		
+		lda player.4.pollenCollected
+		ina 
+		sta player.4.pollenCollected
+		
+		ClearPollen4
+		rts
+
+@pollen4NoCollision:
 rts
 
 ;================================================================

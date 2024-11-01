@@ -24,8 +24,10 @@
 .INCLUDE "P4move.asm"
 .INCLUDE "VBLANK.asm"
 .INCLUDE "SetupVideo.asm"
-.INCLUDE "collision.asm"
 .INCLUDE "SpawnSprites.asm"
+.INCLUDE "collision.asm"
+.INCBIN "pattern.bin"
+
 
 
 
@@ -46,14 +48,22 @@
 .DEFINE FrameWait		$1C
 
 .DEFINE InputCMP	$1F
-
-
+.DEFINE p1ScoreR $20
+.DEFINE p1ScoreW $21
+.DEFINE p2ScoreR $22
+.DEFINE p2ScoreW $23
+.DEFINE p3ScoreR $24
+.DEFINE p3ScoreW $25
+.DEFINE p4ScoreR $26
+.DEFINE p4ScoreW $27
 
 .BANK 0 SLOT 0
 .ORG 0
 .SECTION "MainCode"
 
 Main:
+
+@reset:
 	InitializeSNES
 
 	rep #$10		;A/mem = 8bit, X/Y=16bit
@@ -198,7 +208,11 @@ Next_tile:
 	;setup the video modes and such, then turn on the screen
 	JSR SetupVideo	
 	
-	
+	jsr InitializePollen
+	SpawnPollen1 newPollen1X, newPollen1Y
+	SpawnPollen2 newPollen2X, newPollen2Y
+	SpawnPollen3 newPollen3X, newPollen3Y
+	SpawnPollen4 newPollen4X, newPollen4Y
 
 
 InfiniteLoop:
@@ -214,18 +228,28 @@ InfiniteLoop:
 	lda #$0000
 
 
-	SetCursorPos 10, 10
-	ldy player.1.pollenCollected
-	PrintString "P1 Pollen = %b    "
-	SetCursorPos 11, 10
-	ldy player.2.pollenCollected
-	PrintString "P2 Pollen = %b    "
-	SetCursorPos 12, 10
-	ldy player.3.pollenCollected
-	PrintString "P3 Pollen = %b    "
-	SetCursorPos 13, 10
-	ldy player.4.pollenCollected
-	PrintString "P4 Pollen = %b    "
+	SetCursorPos 6, 10
+	lda player.1.pollenCollected
+	sta p1ScoreR
+	ldy #p1ScoreR
+	PrintString "P1 POLLEN = %b   "
+	SetCursorPos 07, 10
+	lda player.2.pollenCollected
+	sta p2ScoreR
+	ldy #p2ScoreR
+	PrintString "P2 POLLEN = %b    "
+	SetCursorPos 08, 10
+	lda player.3.pollenCollected
+	sta p3ScoreR
+	ldy #p3ScoreR
+	PrintString "P3 POLLEN = %b   "
+	SetCursorPos 09, 10
+	lda player.4.pollenCollected
+	sta p4ScoreR
+	ldy #p4ScoreR
+	PrintString "P4 POLLEN = %b   "
+	
+	
 	
 	
 	
@@ -241,16 +265,12 @@ InfiniteLoop:
 	
 	
 	jsr SpriteUpdate
+	jsr UpdatePollen
+
 	
-	
-	
-	
-	;lda player.1.spriteX_Lo
-	;sta MapX
-	;PrintString " 'Look Ma, I can Walk!' \n"
-	
-	
-	
+	lda $35
+	cmp #$30
+	beq @jumpToReset
 	
 	ldy #01
 	nop
@@ -258,6 +278,8 @@ InfiniteLoop:
 	
 	JMP InfiniteLoop	;Do this forever
 	
+@jumpToReset:	
+jmp @reset
 	
 	.ENDS
 ;==========================================================================================

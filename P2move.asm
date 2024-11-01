@@ -703,7 +703,7 @@ p2_apply_bash
 	  lda #Still
 	  sta player.2.motionState
 	  
-	  lda #$20
+	  lda #$10
 	  sta player.2.cooldown
 	  rts
 	  
@@ -717,7 +717,7 @@ p2_apply_bash
 	  cmp #$00
 	  bne @p2_bash_end_Y
 	  
-	  lda #$20
+	  lda #$10
 	  sta player.2.cooldown
 	  rts
 	  
@@ -726,7 +726,7 @@ p2_apply_bash
 	  
 	  dea
 	  sta player.2.targetVelocityY
-	  lda #$20
+	  lda #$10
 	  sta player.2.cooldown
 rts  
 	  
